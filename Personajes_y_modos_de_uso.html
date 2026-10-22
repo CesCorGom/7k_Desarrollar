@@ -87,16 +87,16 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 @media (min-width:760px){
 .in{padding:18px 16px 14px}
 .th{display:grid;grid-template-columns:30px 44px 1fr;gap:8px;padding:8px;margin-bottom:6px;color:var(--gold);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--gold2)}
-.th span:nth-child(3){display:grid;grid-template-columns:110px 1fr}
+
 .list{column-count:2;column-gap:12px}
-.r .tx{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center}.nm{margin:0}
+.nm{margin:0}
 }
 </style>
 </head>
 <body>
 <div class="frame"><div class="in">
 <div class="hd">
-<h1>Lista completa de <span>personajes</span><br>y modos de uso</h1>
+<h1>Lista completa de <span>personajes que vale la pena desarrollar </span><br>y modos de uso</h1>
 <p>Basado en la información proporcionada</p>
 <div class="orn"></div>
 </div>
@@ -107,7 +107,7 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 <div class="tools"><input type="search" id="q" placeholder="Buscar personaje..." autocomplete="off"><button id="sort">A–Z</button></div>
 <div id="fbox"></div>
 <p class="cnt" id="cnt"></p>
-<div class="th"><span>#</span><span></span><span><em style="font-style:normal">Personaje</em><em style="font-style:normal">Dónde se usa</em></span></div>
+<div class="th"><span>#</span><span></span><span><em style="font-style:normal">Personaje</em></span></div>
 <div class="list" id="list"></div>
 </div>
 <div id="vS" style="display:none">
@@ -169,16 +169,16 @@ var IC={"Aris": "data:image/webp;base64,UklGRqorAABXRUJQVlA4IJ4rAAAwhwCdASrAAMAA
 function avh(n){var h1=hue(n);if(IC[n])return '<div class="av im" style="background-image:url('+IC[n]+')"></div>';return '<div class="av" style="background:linear-gradient(135deg,hsl('+h1+',60%,45%),hsl('+(h1+40)+',60%,28%))">'+ini(n)+'</div>'}
 function leg(){var h="";CAT.forEach(function(c){h+='<button class="lg'+(cat==c[0]?' on':'')+'" style="--c:'+c[1]+'" data-k="'+c[0]+'"><span class="ic">'+c[2]+'</span><span><b>'+c[3]+'</b><br>'+c[4]+'</span></button>'});$("leg").innerHTML=h}
 function render(){
-var f=all.filter(function(p){return p.n.toLowerCase().indexOf(term)>-1&&(!cat||p.c[cat])&&(!boss||p.c[cat].indexOf(boss)>-1)});
+var f=all.filter(function(p){return !p.pet&&p.n.toLowerCase().indexOf(term)>-1&&(!cat||p.c[cat])&&(!boss||p.c[cat].indexOf(boss)>-1)});
 f.sort(function(a,b){return mode=="az"?a.n.localeCompare(b.n):(b.t-a.t||a.n.localeCompare(b.n))});
 var h="";
 f.forEach(function(p,i){
 var h1=hue(p.n),ls="",first=true;
 CAT.forEach(function(c){var b=p.c[c[0]];if(!b)return;
 ls+='<div class="ln" style="color:'+c[1]+'">'+(first?'':'-- ')+'<b>'+c[0]+'</b> - '+b.join(", ")+'</div>';first=false});
-h+='<div class="r" data-c="'+p.n+'"><div class="no">'+(i+1)+'</div>'+avh(p.n)+'<div class="tx"><div class="nm">'+p.n+'<small>'+( p.pet?'🐾 Mascota':'x'+p.t)+'</small></div><div>'+( p.pet?'<div class="ln" style="color:var(--gold)">Mascota · usado en '+p.petCount+' equipos</div>':ls)+'</div></div></div>'});
+h+='<div class="r" data-c="'+p.n+'"><div class="no">'+(i+1)+'</div>'+avh(p.n)+'<div class="tx"><div class="nm">'+p.n+'</div></div></div>'});
 $("list").innerHTML=h||'<div class="empty">Sin resultados</div>';
-$("fbox").innerHTML=boss?fm(boss):"";$("cnt").textContent=f.length+" de "+all.length+" personajes"+(cat?" · "+(boss||cat):"")}
+$("fbox").innerHTML=boss?fm(boss):"";$("cnt").textContent=f.length+" de "+all.filter(function(p){return !p.pet}).length+" personajes"+(cat?" · "+(boss||cat):"")}
 $("q").oninput=function(){term=this.value.trim().toLowerCase();render()};
 $("sort").onclick=function(){mode=mode=="az"?"top":"az";this.textContent=mode=="az"?"A–Z":"Más usados";render()};
 $("leg").onclick=function(e){var b=e.target.closest(".lg");if(!b)return;var k=b.getAttribute("data-k");cat=cat==k?null:k;boss=null;refresh()};
@@ -222,9 +222,9 @@ var FORM={
 (function(){D.forEach(function(d){var f=FORM[d[0]]||FORM[d[1]];if(!f)return;var t=f.fr.concat(f.bk).slice().sort().join(),u=d[2].slice().sort().join();if(d[0]=="Asedio"&&t!=u)console.warn("Alineación no coincide con el equipo:",d[1])})})();
 function fm(b){var f=FORM[b];if(!f)return"";function row(l,a){var h='<div class="fr"><span class="fl">'+l+'</span>';a.forEach(function(n){h+='<button class="ft2" data-c="'+n+'">'+avh(n)+'<i>'+n+'</i></button>'});return h+'</div>'}function prow(a){if(!a.length)return'<div class="fr"><span class="fl"> </span></div>';var h='<div class="fh">Prioridad habilidad</div><div class="fr"><span class="fl"> </span><div class="fsc">';a.forEach(function(n,i){var k=hue(n);h+='<div class="ft2"><div class="av pn" style="background:linear-gradient(135deg,hsl('+k+',60%,45%),hsl('+(k+40)+',60%,28%))">'+(i+1)+'</div><i>'+n+'</i></div>'});return h+'</div></div>'}return'<div class="fm"><div class="fh">Alineación <b>'+f.al+'</b></div>'+row("Adelante",f.fr)+row("Atrás",f.bk)+row("Mascota",f.pet||[])+prow(f.pri||[])+'</div>'}
 $("fbox").onclick=function(e){var b=e.target.closest("[data-c]");if(b)openM(b.getAttribute("data-c"))};
-function bch(){var el=$("bchips");if(!cat){el.style.display="none";el.innerHTML="";return}var h='<button class="sc'+(!boss?' on':'')+'" style="--c:'+col[cat]+'" data-k="">Todos los jefes</button>';D.forEach(function(d){if(d[0]==cat)h+='<button class="sc'+(boss==d[1]?' on':'')+'" style="--c:'+col[cat]+'" data-k="'+d[1]+'">'+d[1]+'</button>'});el.innerHTML=h;el.style.display="flex"}
+function bch(){var el=$("bchips");if(!cat){el.style.display="none";el.innerHTML="";return}var h='';D.forEach(function(d){if(d[0]==cat)h+='<button class="sc'+(boss==d[1]?' on':'')+'" style="--c:'+col[cat]+'" data-k="'+d[1]+'">'+d[1]+'</button>'});el.innerHTML=h;el.style.display="flex"}
 function refresh(){lim=15;leg();bch();render();sPod();sRank();sModes();mStats()}
-$("bchips").onclick=function(e){var b=e.target.closest(".sc");if(!b)return;var k=b.getAttribute("data-k");boss=k===""?null:k;refresh()};
+$("bchips").onclick=function(e){var b=e.target.closest(".sc");if(!b)return;var k=b.getAttribute("data-k");boss=boss==k?null:k;refresh()};
 function sDet(){var d=$("sdet");if(!sel){d.className="sdet";d.innerHTML="";return}var p=P[sel];var h='<div class="hh">'+sav(sel)+'<div><div class="bg">'+sel+'</div><div style="font-size:13px;color:var(--mut)">Aparece en '+p.t+' de '+T+' equipos ('+pc(p.t)+'%)</div></div><button class="x" id="sx" aria-label="Cerrar">✕</button></div><div style="margin-top:8px">';D.forEach(function(x){if(x[2].indexOf(sel)>-1)h+='<div class="li"><b>'+x[1]+'</b><span style="background:'+col[x[0]]+'">'+x[0]+'</span></div>'});d.innerHTML=h+'</div>';d.className="sdet show";$("sx").onclick=function(){pick(null)}}
 function pick(n){sel=n;sModes();if(n)openM(n);else closeM()}
 function openM(n){var p=P[n],r=1;all.forEach(function(q){if(q.t>p.t)r++});
