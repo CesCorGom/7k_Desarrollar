@@ -1,0 +1,220 @@
+-- expedicion de los advientos
+TEO SHADOW:
+pascal
+xiao
+kyrielle
+vanessa
+dongyoung
+
+KYLE SHADOW:
+fai
+shane
+sunran
+randgrid
+guan yu
+
+YEONHEE SHADOW:
+dongyoung
+vanessa
+chole
+ruri
+orly
+
+KARMA SHADOW:
+sunran
+randgrid
+Taka
+karl heron
+feng yan
+
+DIOS DESTRUCCION:
+pascal
+sunran
+miho
+xiao qiao
+reginleif
+
+-- incursion avansada
+
+CALISTRA:
+biscuit
+sunran
+rachel
+fai
+guan yu
+
+ASTREA:
+biscuit
+miho
+espada
+daisy
+orly
+
+LEONID:
+Lu bu
+biscuit
+guan yu
+xiao
+bai long
+
+-- Asedio
+VENTISCA SPIKE:
+sunran
+feng yan
+biscuit
+rachel
+ryan
+
+MUERTE DELLIONS:
+rachel
+biscuit
+sunran
+deo
+ryan
+
+
+INMORTAL RACHEL:
+lina
+biscuit
+nezha
+ryan
+miho
+
+INFIERNO JAVE:
+rachel
+ryan
+biscuit
+sieg
+eileene
+
+GUARDIAN RUDY:
+miho
+biscuit
+nezha
+evan
+orly
+
+LLAMA EILEENE:
+miho
+nezha
+lina
+biscuit
+chole
+
+OSCURIDAD KRIS:
+heavenia
+Eileene
+Biskuit
+Xiao
+Shane
+
+
+-- power up honguitos
+FUEGO:
+lucy
+heavenia
+gelidus
+yui
+lania
+
+AGUA:
+hayeon
+dongyoung
+feng yan
+shinobu
+bai jiao
+
+TIERRA:
+Rachel
+tanjiro 
+sunran
+sieg
+fai
+
+LUZ:
+Joker
+bai jiao
+chole
+ling ling 
+Aris
+
+OSCURIDAD:
+bai jiao
+xiao
+bi dam
+freyja
+hayeon
+
+-- incursiones
+
+letal:
+biskuit
+sunran
+shane
+yui
+sieg
+
+red ox:
+biscuit
+espada
+karon
+daisy
+orly
+
+come hierros:
+biscuit
+sunran
+pascal
+Melia
+xiao qiao
+
+
+Power up honguitos
+FUEGO
+alineacion: 4-1
+adelante:  heavenia - lucy - gelidus - yui
+atras: lania
+
+agua
+alineacion: 4-1
+adelante: dongyoung - hayeon - feng yan - bai jiao
+atras:  shinobu
+
+
+tierra
+alineacion: 4-1
+adelante: randgrid - tanjiro  - sieg - rachel 
+atras: fai
+
+
+luz
+alineacion: 4-1
+adelante: xiao qiao - joker - aris - chole
+atras: bai jiao
+
+
+
+oscuridad
+alineacion: 4-1
+adelante: bi dam - freyja - xiao  - hayeon
+atras: bai jiao
+
+
+incursiones 
+letal
+alineacion: 3-2
+adelante: biscuit - sieg  - yui 
+atras:  sunran - shane
+
+red ox
+alineacion: 4-1
+adelante: biscuit - orly - karon - daisy
+atras: espada
+
+come hierros
+alineacion: 3-2
+adelante: biscuit - melia - sunran
+atras:  xiao qiao - pascal
+
+
+// puedes agregar esta información en la sona especifica donde se solicita cuando se consulte el submodo de juego 
