@@ -166,7 +166,16 @@ var D=[
 ["Incursiones","Come Hierros",["Biscuit","Sunran","Pascal","Melia","Xiao Qiao"]]
 ];
 var CAT=[["Expedición de los Adviento","#4aa3ff","🧭","Expedición","de los Adviento"],["Incursión Avanzada","#b86bff","🔮","Incursión","Avanzada"],["Asedio","#ff4d5e","⚔️","Asedio",""],["Power Up Honguitos","#5de07a","🍄","Power Up","Honguitos"],["Incursiones","#f5a623","👹","Incursiones",""]];
-var ROLE={"Aris":"Debuffer","Lina":"Healer","Ling Ling":"Mage","Bi Dam":"Attack","Evan":"Tank"};
+var ROLES={
+"Healer":["Lina"],
+"Debuffer":["Aris","Bai Jiao"],
+"Attack":["Bi Dam","Lu Bu"],
+"Mage":["Ling Ling"],
+"Tank":["Evan"]
+};
+var ROLE={};Object.keys(ROLES).forEach(function(r){ROLES[r].forEach(function(n){ROLE[n]=r})});
+var ROLEC={"Healer":"#f5d142","Debuffer":"#b86bff","Attack":"#ff4d5e","Mage":"#4aa3ff","Mago":"#4aa3ff","Tank":"#a0693b"};
+function rtag(n){var c=ROLEC[ROLE[n]]||"var(--gold)";return '<span class="rl" style="color:'+c+';border-color:'+c+'">'+ROLE[n]+'</span>'}
 var col={},P={};
 CAT.forEach(function(c){col[c[0]]=c[1]});
 D.forEach(function(d){d[2].forEach(function(n){var p=P[n]||(P[n]={n:n,t:0,c:{}});p.t++;(p.c[d[0]]=p.c[d[0]]||[]).push(d[1])})});
@@ -186,7 +195,7 @@ f.forEach(function(p,i){
 var h1=hue(p.n),ls="",first=true;
 CAT.forEach(function(c){var b=p.c[c[0]];if(!b)return;
 ls+='<div class="ln" style="color:'+c[1]+'">'+(first?'':'-- ')+'<b>'+c[0]+'</b> - '+b.join(", ")+'</div>';first=false});
-h+='<div class="r" data-c="'+p.n+'"><div class="no">'+(i+1)+'</div>'+avh(p.n)+'<div class="tx"><div class="nm">'+p.n+(ROLE[p.n]?'<span class="rl">'+ROLE[p.n]+'</span>':'')+'</div></div></div>'});
+h+='<div class="r" data-c="'+p.n+'"><div class="no">'+(i+1)+'</div>'+avh(p.n)+'<div class="tx"><div class="nm">'+p.n+(ROLE[p.n]?rtag(p.n):'')+'</div></div></div>'});
 $("list").innerHTML=h||'<div class="empty">Sin resultados</div>';
 $("fbox").innerHTML=boss?fm(boss):"";$("cnt").textContent=f.length+" de "+all.filter(function(p){return !p.pet}).length+" personajes"+(cat?" · "+(boss||cat):"")}
 $("q").oninput=function(){term=this.value.trim().toLowerCase();render()};
@@ -239,7 +248,7 @@ $("bchips").onclick=function(e){var b=e.target.closest(".sc");if(!b)return;var k
 function sDet(){var d=$("sdet");if(!sel){d.className="sdet";d.innerHTML="";return}var p=P[sel];var h='<div class="hh">'+sav(sel)+'<div><div class="bg">'+sel+'</div><div style="font-size:13px;color:var(--mut)">Aparece en '+p.t+' de '+T+' equipos ('+pc(p.t)+'%)</div></div><button class="x" id="sx" aria-label="Cerrar">✕</button></div><div style="margin-top:8px">';D.forEach(function(x){if(x[2].indexOf(sel)>-1)h+='<div class="li"><b>'+x[1]+'</b><span style="background:'+col[x[0]]+'">'+x[0]+'</span></div>'});d.innerHTML=h+'</div>';d.className="sdet show";$("sx").onclick=function(){pick(null)}}
 function pick(n){sel=n;sModes();if(n)openM(n);else closeM()}
 function openM(n){var p=P[n],r=1;all.forEach(function(q){if(q.t>p.t)r++});
-var h='<button class="mx" id="mx" aria-label="Cerrar">✕</button><div class="mi" style="'+(IC[n]?'background-image:url('+IC[n]+')':'background:linear-gradient(135deg,hsl('+hue(n)+',60%,45%),hsl('+(hue(n)+40)+',60%,28%))')+'">'+(IC[n]?'':ini(n))+'</div><div class="mn">'+n+'</div>'+(ROLE[n]?'<div class="ms">Rol: <b>'+ROLE[n]+'</b></div>':'')+(p.pet?'<div class="ms">🐾 Mascota · usada en '+p.petCount+' de '+T+' equipos ('+pc(p.petCount)+'%)</div><div class="mbar"><div style="width:'+pc(p.petCount)+'%"></div></div>':'<div class="ms">Aparece en '+p.t+' de '+T+' equipos ('+pc(p.t)+'%) · puesto '+r+' en uso</div><div class="mbar"><div style="width:'+Math.round(p.t/rk[0].t*100)+'%"></div></div>');
+var h='<button class="mx" id="mx" aria-label="Cerrar">✕</button><div class="mi" style="'+(IC[n]?'background-image:url('+IC[n]+')':'background:linear-gradient(135deg,hsl('+hue(n)+',60%,45%),hsl('+(hue(n)+40)+',60%,28%))')+'">'+(IC[n]?'':ini(n))+'</div><div class="mn">'+n+'</div>'+(ROLE[n]?'<div class="ms">Rol: <b style="color:'+(ROLEC[ROLE[n]]||'inherit')+'">'+ROLE[n]+'</b></div>':'')+(p.pet?'<div class="ms">🐾 Mascota · usada en '+p.petCount+' de '+T+' equipos ('+pc(p.petCount)+'%)</div><div class="mbar"><div style="width:'+pc(p.petCount)+'%"></div></div>':'<div class="ms">Aparece en '+p.t+' de '+T+' equipos ('+pc(p.t)+'%) · puesto '+r+' en uso</div><div class="mbar"><div style="width:'+Math.round(p.t/rk[0].t*100)+'%"></div></div>');
 CAT.forEach(function(c){var b=p.c[c[0]];if(!b)return;h+='<div class="mg" style="--c:'+c[1]+'"><b>'+c[0]+'</b>';b.forEach(function(x){h+='<span>'+x+'</span>'});h+='</div>'});
 $("mbody").innerHTML=h;$("mo").className="mo show";document.body.style.overflow="hidden";$("mx").onclick=closeM}
 function closeM(){$("mo").className="mo";document.body.style.overflow="";if(sel){sel=null;sModes()}}
