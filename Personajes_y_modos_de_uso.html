@@ -81,6 +81,9 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 .fr{display:flex;align-items:center;gap:10px;margin-bottom:8px}.fl{width:62px;font-size:11px;color:var(--mut);text-transform:uppercase;flex:none}
 .ft2{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit;padding:0}.ft2 i{font-style:normal;font-size:11px}
 .fsc{display:flex;gap:10px;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;padding:4px 6px 8px;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.fph{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.fph::-webkit-scrollbar{height:5px}.fph::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
+.fp{flex:none;border:1px solid var(--gold2);border-radius:8px;padding:8px 10px}.fp .fr:last-child{margin-bottom:0}.fpt{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:6px}
 .fsc::-webkit-scrollbar{height:5px}.fsc::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
 .fsc .ft2{flex:none;min-width:58px;white-space:nowrap}
 .av.pn{font-size:18px}
@@ -132,10 +135,10 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 <div class="mo" id="mo" role="dialog" aria-modal="true"><div class="mb" id="mbody"></div></div>
 <script>
 var D=[
-["Expedición de los Adviento","Teo Shadow",["Pascal","Xiao","Kyrielle","Vanessa","Dongyoung"]],
+["Expedición de los Adviento","Teo Shadow",["Pascal","Xiao","Kyrielle","Vanessa","Dongyoung","Miho","Orly","Biscuit","Xiao Qiao","Daisy"]],
 ["Expedición de los Adviento","Kyle Shadow",["Fai","Shane","Sunran","Randgrid","Guan Yu"]],
 ["Expedición de los Adviento","Yeonhee Shadow",["Dongyoung","Vanessa","Chole","Ruri","Orly"]],
-["Expedición de los Adviento","Karma Shadow",["Taka","Sunran","Karl Heron","Rangrid","Feng Yang"],["Sunran","Randgrid","Taka","Karl Heron","Feng Yan"]],
+["Expedición de los Adviento","Karma Shadow",["Taka","Sunran","Karl Heron","Randgrid","Feng Yan","Lu Bu","Guan Yu","Ryan","Rachel","Biscuit"]],
 ["Expedición de los Adviento","Dios Destrucción",["Pascal","Sunran","Miho","Xiao Qiao","Reginleif"]],
 ["Incursión Avanzada","Calistra",["Biscuit","Sunran","Rachel","Fai","Guan Yu"]],
 ["Incursión Avanzada","Astrea",["Biscuit","Miho","Espada","Daisy","Orly"]],
@@ -202,10 +205,10 @@ var FORM={
 "Llama Eileene":{al:"4-1",fr:["Chole","Lina","Biscuit","Miho"],bk:["Nezha"],pet:["Ventoso"]},
 "Oscuridad Kris":{al:"4-1",fr:["Xiao","Biscuit","Eileene","Heavenia"],bk:["Shane"],pet:["Ventoso"]},
 "Dios Destrucción":{al:"4-1",fr:["Reginleif","Xiao Qiao","Miho","Sunran"],bk:["Pascal"],pet:["Jeo"]},
-"Teo Shadow":{al:"4-1",fr:["Kyrielle","Vanessa","Dongyoung","Xiao"],bk:["Pascal"],pet:["Jeo"]},
+"Teo Shadow":{al:"4-1",fr:["Kyrielle","Vanessa","Dongyoung","Xiao"],bk:["Pascal"],pet:["Jeo"],alternativas:[{al:"3-2",fr:["Miho","Orly","Biscuit"],bk:["Xiao Qiao","Daisy"],pet:["Ventoso"]}]},
 "Kyle Shadow":{al:"3-2",fr:["Fai","Sunran","Guan Yu"],bk:["Shane","Randgrid"],pet:["Jeo"]},
 "Yeonhee Shadow":{al:"4-1",fr:["Dongyoung","Vanessa","Orly","Chole"],bk:["Ruri"],pet:["Jeo"]},
-"Karma Shadow":{al:"2-3",fr:["Sunran","Randgrid"],bk:["Taka","Karl Heron","Feng Yan"],pet:["Jeo"]},
+"Karma Shadow":{al:"2-3",fr:["Sunran","Randgrid"],bk:["Taka","Karl Heron","Feng Yan"],pet:["Jeo"],alternativas:[{al:"4-1",fr:["Lu Bu","Guan Yu","Rachel","Biscuit"],bk:["Ryan"],pet:["Ventoso"]}]},
 "Calistra":{al:"3-2",fr:["Biscuit","Rachel","Guan Yu"],bk:["Sunran","Fai"],pet:["Ventoso"],pri:["2da de Biscuit","1ra de Rachel","1ra de Fai","2da de Sunran","3ra de Sunran"]},
 "Astrea":{al:"4-1",fr:["Biscuit","Miho","Daisy","Espada"],bk:["Orly"],pet:["Ventoso"],pri:["2da de Biscuit","1ra de Daisy","2da de Espada","2da de Daisy","1ra de Espada","1ra de Miho"]},
 "Leonid":{al:"4-1",fr:["Lu Bu","Xiao","Biscuit","Guan Yu"],bk:["Bai Long"],pet:["Ventoso"],pri:["2da de Biscuit","2da de Guan Yu","1ra de Lu Bu","2da de Taka","1ra de Taka"]},
@@ -218,9 +221,10 @@ var FORM={
 "Letal":{al:"3-2",fr:["Biscuit","Sieg","Yui"],bk:["Sunran","Shane"],pet:["Ventoso"],pri:["2da de biscuit","2da de Shane","1ra de Sunran","2da de Yui","2da de Sunran","3ra de sunran","1ra de Sieg"]},
 "Come Hierros":{al:"3-2",fr:["Biscuit","Melia","Sunran"],bk:["Xiao Qiao","Pascal"],pet:["Ventoso"],pri:["2da de Biscuit","2da de Xiao Qiao","1ra de Xiao Qiao","1ra de Pascal","2da de Pascal"]},
 };
-["Ventoso","Jeo"].forEach(function(n){var q={n:n,t:0,c:{},pet:true,petCount:0};D.forEach(function(d){var f=FORM[d[1]];if(f&&f.pet&&f.pet.indexOf(n)>-1){q.petCount++;(q.c[d[0]]=q.c[d[0]]||[]).push(d[1])}});if(!P[n]){P[n]=q;all.push(q)}});
+function pets(f){var a=(f.pet||[]).slice();(f.alternativas||[]).forEach(function(x){(x.pet||[]).forEach(function(n){if(a.indexOf(n)<0)a.push(n)})});return a}
+["Ventoso","Jeo"].forEach(function(n){var q={n:n,t:0,c:{},pet:true,petCount:0};D.forEach(function(d){var f=FORM[d[1]];if(f&&pets(f).indexOf(n)>-1){q.petCount++;(q.c[d[0]]=q.c[d[0]]||[]).push(d[1])}});if(!P[n]){P[n]=q;all.push(q)}});
 (function(){D.forEach(function(d){var f=FORM[d[0]]||FORM[d[1]];if(!f)return;var t=f.fr.concat(f.bk).slice().sort().join(),u=d[2].slice().sort().join();if(d[0]=="Asedio"&&t!=u)console.warn("Alineación no coincide con el equipo:",d[1])})})();
-function fm(b){var f=FORM[b];if(!f)return"";function row(l,a){var h='<div class="fr"><span class="fl">'+l+'</span>';a.forEach(function(n){h+='<button class="ft2" data-c="'+n+'">'+avh(n)+'<i>'+n+'</i></button>'});return h+'</div>'}function prow(a){if(!a.length)return'<div class="fr"><span class="fl"> </span></div>';var h='<div class="fh">Prioridad habilidad</div><div class="fr"><span class="fl"> </span><div class="fsc">';a.forEach(function(n,i){var k=hue(n);h+='<div class="ft2"><div class="av pn" style="background:linear-gradient(135deg,hsl('+k+',60%,45%),hsl('+(k+40)+',60%,28%))">'+(i+1)+'</div><i>'+n+'</i></div>'});return h+'</div></div>'}return'<div class="fm"><div class="fh">Alineación <b>'+f.al+'</b></div>'+row("Adelante",f.fr)+row("Atrás",f.bk)+row("Mascota",f.pet||[])+prow(f.pri||[])+'</div>'}
+function fm(b){var f=FORM[b];if(!f)return"";function row(l,a){var h='<div class="fr"><span class="fl">'+l+'</span>';a.forEach(function(n){h+='<button class="ft2" data-c="'+n+'">'+avh(n)+'<i>'+n+'</i></button>'});return h+'</div>'}function lineup(x){return'<div class="fh">Alineación <b>'+x.al+'</b></div>'+row("Adelante",x.fr)+row("Atrás",x.bk)+row("Mascota",x.pet||[])}function prow(a){if(!a.length)return'<div class="fr"><span class="fl"> </span></div>';var h='<div class="fh">Prioridad habilidad</div><div class="fr"><span class="fl"> </span><div class="fsc">';a.forEach(function(n,i){var k=hue(n);h+='<div class="ft2"><div class="av pn" style="background:linear-gradient(135deg,hsl('+k+',60%,45%),hsl('+(k+40)+',60%,28%))">'+(i+1)+'</div><i>'+n+'</i></div>'});return h+'</div></div>'}var h='<div class="fm">',al=f.alternativas||[];if(al.length){h+='<div class="fph">';[f].concat(al).forEach(function(x,i){h+='<div class="fp"><div class="fpt">Fase '+(i+1)+'</div>'+lineup(x)+'</div>'});h+='</div>'}else h+=lineup(f);return h+prow(f.pri||[])+'</div>'}
 $("fbox").onclick=function(e){var b=e.target.closest("[data-c]");if(b)openM(b.getAttribute("data-c"))};
 function bch(){var el=$("bchips");if(!cat){el.style.display="none";el.innerHTML="";return}var h='';D.forEach(function(d){if(d[0]==cat)h+='<button class="sc'+(boss==d[1]?' on':'')+'" style="--c:'+col[cat]+'" data-k="'+d[1]+'">'+d[1]+'</button>'});el.innerHTML=h;el.style.display="flex"}
 function refresh(){lim=15;leg();bch();render();sPod();sRank();sModes();mStats()}
@@ -242,7 +246,7 @@ $("smore").onclick=function(){lim=0;sRank()};
 $("schips").onclick=function(e){var b=e.target.closest(".sc");if(b){curC=b.getAttribute("data-k");sChips();sModes()}};
 sPod();sRank();sChips();sModes();
 function mStats(){var ts=D.filter(function(d){return(!cat||d[0]==cat)&&(!boss||d[1]==boss)}),m={},n=ts.length;
-ts.forEach(function(d){var f=FORM[d[1]];(f&&f.pet||[]).forEach(function(x){m[x]=(m[x]||0)+1})});
+ts.forEach(function(d){var f=FORM[d[1]];(f?pets(f):[]).forEach(function(x){m[x]=(m[x]||0)+1})});
 var k=Object.keys(m).map(function(x){return{n:x,t:m[x]}}).sort(function(a,b){return b.t-a.t||a.n.localeCompare(b.n)});
 function q(t){return n?Math.round(t/n*100):0}
 $("mtitle").textContent="Uso de mascotas"+(cat?" · "+(boss||cat):"")+" ("+n+" equipos)";
@@ -250,7 +254,7 @@ var md=["🥈","🥇","🥉"],h="";[1,0,2].forEach(function(i,j){var p=k[i];if(!
 h="";k.forEach(function(p,i){h+='<div class="sr" data-c="'+p.n+'"><span class="no" style="width:22px">'+(i+1)+'</span>'+sav(p.n)+'<div class="mid"><div class="t">'+p.n+'<i>'+p.t+' de '+n+' ('+q(p.t)+'%)</i></div><div class="sb"><div style="width:'+q(p.t)+'%;background:linear-gradient(90deg,'+(i==0?'#f5b301,#ff4d5e':'#4aa3ff,#b86bff')+')"></div></div></div></div>'});
 $("mrank").innerHTML=h||'<div class="empty">Sin mascotas registradas</div>';
 h="";CAT.forEach(function(c){if(cat&&c[0]!=cat)return;var bs=D.filter(function(d){return d[0]==c[0]&&(!boss||d[1]==boss)}),mm={};
-bs.forEach(function(d){var f=FORM[d[1]];(f&&f.pet||[]).forEach(function(x){(mm[x]=mm[x]||[]).push(d[1])})});
+bs.forEach(function(d){var f=FORM[d[1]];(f?pets(f):[]).forEach(function(x){(mm[x]=mm[x]||[]).push(d[1])})});
 var ks=Object.keys(mm).sort(function(a,b){return mm[b].length-mm[a].length||a.localeCompare(b)});if(!ks.length)return;
 h+='<div class="smc" style="--c:'+c[1]+'"><h3>'+c[0]+'</h3>';
 ks.forEach(function(x){var t=mm[x].length;h+='<div class="sr" data-c="'+x+'" style="margin:6px 0 0">'+sav(x)+'<div class="mid"><div class="t">'+x+'<i>'+t+' de '+bs.length+' ('+Math.round(t/bs.length*100)+'%)</i></div><div class="sb"><div style="width:'+Math.round(t/bs.length*100)+'%;background:'+c[1]+'"></div></div><div style="font-size:11px;color:var(--mut);margin-top:4px">'+mm[x].join(" · ")+'</div></div></div>'});
