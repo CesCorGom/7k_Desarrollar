@@ -36,16 +36,18 @@ import { JuegoService } from '../juego.service';
           </div>
           <div class="mbar"><div [style.width.%]="pct(u.total, juego.maxUso)"></div></div>
         }
-        @for (c of juego.categorias; track c.nombre) {
-          @if (u.porCategoria[c.nombre]; as subs) {
-            <div class="mg" [style.--c]="c.color">
-              <b>{{ c.nombre }}</b>
-              @for (s of subs; track $index) {
-                <span>{{ s }}</span>
-              }
-            </div>
+        <div class="ml">
+          @for (c of juego.categorias; track c.nombre) {
+            @if (u.porCategoria[c.nombre]; as subs) {
+              <div class="mg" [style.--c]="c.color">
+                <b>{{ c.nombre }}</b>
+                @for (s of subs; track $index) {
+                  <span>{{ s }}</span>
+                }
+              </div>
+            }
           }
-        }
+        </div>
       </div>
     }
   `,

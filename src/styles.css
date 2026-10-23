@@ -72,6 +72,7 @@ html,body{height:100%;overflow:hidden}
 .mn{font-family:Georgia,serif;font-size:25px;color:#fff;text-shadow:0 0 12px rgba(232,194,106,.5)}
 .ms{font-size:13px;color:var(--mut);margin:2px 0 10px}
 .mbar{height:8px;background:#1b2757;border-radius:5px;overflow:hidden;margin:0 auto 12px;max-width:260px}.mbar div{height:100%;background:linear-gradient(90deg,var(--gold),#ff4d5e)}
+.ml{max-height:38vh;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent}
 .mg{text-align:left;border-left:4px solid var(--c);background:var(--row);border-radius:8px;padding:8px 10px;margin-bottom:6px}
 .mg b{display:block;font-size:12px;color:var(--c);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 .mg span{display:inline-block;font-size:13px;margin:0 5px 4px 0;padding:2px 10px;border:1px solid var(--c);border-radius:999px}
