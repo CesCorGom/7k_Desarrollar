@@ -79,7 +79,7 @@ export const ROL_COLOR: Record<Rol, string> = {
 
 export const ROL_ICONO: Record<Rol, string> = {
   Healer: '✚',
-  Debuffer: '🧪',
+  Debuffer: 'images/estrella.svg',
   Attack: '⚔️',
   Mage: 'images/baculo.svg',
   Mago: 'images/baculo.svg',
