@@ -25,7 +25,7 @@ import { JuegoService } from '../juego.service';
         }
         <div class="mn">{{ u.nombre }}</div>
         @if (pj()?.rol; as rol) {
-          <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b><span class="ri">{{ rolIcono[rol] }}</span></div>
+          <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b>@if (rolIcono[rol].endsWith('.svg')) {<img class="ri" [src]="rolIcono[rol]" alt="" />} @else {<span class="ri">{{ rolIcono[rol] }}</span>}</div>
         }
         @if (u.mascota) {
           <div class="ms">🐾 Mascota · usada en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%)</div>

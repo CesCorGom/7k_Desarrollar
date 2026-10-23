@@ -22,7 +22,7 @@ import { JuegoService } from '../juego.service';
             <div class="nm">
               {{ p.nombre }}
               @if (rol(p.nombre); as r) {
-                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span><span class="ri">{{ rolIcono[r] }}</span>
+                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span>@if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
               }
             </div>
           </div>
