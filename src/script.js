@@ -96,7 +96,7 @@ function img(n){return PJ[n]&&PJ[n].img}
 function avh(n){var h1=hue(n);if(img(n))return '<div class="av im" style="background-image:url('+img(n)+')"></div>';return '<div class="av" style="background:linear-gradient(135deg,hsl('+h1+',60%,45%),hsl('+(h1+40)+',60%,28%))">'+ini(n)+'</div>'}
 function leg(){var h="";CAT.forEach(function(c){h+='<button class="lg'+(cat==c[0]?' on':'')+'" style="--c:'+c[1]+'" data-k="'+c[0]+'"><span class="ic">'+c[2]+'</span><span><b>'+c[3]+'</b><br>'+c[4]+'</span></button>'});$("leg").innerHTML=h}
 function render(){
-var f=all.filter(function(p){return !p.pet&&p.n.toLowerCase().indexOf(term)>-1&&(!cat||p.c[cat])&&(!boss||p.c[cat].indexOf(boss)>-1)});
+var f=all.filter(function(p){return !p.pet&&p.n.toLowerCase().indexOf(term)>-1});
 f.sort(function(a,b){return mode=="az"?a.n.localeCompare(b.n):(b.t-a.t||a.n.localeCompare(b.n))});
 var h="";
 f.forEach(function(p,i){
@@ -105,11 +105,11 @@ CAT.forEach(function(c){var b=p.c[c[0]];if(!b)return;
 ls+='<div class="ln" style="color:'+c[1]+'">'+(first?'':'-- ')+'<b>'+c[0]+'</b> - '+b.join(", ")+'</div>';first=false});
 h+='<div class="r" data-c="'+p.n+'"><div class="no">'+(i+1)+'</div>'+avh(p.n)+'<div class="tx"><div class="nm">'+p.n+(rol(p.n)?rtag(p.n):'')+'</div></div></div>'});
 $("list").innerHTML=h||'<div class="empty">Sin resultados</div>';
-$("fbox").innerHTML=boss?fm(boss):"";$("cnt").textContent=f.length+" de "+all.filter(function(p){return !p.pet}).length+" personajes"+(cat?" · "+(boss||cat):"")}
+$("cnt").textContent=f.length+" de "+all.filter(function(p){return !p.pet}).length+" personajes"}
 $("q").oninput=function(){term=this.value.trim().toLowerCase();render()};
 $("sort").onclick=function(){mode=mode=="az"?"top":"az";this.textContent=mode=="az"?"A–Z":"Más usados";render()};
 $("leg").onclick=function(e){var b=e.target.closest(".lg");if(!b)return;var k=b.getAttribute("data-k");cat=cat==k?null:k;boss=null;refresh()};
-leg();render();
+leg();render();tab(1);
 var T=D.length,rk=all.slice().sort(function(a,b){return b.t-a.t||a.n.localeCompare(b.n)}),lim=15,sel=null,curC=CAT[0][0];
 function pc(n){return Math.round(n/T*100)}
 function sav(n){return avh(n)}
@@ -150,9 +150,9 @@ function pets(f){var a=(f.pet||[]).slice();(f.alternativas||[]).forEach(function
 (function(){D.forEach(function(d){var f=FORM[d[0]]||FORM[d[1]];if(!f)return;var t=f.fr.concat(f.bk).slice().sort().join(),u=d[2].map(function(o){return o.nombre}).sort().join();if(d[0]=="Asedio"&&t!=u)console.warn("Alineación no coincide con el equipo:",d[1])})})();
 function fm(b){var f=FORM[b];if(!f)return"";function row(l,a){var h='<div class="fr"><span class="fl">'+l+'</span>';a.forEach(function(n){h+='<button class="ft2" data-c="'+n+'">'+avh(n)+'<i>'+n+'</i></button>'});return h+'</div>'}function lineup(x){return'<div class="fh">Alineación <b>'+x.al+'</b></div>'+row("Adelante",x.fr)+row("Atrás",x.bk)+row("Mascota",x.pet||[])}function prow(a){if(!a.length)return'<div class="fr"><span class="fl"> </span></div>';var h='<div class="fh">Prioridad habilidad</div><div class="fr"><span class="fl"> </span><div class="fsc">';a.forEach(function(n,i){var k=hue(n);h+='<div class="ft2"><div class="av pn" style="background:linear-gradient(135deg,hsl('+k+',60%,45%),hsl('+(k+40)+',60%,28%))">'+(i+1)+'</div><i>'+n+'</i></div>'});return h+'</div></div>'}var h='<div class="fm">',al=f.alternativas||[];if(al.length){h+='<div class="fph">';[f].concat(al).forEach(function(x,i){h+='<div class="fp"><div class="fpt">Fase '+(i+1)+'</div>'+lineup(x)+'</div>'});h+='</div>'}else h+=lineup(f);return h+prow(f.pri||[])+'</div>'}
 $("fbox").onclick=function(e){var b=e.target.closest("[data-c]");if(b)openM(b.getAttribute("data-c"))};
-function bch(){var el=$("bchips");if(!cat){el.style.display="none";el.innerHTML="";return}var h='';D.forEach(function(d){if(d[0]==cat)h+='<button class="sc'+(boss==d[1]?' on':'')+'" style="--c:'+col[cat]+'" data-k="'+d[1]+'">'+d[1]+'</button>'});el.innerHTML=h;el.style.display="flex"}
+function bch(){var h='';CAT.forEach(function(c){if(cat&&c[0]!=cat)return;h+='<h2 class="sh">'+c[0]+'</h2><div class="schips">';D.forEach(function(d){if(d[0]==c[0])h+='<button class="sc'+(boss==d[1]?' on':'')+'" style="--c:'+c[1]+'" data-g="'+c[0]+'" data-k="'+d[1]+'">'+d[1]+'</button>'});h+='</div>'});$("bchips").innerHTML=h;$("fbox").innerHTML=boss?fm(boss):'<div class="empty">Elige un submodo para ver su alineación</div>'}
 function refresh(){lim=15;leg();bch();render();sPod();sRank();sModes();mStats()}
-$("bchips").onclick=function(e){var b=e.target.closest(".sc");if(!b)return;var k=b.getAttribute("data-k");boss=boss==k?null:k;refresh()};
+$("bchips").onclick=function(e){var b=e.target.closest(".sc");if(!b)return;var k=b.getAttribute("data-k");cat=b.getAttribute("data-g");boss=boss==k?null:k;refresh()};
 function sDet(){var d=$("sdet");if(!sel){d.className="sdet";d.innerHTML="";return}var p=P[sel];var h='<div class="hh">'+sav(sel)+'<div><div class="bg">'+sel+'</div><div class="sub">Aparece en '+p.t+' de '+T+' equipos ('+pc(p.t)+'%)</div></div><button class="x" id="sx" aria-label="Cerrar">✕</button></div><div class="lis">';D.forEach(function(x){if(x[2].indexOf(PJ[sel])>-1)h+='<div class="li"><b>'+x[1]+'</b><span style="background:'+col[x[0]]+'">'+x[0]+'</span></div>'});d.innerHTML=h+'</div>';d.className="sdet show";$("sx").onclick=function(){pick(null)}}
 function pick(n){sel=n;sModes();if(n)openM(n);else closeM()}
 function openM(n){var p=P[n],r=1;all.forEach(function(q){if(q.t>p.t)r++});
@@ -163,12 +163,12 @@ function closeM(){$("mo").className="mo";document.body.style.overflow="";if(sel)
 $("mo").onclick=function(e){if(e.target===this)closeM()};
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeM()});
 $("list").onclick=function(e){var r=e.target.closest(".r");if(r)openM(r.getAttribute("data-c"))};
-function tab(n){["vL","vS","vM"].forEach(function(v,i){$(v).style.display=n==i+1?"block":"none"});["tL","tS","tM"].forEach(function(t,i){$(t).className=n==i+1?"on":""})}
-$("tL").onclick=function(){tab(1)};$("tS").onclick=function(){tab(2)};$("tM").onclick=function(){tab(3)};
+function tab(n){$("leg").style.display=n==1?"none":"";["vL","vS","vM","vB"].forEach(function(v,i){$(v).style.display=n==i+1?"block":"none"});["tL","tS","tM","tB"].forEach(function(t,i){$(t).className=n==i+1?"on":""})}
+$("tL").onclick=function(){tab(1)};$("tS").onclick=function(){tab(2)};$("tM").onclick=function(){tab(3)};$("tB").onclick=function(){tab(4)};
 $("smore").onclick=function(){lim=0;sRank()};
 ["spod","srank","smodes"].forEach(function(id){$(id).onclick=function(e){var b=e.target.closest("[data-c]");if(b)pick(b.getAttribute("data-c"))}});
 $("schips").onclick=function(e){var b=e.target.closest(".sc");if(b){curC=b.getAttribute("data-k");sChips();sModes()}};
-sPod();sRank();sChips();sModes();
+sPod();sRank();sChips();sModes();bch();
 function mStats(){var ts=D.filter(function(d){return(!cat||d[0]==cat)&&(!boss||d[1]==boss)}),m={},n=ts.length;
 ts.forEach(function(d){var f=FORM[d[1]];(f?pets(f):[]).forEach(function(x){m[x]=(m[x]||0)+1})});
 var k=Object.keys(m).map(function(x){return{n:x,t:m[x]}}).sort(function(a,b){return b.t-a.t||a.n.localeCompare(b.n)});

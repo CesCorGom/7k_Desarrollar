@@ -85,7 +85,7 @@ html,body{height:100%;overflow:hidden}
 .fsc::-webkit-scrollbar{height:5px}.fsc::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
 .fsc .ft2{flex:none;min-width:58px;white-space:nowrap}
 .av.pn{font-size:18px}
-#bchips,#vS,#vM{display:none}
+#vB,#vS,#vM{display:none}
 .th em{font-style:normal}
 .ctr{text-align:center}
 .medal{font-size:22px}
