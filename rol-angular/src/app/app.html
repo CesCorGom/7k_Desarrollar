@@ -1,0 +1,22 @@
+<div class="frame">
+  <div class="in">
+    <div class="bd">
+      <div class="hd">
+        <h1>Lista completa de <span>personajes que vale la pena evolucionar </span><br />y modos de uso</h1>
+        <div class="orn"></div>
+      </div>
+      <nav class="tabs2">
+        <button routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Lista completa</button>
+        <button routerLink="/submodos" routerLinkActive="on">Submodos</button>
+        <button routerLink="/personajes" routerLinkActive="on">Tasa Uso Personajes</button>
+        <button routerLink="/mascotas" routerLinkActive="on">Tasa Uso Mascotas</button>
+      </nav>
+      @if (!enLista()) {
+        <app-leyenda />
+      }
+      <router-outlet />
+    </div>
+    <div class="ft"><span></span><i>Más héroes, más posibilidades.</i></div>
+  </div>
+</div>
+<app-personaje-modal />
