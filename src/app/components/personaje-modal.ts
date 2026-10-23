@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { degradado, iniciales } from './avatar';
 import { pct } from './ranking';
-import { PJ, ROL_COLOR } from '../data/personajes';
+import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
 import { JuegoService } from '../juego.service';
 
 @Component({
@@ -25,7 +25,7 @@ import { JuegoService } from '../juego.service';
         }
         <div class="mn">{{ u.nombre }}</div>
         @if (pj()?.rol; as rol) {
-          <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b></div>
+          <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b><span class="ri">{{ rolIcono[rol] }}</span></div>
         }
         @if (u.mascota) {
           <div class="ms">🐾 Mascota · usada en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%)</div>
@@ -59,6 +59,7 @@ export class PersonajeModal {
   protected readonly pj = computed(() => PJ[this.juego.abierto() ?? '']);
   protected readonly total = this.juego.totalEquipos;
   protected readonly rolColor = ROL_COLOR;
+  protected readonly rolIcono = ROL_ICONO;
   protected readonly pct = pct;
   protected readonly fondo = degradado;
   protected readonly ini = iniciales;

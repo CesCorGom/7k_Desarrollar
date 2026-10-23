@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Avatar } from '../components/avatar';
-import { PJ, ROL_COLOR } from '../data/personajes';
+import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
 import { JuegoService } from '../juego.service';
 
 @Component({
@@ -22,7 +22,7 @@ import { JuegoService } from '../juego.service';
             <div class="nm">
               {{ p.nombre }}
               @if (rol(p.nombre); as r) {
-                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span>
+                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span><span class="ri">{{ rolIcono[r] }}</span>
               }
             </div>
           </div>
@@ -38,6 +38,7 @@ export class Lista {
   protected readonly termino = signal('');
   protected readonly porUso = signal(false);
   protected readonly rolColor = ROL_COLOR;
+  protected readonly rolIcono = ROL_ICONO;
 
   protected readonly filtrados = computed(() => {
     const t = this.termino().trim().toLowerCase();

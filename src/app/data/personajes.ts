@@ -76,3 +76,12 @@ export const ROL_COLOR: Record<Rol, string> = {
   Mago: '#4aa3ff',
   Tank: '#a0693b',
 };
+
+export const ROL_ICONO: Record<Rol, string> = {
+  Healer: '✚',
+  Debuffer: '☠️',
+  Attack: '⚔️',
+  Mage: '🔮',
+  Mago: '🔮',
+  Tank: '🛡️',
+};
