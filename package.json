@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:gh-pages": "ng build --base-href /p/"
+    "build:gh-pages": "ng build --base-href /p/",
+    "deploy": "ng build --configuration production --base-href=/7k_Desarrollar/ && angular-cli-ghpages --dir=dist/rol-angular/browser"
   },
   "private": true,
   "packageManager": "npm@11.19.0",
@@ -29,4 +30,6 @@
     "prettier": "^3.8.1",
     "typescript": "~6.0.2"
   }
+ 
+
 }
