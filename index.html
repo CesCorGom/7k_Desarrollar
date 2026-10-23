@@ -10,8 +10,9 @@
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(circle at 20% 0,#2b2160 0,transparent 45%),radial-gradient(circle at 90% 10%,#40204f 0,transparent 40%),#070b1e;min-height:100%;-webkit-tap-highlight-color:transparent}
-.frame{max-width:1000px;margin:10px auto;padding:3px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2) 40%,var(--gold) 70%,var(--gold2))}
-.in{background:linear-gradient(#0a1030,#070c26);border-radius:12px;padding:16px 10px 14px;border:1px solid #000}
+html,body{height:100%;overflow:hidden}
+.frame{max-width:1000px;height:calc(100dvh - 20px);margin:10px auto;padding:3px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2) 40%,var(--gold) 70%,var(--gold2))}
+.in{display:flex;flex-direction:column;height:100%;min-height:0;background:linear-gradient(#0a1030,#070c26);border-radius:12px;padding:16px 10px 14px;border:1px solid #000}
 .hd{text-align:center;padding:4px 8px 12px}
 .hd h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(20px,5.5vw,32px);letter-spacing:1px;text-transform:uppercase;line-height:1.15;color:#fff;text-shadow:0 0 14px rgba(232,194,106,.55)}
 .hd h1 span{color:var(--gold)}
@@ -36,7 +37,8 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 .nm small{font-weight:400;font-size:11px;color:var(--gold);margin-left:6px}
 .ln{font-size:11.5px;line-height:1.4;text-transform:uppercase;letter-spacing:.2px}
 .ln b{text-transform:none;font-size:12px}
-.ft{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding:12px 6px 4px;border-top:1px solid var(--gold2);font-size:12px;color:var(--mut)}
+.bd{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent;padding-right:4px}
+.ft{flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;padding:12px 6px 4px;border-top:1px solid var(--gold2);font-size:12px;color:var(--mut)}
 .ft i{font-family:Georgia,serif;color:var(--gold);font-size:14px}
 .empty{padding:24px;text-align:center;color:var(--mut)}
 .tabs2{display:flex;gap:6px;background:#0b1236;border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:10px}
@@ -56,6 +58,9 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 .sc{flex:none;border:1.5px solid var(--c);background:#0b1236;color:var(--ink);font-size:13px;padding:7px 13px;border-radius:999px;font-family:inherit}.sc.on{background:var(--c);color:#06102a;font-weight:700}
 .smc{background:var(--row);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:8px;padding:10px;margin-bottom:6px}
 .smc h3{margin:0 0 6px;font-size:14px;color:var(--c)}
+.spsc{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.spsc::-webkit-scrollbar{height:5px}.spsc::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
+.spsc .spl{flex:none;white-space:nowrap}
 .spl{border:1.5px solid var(--c);background:transparent;color:var(--ink);font-size:13px;padding:4px 10px;border-radius:999px;margin:0 4px 5px 0;font-family:inherit}.spl.sel{background:var(--c);color:#06102a;font-weight:700}
 .sdet{display:none;background:var(--row2);border:2px solid var(--gold);border-radius:12px;padding:10px 12px;margin-bottom:10px}.sdet.show{display:block}
 .sdet .hh{display:flex;align-items:center;gap:10px}.sdet .hh>div:nth-child(2){flex:1}.sdet .bg{font-size:20px;font-weight:700}
@@ -97,7 +102,7 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 </style>
 </head>
 <body>
-<div class="frame"><div class="in">
+<div class="frame"><div class="in"><div class="bd">
 <div class="hd">
 <h1>Lista completa de <span>personajes que vale la pena desarrollar </span><br>y modos de uso</h1>
 <p>Basado en la información proporcionada</p>
@@ -129,6 +134,7 @@ body{margin:0;color:var(--ink);font-family:"Trebuchet MS",system-ui,-apple-syste
 <div id="mrank"></div>
 <h2 class="sh">Mascotas por modo</h2>
 <div id="mmodes"></div>
+</div>
 </div>
 <div class="ft"><span>Basado en la información proporcionada</span><i>Más héroes, más posibilidades.</i></div>
 </div></div>
@@ -195,7 +201,7 @@ function agg(){teams=D.filter(function(d){return(!cat||d[0]==cat)&&(!boss||d[1]=
 function pf(n){return Math.round(n/TT*100)}
 function sPod(){agg();$("stitle").textContent="Top de uso"+(cat?" · "+(boss||cat):"")+" ("+TT+" equipos)";var o=[1,0,2],m=["🥈","🥇","🥉"],h="";o.forEach(function(i,k){var p=sk[i];if(!p)return;h+='<div class="sp'+(i==0?' f':'')+'" data-c="'+p.n+'"><div style="font-size:22px">'+m[k]+'</div>'+sav(p.n)+'<b>'+p.n+'</b><span>'+p.t+' de '+TT+' ('+pf(p.t)+'%)</span></div>'});$("spod").innerHTML=h}
 function sRank(){var h="";(lim?sk.slice(0,lim):sk).forEach(function(p,i){h+='<div class="sr" data-c="'+p.n+'"><span class="no" style="width:22px">'+(i+1)+'</span>'+sav(p.n)+'<div class="mid"><div class="t">'+p.n+'<i>'+p.t+' ('+pf(p.t)+'%)</i></div><div class="sb"><div style="width:'+Math.round(p.t/sk[0].t*100)+'%;background:linear-gradient(90deg,'+(i==0?'#f5b301,#ff4d5e':'#4aa3ff,#b86bff')+')"></div></div></div></div>'});$("srank").innerHTML=h;var more=lim&&sk.length>lim;$("smore").style.display=more?"inline-block":"none";$("smore").textContent="Ver los "+(sk.length-lim)+" restantes"}
-function sModes(){var c=cat||curC,h="";$("schips").style.display=cat?"none":"flex";D.forEach(function(d){if(d[0]!=c||(boss&&d[1]!=boss))return;h+='<div class="smc" style="--c:'+col[d[0]]+'"><h3>'+d[1]+'</h3>';d[2].forEach(function(n){h+='<button class="spl'+(n==sel?' sel':'')+'" data-c="'+n+'">'+n+'</button>'});h+=fm(d[1])+'</div>'});$("smodes").innerHTML=h}
+function sModes(){var c=cat||curC,h="";$("schips").style.display=cat?"none":"flex";D.forEach(function(d){if(d[0]!=c||(boss&&d[1]!=boss))return;h+='<div class="smc" style="--c:'+col[d[0]]+'"><h3>'+d[1]+'</h3><div class="spsc">';d[2].forEach(function(n){h+='<button class="spl'+(n==sel?' sel':'')+'" data-c="'+n+'">'+n+'</button>'});h+='</div>'+fm(d[1])+'</div>'});$("smodes").innerHTML=h}
 var FORM={
 "Ventisca Spike":{al:"3-2",fr:["Feng Yan","Biscuit","Rachel"],bk:["Sunran","Ryan"],pet:["Ventoso"]},
 "Muerte Dellions":{al:"3-2",fr:["Biscuit","Deo","Rachel"],bk:["Sunran","Ryan"],pet:["Ventoso"]},
