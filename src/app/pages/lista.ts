@@ -25,6 +25,15 @@ export class Lista {
       .sort((a, b) => (this.porUso() ? b.total - a.total : 0) || a.nombre.localeCompare(b.nombre));
   });
 
+  protected readonly conteo = computed(() => {
+    const c: Partial<Record<Rol, number>> = {};
+    for (const p of this.juego.personajes) {
+      const r = this.rol(p.nombre);
+      if (r) c[r] = (c[r] ?? 0) + 1;
+    }
+    return c;
+  });
+
   protected rol(n: string) {
     return PJ[n]?.rol;
   }

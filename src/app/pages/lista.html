@@ -1,33 +1,52 @@
-<div class="tools">
-  <input type="search" placeholder="Buscar personaje..." autocomplete="off" (input)="termino.set($any($event.target).value)" />
-  <button (click)="porUso.set(!porUso())">{{ porUso() ? 'A–Z' : 'Más usados' }}</button>
+<div class="tools input-group mb-3">
+  <span class="input-group-text">🔍</span>
+  <input type="search" class="form-control" placeholder="Buscar personaje..." autocomplete="off" [value]="termino()" (input)="termino.set($any($event.target).value)" />
+  @if (termino()) {
+    <button class="btn btn-outline-secondary" type="button" title="Limpiar" (click)="termino.set('')">✕</button>
+  }
+  <button class="btn btn-outline-warning" type="button" (click)="porUso.set(!porUso())">{{ porUso() ? 'A–Z' : '🔥 Más usados' }}</button>
 </div>
 <div class="roles">
-  <button [class.on]="!filtroRol()" (click)="filtroRol.set(null)">Todos</button>
+  <button class="btn btn-sm rounded-pill" [class.on]="!filtroRol()" (click)="filtroRol.set(null)">
+    Todos <span class="badge rounded-pill text-bg-warning">{{ juego.personajes.length }}</span>
+  </button>
   @for (r of roles; track r) {
-    <button [class.on]="filtroRol() === r" [style.--c]="rolColor[r]" (click)="filtroRol.set(filtroRol() === r ? null : r)">
+    <button class="btn btn-sm rounded-pill" [class.on]="filtroRol() === r" [style.--c]="rolColor[r]" (click)="filtroRol.set(filtroRol() === r ? null : r)">
       @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
       {{ r }}
+      <span class="badge rounded-pill" [style.background]="rolColor[r]">{{ conteo()[r] || 0 }}</span>
     </button>
   }
 </div>
-<p class="cnt">{{ filtrados().length }} de {{ juego.personajes.length }} personajes</p>
-<div class="th"><span>#</span><span></span><span><em>Personaje</em></span></div>
-<div class="list">
+<div class="cnt d-flex align-items-center gap-2">
+  <span class="text-nowrap">{{ filtrados().length }} de {{ juego.personajes.length }} personajes</span>
+  <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="filtrados().length" aria-valuemin="0" [attr.aria-valuemax]="juego.personajes.length">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(filtrados().length / juego.personajes.length) * 100"></div>
+  </div>
+</div>
+<div class="list row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
   @for (p of filtrados(); track p.nombre; let i = $index) {
-    <div class="r" (click)="juego.abierto.set(p.nombre)">
-      <div class="no">{{ i + 1 }}</div>
-      <app-avatar [nombre]="p.nombre" />
-      <div class="tx">
-        <div class="nm">
-          {{ p.nombre }}
-          @if (rol(p.nombre); as r) {
-            <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span>@if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
-          }
+    <div class="col" [style.animation-delay.ms]="i < 20 ? i * 30 : 0">
+      <div class="r card h-100" [style.--c]="rol(p.nombre) ? rolColor[rol(p.nombre)!] : null" (click)="juego.abierto.set(p.nombre)">
+        <div class="card-body d-flex align-items-center gap-2">
+          <span class="no badge rounded-pill">{{ i + 1 }}</span>
+          <app-avatar [nombre]="p.nombre" />
+          <div class="tx flex-grow-1 min-w-0">
+            <div class="nm text-truncate">{{ p.nombre }}</div>
+            @if (rol(p.nombre); as r) {
+              <span class="rl badge rounded-pill" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">
+                @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
+                {{ r }}
+              </span>
+            }
+          </div>
+          <span class="go">›</span>
         </div>
       </div>
     </div>
   } @empty {
-    <div class="empty">Sin resultados</div>
+    <div class="col-12">
+      <div class="empty alert alert-dark text-center mb-0">😕 Sin resultados</div>
+    </div>
   }
 </div>
