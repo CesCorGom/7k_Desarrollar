@@ -1,0 +1,26 @@
+<h2 class="sh">Ranking de roles{{ filtro() }} ({{ puestos() }} puestos en {{ equipos() }} equipos)</h2>
+@for (r of roles(); track r.nombre; let i = $index) {
+  <div class="smc" [style.--c]="r.color">
+    <div class="sr">
+      <span class="no">{{ i + 1 }}</span>
+      <div class="av pn" [style.border-color]="r.color">
+        @if (r.icono.endsWith('.svg')) {<img class="ri" [src]="r.icono" alt="" />} @else {<span [style.color]="r.color">{{ r.icono }}</span>}
+      </div>
+      <div class="mid">
+        <div class="t">
+          <span [style.color]="r.color">{{ r.nombre }}</span>
+          <i>{{ r.total }} de {{ puestos() }} ({{ pct(r.total, puestos()) }}%)</i>
+        </div>
+        <div class="sb"><div [style.width.%]="pct(r.total, roles()[0].total)" [style.background]="r.color"></div></div>
+        <div class="bs">Presente en {{ r.enEquipos }} de {{ equipos() }} equipos ({{ pct(r.enEquipos, equipos()) }}%)</div>
+      </div>
+    </div>
+    <div class="spsc">
+      @for (p of r.top; track p.nombre) {
+        <button class="spl" (click)="juego.abierto.set(p.nombre)">{{ p.nombre }} · {{ p.total }}</button>
+      }
+    </div>
+  </div>
+} @empty {
+  <div class="empty">Sin datos</div>
+}

@@ -55,6 +55,11 @@ export class JuegoService {
     contar(this.equiposFiltrados().flatMap((e) => this.mascotasDeEquipo(e))),
   );
 
+  /** Puestos ocupados por cada rol en los equipos filtrados. */
+  readonly rankingRoles = computed(() =>
+    contar(this.equiposFiltrados().flatMap((e) => e.miembros.map((n) => PJ[n]?.rol ?? 'Sin rol'))),
+  );
+
   constructor() {
     this.validarAsedio();
   }
