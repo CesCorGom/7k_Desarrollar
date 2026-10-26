@@ -1,0 +1,5 @@
+@if (img(); as src) {
+  <div class="av im" [style.background-image]="'url(' + src + ')'"></div>
+} @else {
+  <div class="av" [style.background]="fondo()">{{ ini() }}</div>
+}

@@ -1,0 +1,35 @@
+@if (uso(); as u) {
+  <div class="mb">
+    <button class="mx" aria-label="Cerrar" (click)="cerrar()">✕</button>
+    @if (pj()?.img; as src) {
+      <div class="mi" [style.background-image]="'url(' + src + ')'"></div>
+    } @else {
+      <div class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</div>
+    }
+    <div class="mn">{{ u.nombre }}</div>
+    @if (pj()?.rol; as rol) {
+      <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b>@if (rolIcono[rol].endsWith('.svg')) {<img class="ri" [src]="rolIcono[rol]" alt="" />} @else {<span class="ri" [style.color]="rolColor[rol]">{{ rolIcono[rol] }}</span>}</div>
+    }
+    @if (u.mascota) {
+      <div class="ms">🐾 Mascota · usada en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%)</div>
+      <div class="mbar"><div [style.width.%]="pct(u.total, total)"></div></div>
+    } @else {
+      <div class="ms">
+        Aparece en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%) · puesto {{ juego.puesto(u.nombre) }} en uso
+      </div>
+      <div class="mbar"><div [style.width.%]="pct(u.total, juego.maxUso)"></div></div>
+    }
+    <div class="ml">
+      @for (c of juego.categorias; track c.nombre) {
+        @if (u.porCategoria[c.nombre]; as subs) {
+          <div class="mg" [style.--c]="c.color">
+            <b>{{ c.nombre }}</b>
+            @for (s of subs; track $index) {
+              <span>{{ s }}</span>
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+}

@@ -9,34 +9,7 @@ const LIMITE = 15;
 @Component({
   selector: 'app-uso-personajes',
   imports: [Formacion, Podio, Ranking],
-  template: `
-    <app-podio [items]="ranking()" [total]="totalFiltrado()" />
-    <h2 class="sh">Top de uso{{ filtro() }} ({{ totalFiltrado() }} equipos)</h2>
-    <app-ranking [items]="visibles()" [total]="totalFiltrado()" [relativa]="true" />
-    @if (ocultos() > 0) {
-      <p class="ctr"><button class="sbtn" (click)="limite.set(0)">Ver los {{ ocultos() }} restantes</button></p>
-    }
-
-    <h2 class="sh">Favoritos por jefe</h2>
-    @if (!juego.categoria()) {
-      <div class="schips">
-        @for (c of juego.categorias; track c.nombre) {
-          <button class="sc" [class.on]="c.nombre === chip()" [style.--c]="c.color" (click)="chip.set(c.nombre)">{{ c.nombre }}</button>
-        }
-      </div>
-    }
-    @for (e of modos(); track e.submodo) {
-      <div class="smc" [style.--c]="color[e.categoria]">
-        <h3>{{ e.submodo }}</h3>
-        <div class="spsc">
-          @for (n of e.miembros; track n) {
-            <button class="spl" [class.sel]="juego.abierto() === n" (click)="juego.abierto.set(n)">{{ n }}</button>
-          }
-        </div>
-        <app-formacion [submodo]="e.submodo" />
-      </div>
-    }
-  `,
+  templateUrl: './uso-personajes.html',
 })
 export class UsoPersonajes {
   protected readonly juego = inject(JuegoService);
