@@ -5,12 +5,12 @@
         <h1>Lista completa de <span>personajes que vale la pena evolucionar </span><br />y modos de uso</h1>
         <div class="orn"></div>
       </div>
-      <nav class="tabs2">
-        <button routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Lista completa</button>
-        <button routerLink="/submodos" routerLinkActive="on">Submodos</button>
-        <button routerLink="/personajes" routerLinkActive="on">Tasa Uso Personajes</button>
-        <button routerLink="/mascotas" routerLinkActive="on">Tasa Uso Mascotas</button>
-        <button routerLink="/roles" routerLinkActive="on">Tasa Uso Roles</button>
+      <nav class="tabs2 nav nav-pills nav-fill flex-nowrap" aria-label="Secciones">
+        <a class="nav-link" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page" [routerLinkActiveOptions]="{ exact: true }"><span class="ni">📜</span>Lista completa</a>
+        <a class="nav-link" routerLink="/submodos" routerLinkActive="active" ariaCurrentWhenActive="page"><span class="ni">🎮</span>Submodos</a>
+        <a class="nav-link" routerLink="/personajes" routerLinkActive="active" ariaCurrentWhenActive="page"><span class="ni">🦸</span>Tasa Uso Personajes</a>
+        <a class="nav-link" routerLink="/mascotas" routerLinkActive="active" ariaCurrentWhenActive="page"><span class="ni">🐾</span>Tasa Uso Mascotas</a>
+        <a class="nav-link" routerLink="/roles" routerLinkActive="active" ariaCurrentWhenActive="page"><span class="ni">🛡️</span>Tasa Uso Roles</a>
       </nav>
       @if (!enLista()) {
         <app-leyenda />

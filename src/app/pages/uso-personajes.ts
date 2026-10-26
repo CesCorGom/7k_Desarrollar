@@ -1,20 +1,16 @@
-import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
-import { Formacion } from '../components/formacion';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import { Podio, Ranking } from '../components/ranking';
-import { COLOR_CATEGORIA } from '../data/modos';
 import { JuegoService } from '../juego.service';
 
 const LIMITE = 15;
 
 @Component({
   selector: 'app-uso-personajes',
-  imports: [Formacion, Podio, Ranking],
+  imports: [Podio, Ranking],
   templateUrl: './uso-personajes.html',
 })
 export class UsoPersonajes {
   protected readonly juego = inject(JuegoService);
-  protected readonly color = COLOR_CATEGORIA;
-  protected readonly chip = signal(this.juego.categorias[0].nombre);
 
   protected readonly ranking = this.juego.rankingPersonajes;
   protected readonly totalFiltrado = computed(() => this.juego.equiposFiltrados().length);
@@ -26,10 +22,5 @@ export class UsoPersonajes {
   protected readonly filtro = computed(() => {
     const c = this.juego.categoria();
     return c ? ' · ' + (this.juego.submodo() ?? c) : '';
-  });
-
-  protected readonly modos = computed(() => {
-    const c = this.juego.categoria() ?? this.chip(), s = this.juego.submodo();
-    return this.juego.equipos.filter((e) => e.categoria === c && (!s || e.submodo === s));
   });
 }
