@@ -1,6 +1,6 @@
 <div class="tools">
   <input type="search" placeholder="Buscar personaje..." autocomplete="off" (input)="termino.set($any($event.target).value)" />
-  <button (click)="porUso.set(!porUso())">{{ porUso() ? 'Más usados' : 'A–Z' }}</button>
+  <button (click)="porUso.set(!porUso())">{{ porUso() ? 'A–Z' : 'Más usados' }}</button>
 </div>
 <div class="roles">
   <button [class.on]="!filtroRol()" (click)="filtroRol.set(null)">Todos</button>
