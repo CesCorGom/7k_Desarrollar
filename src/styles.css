@@ -287,6 +287,13 @@ img.mfr{width:96px;height:96px}
 .sb .progress-bar.progress-bar-striped{animation:progress-bar-stripes 1s linear infinite,llenar .7s ease-out both}
 .pres .progress-bar-striped{animation:progress-bar-stripes 1s linear infinite}
 @keyframes destello{to{transform:translateX(100%)}}
+/* barras del resto: degradado arcoíris que fluye, late y deja un destello rápido */
+.rk .sb .progress-bar:not(.progress-bar-striped){background-image:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c2),var(--c1));background-size:300% 100%;animation:llenar .7s ease-out both,fluir 4s linear .7s infinite,latir 1.8s ease-in-out .7s infinite}
+.rk .sb .progress-bar:not(.progress-bar-striped)::after{background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);animation-duration:1.6s}
+.rk .col:not(:first-child) .sb{animation:resplandor 1.8s ease-in-out .7s infinite}
+@keyframes fluir{to{background-position:-300% 0}}
+@keyframes latir{50%{filter:brightness(1.35) saturate(1.3)}}
+@keyframes resplandor{50%{box-shadow:0 0 8px 1px color-mix(in srgb,var(--c2) 60%,transparent)}}
 .spl{display:inline-flex;align-items:center;gap:4px;font-family:inherit;font-size:12px;padding:3px 4px 3px 10px;color:var(--ink);background:#0a0f2a;border:1px solid color-mix(in srgb,var(--c) 70%,transparent);transition:transform .15s,background .2s,color .2s,box-shadow .2s}
 .spl .badge{font-size:10px;color:#06102a;background:var(--c)}
 .spl:hover{transform:translateY(-2px);color:#06102a;background:var(--c);border-color:var(--c);box-shadow:0 0 8px var(--c)}
@@ -305,7 +312,7 @@ img.mfr{width:96px;height:96px}
 .spod{gap:14px;max-width:640px;margin:0 auto 10px}
 .sp.f .av.im{width:84px;height:84px}
 }
-@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .av,.sp:first-child .av,.sp:last-child .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.rk .sb,.rk .sb .progress-bar:not(.progress-bar-striped),.rk .sb .progress-bar:not(.progress-bar-striped)::after,.st,.sp,.sp .av,.sp.f .av,.sp:first-child .av,.sp:last-child .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
 
 /* alineaciones (Bootstrap) */
 .fm{margin:6px 0 4px}
