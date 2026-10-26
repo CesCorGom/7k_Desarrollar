@@ -1,59 +1,64 @@
 @if (formacion(); as f) {
   <div class="fm">
-    @if (fases().length > 1) {
-      <div class="fph">
-        @for (x of fases(); track $index) {
-          <div class="fp">
-            <div class="fpt">Fase {{ $index + 1 }}</div>
-            <ng-container *ngTemplateOutlet="lineup; context: { $implicit: x }" />
-          </div>
-        }
-      </div>
-    } @else {
-      <ng-container *ngTemplateOutlet="lineup; context: { $implicit: f }" />
-    }
+    <div class="row row-cols-1 g-2" [class.row-cols-lg-2]="fases().length > 1">
+      @for (x of fases(); track $index; let i = $index) {
+        <div class="col" [style.animation-delay.ms]="i * 80">
+          <ng-container *ngTemplateOutlet="lineup; context: { $implicit: x, fase: fases().length > 1 ? i + 1 : 0 }" />
+        </div>
+      }
+    </div>
 
     @if (f.prioridad?.length) {
-      <div class="fh">Prioridad habilidad</div>
-      <div class="fr">
-        <span class="fl"> </span>
-        <div class="fsc">
-          @for (p of f.prioridad; track $index) {
-            <div class="ft2">
-              <div class="av pn" [style.background]="fondo(p)">{{ $index + 1 }}</div>
-              <i>{{ p }}</i>
-            </div>
-          }
+      <div class="fpri card mt-2">
+        <div class="card-header d-flex align-items-center gap-2">
+          <span class="fh">⚡ Prioridad de habilidad</span>
+        </div>
+        <div class="card-body">
+          <ol class="fsc list-unstyled mb-0">
+            @for (p of f.prioridad; track $index) {
+              <li class="fpi badge rounded-pill d-inline-flex align-items-center gap-2" [style.animation-delay.ms]="$index * 60">
+                <span class="fpn" [style.background]="fondo(p)">{{ $index + 1 }}</span>{{ p }}
+              </li>
+            }
+          </ol>
         </div>
       </div>
-    } @else {
-      <div class="fr"><span class="fl"> </span></div>
     }
   </div>
 }
 
-<ng-template #lineup let-x>
-  <div class="fh">Alineación <b>{{ x.al }}</b></div>
-  <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Adelante', n: x.adelante }" />
-  <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Atrás', n: x.atras }" />
-  <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Mascota', n: x.mascota }" />
+<ng-template #lineup let-x let-fase="fase">
+  <div class="fc card h-100">
+    <div class="card-header d-flex align-items-center gap-2">
+      @if (fase) {<span class="fpb badge rounded-pill">Fase {{ fase }}</span>}
+      <span class="fh me-auto">Alineación</span>
+      <span class="fal badge">{{ x.al }}</span>
+    </div>
+    <div class="card-body">
+      <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Adelante', n: x.adelante, c: '#22d3c5' }" />
+      <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Atrás', n: x.atras, c: '#ff7ac6' }" />
+      <ng-container *ngTemplateOutlet="fila; context: { $implicit: 'Mascota', n: x.mascota, c: '#9be15d' }" />
+    </div>
+  </div>
 </ng-template>
 
-<ng-template #fila let-label let-n="n">
-  <div class="fr">
-    <span class="fl">{{ label }}</span>
-    @for (nombre of n; track nombre) {
-      <button class="ft2" (click)="juego.abierto.set(nombre)">
-        <span class="fav">
-          <app-avatar [nombre]="nombre" />
-          @if (rol(nombre); as r) {
-            <span class="frb" [style.border-color]="rolColor[r]">
-              @if (rolIcono[r].endsWith('.svg')) {<img [src]="rolIcono[r]" alt="" />} @else {<span [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
-            </span>
-          }
-        </span>
-        <i>{{ nombre }}</i>
-      </button>
-    }
+<ng-template #fila let-label let-n="n" let-c="c">
+  <div class="fr" [style.--c]="c">
+    <span class="fl badge rounded-pill">{{ label }}</span>
+    <div class="fsc">
+      @for (nombre of n; track nombre) {
+        <button type="button" class="ft2 btn" [title]="nombre" (click)="juego.abierto.set(nombre)">
+          <span class="fav">
+            <app-avatar [nombre]="nombre" />
+            @if (rol(nombre); as r) {
+              <span class="frb" [style.border-color]="rolColor[r]">
+                @if (rolIcono[r].endsWith('.svg')) {<img [src]="rolIcono[r]" alt="" />} @else {<span [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
+              </span>
+            }
+          </span>
+          <i>{{ nombre }}</i>
+        </button>
+      }
+    </div>
   </div>
 </ng-template>
