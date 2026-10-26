@@ -2,7 +2,9 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content mb">
       <div class="modal-header border-0 pb-0">
-        <button type="button" class="btn-close btn-close-white mx" aria-label="Cerrar" (click)="cerrar()"></button>
+        <button type="button" class="mx" aria-label="Cerrar" title="Cerrar" (click)="cerrar()">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
       </div>
       <div class="modal-body pt-0">
         @if (pj()?.rol; as rol) {

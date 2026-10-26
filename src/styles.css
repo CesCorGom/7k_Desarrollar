@@ -68,9 +68,10 @@ img.ri{width:18px;height:18px}
 .mb{position:relative;color:var(--ink);background:linear-gradient(#0f1840,#080d29);border:2px solid var(--gold);border-radius:16px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 24px rgba(232,194,106,.25)}
 .mb .modal-header{padding:10px 10px 0;justify-content:flex-end}
 .mb .modal-body{padding:0 16px 16px;scrollbar-width:thin;scrollbar-color:var(--gold2) transparent}
-.mx.btn-close{width:14px;height:14px;padding:10px;border-radius:50%;border:1px solid var(--gold2);background-color:#17204a;opacity:.85;transition:transform .2s,opacity .2s,box-shadow .2s}
-.mx.btn-close:hover{opacity:1;transform:rotate(90deg);box-shadow:0 0 8px var(--gold)}
-.mx.btn-close:focus{box-shadow:0 0 0 .2rem rgba(232,194,106,.35)}
+.mx{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border-radius:50%;border:1px solid var(--gold2);background:#17204a;color:var(--gold);cursor:pointer;opacity:.9;transition:transform .2s,opacity .2s,box-shadow .2s,background .2s}
+.mx svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.mx:hover{opacity:1;background:#22306a;transform:rotate(90deg);box-shadow:0 0 8px var(--gold)}
+.mx:focus-visible{outline:none;box-shadow:0 0 0 .2rem rgba(232,194,106,.45)}
 .mi{width:min(62vw,230px);height:min(62vw,230px);margin:0 auto 10px;border-radius:14px;border:3px solid var(--gold);background-size:cover;background-position:center top;box-shadow:0 0 22px rgba(232,194,106,.4);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:700;color:#fff;transition:transform .3s,box-shadow .3s}
 .mi:hover{transform:scale(1.04) rotate(-1deg);box-shadow:0 0 32px rgba(232,194,106,.65)}
 .mf{display:block;width:min(62vw,230px);height:min(62vw,230px);margin:0 auto 10px;padding:0;border:0;background:none;border-radius:14px;perspective:900px;cursor:pointer;transition:transform .3s}
@@ -107,7 +108,7 @@ img.mfr{width:96px;height:96px}
 .mg .accordion-body .badge:hover{background:var(--c);color:#06102a;transform:translateY(-1px)}
 @keyframes mzoom{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:none}}
 @keyframes llenar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@media (prefers-reduced-motion:reduce){.mo.modal,.mo.show .modal-dialog,.mi,.mf,.mfi,.mx.btn-close,.mbadge,.mg.accordion-item,.mg .accordion-body{animation:none;transition:none}.mbar .progress-bar{animation:none}}
+@media (prefers-reduced-motion:reduce){.mo.modal,.mo.show .modal-dialog,.mi,.mf,.mfi,.mx,.mbadge,.mg.accordion-item,.mg .accordion-body{animation:none;transition:none}.mbar .progress-bar{animation:none}}
 .av.pn{font-size:18px}
 #vB,#vS,#vM{display:none}
 .th em{font-style:normal}
