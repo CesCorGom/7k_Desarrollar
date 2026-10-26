@@ -1,0 +1,8 @@
+@for (p of podio(); track p.c.nombre) {
+  <div class="sp" [class.f]="p.i === 0" (click)="juego.abierto.set(p.c.nombre)">
+    <div class="medal">{{ p.medalla }}</div>
+    <app-avatar [nombre]="p.c.nombre" />
+    <b>{{ p.c.nombre }}</b>
+    <span>{{ p.c.total }} de {{ total() }} ({{ pct(p.c.total, total()) }}%)</span>
+  </div>
+}

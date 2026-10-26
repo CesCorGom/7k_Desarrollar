@@ -20,13 +20,7 @@ export function iniciales(n: string): string {
 @Component({
   selector: 'app-avatar',
   host: { style: 'display:contents' },
-  template: `
-    @if (img(); as src) {
-      <div class="av im" [style.background-image]="'url(' + src + ')'"></div>
-    } @else {
-      <div class="av" [style.background]="fondo()">{{ ini() }}</div>
-    }
-  `,
+  templateUrl: './avatar.html',
 })
 export class Avatar {
   readonly nombre = input.required<string>();

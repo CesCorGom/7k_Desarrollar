@@ -1,7 +1,7 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { degradado, iniciales } from './avatar';
 import { pct } from './ranking';
-import { PJ, ROL_COLOR } from '../data/personajes';
+import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
 import { JuegoService } from '../juego.service';
 
 @Component({
@@ -14,41 +14,7 @@ import { JuegoService } from '../juego.service';
     '(click)': 'cerrarFondo($event)',
     '(document:keydown.escape)': 'cerrar()',
   },
-  template: `
-    @if (uso(); as u) {
-      <div class="mb">
-        <button class="mx" aria-label="Cerrar" (click)="cerrar()">✕</button>
-        @if (pj()?.img; as src) {
-          <div class="mi" [style.background-image]="'url(' + src + ')'"></div>
-        } @else {
-          <div class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</div>
-        }
-        <div class="mn">{{ u.nombre }}</div>
-        @if (pj()?.rol; as rol) {
-          <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b></div>
-        }
-        @if (u.mascota) {
-          <div class="ms">🐾 Mascota · usada en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%)</div>
-          <div class="mbar"><div [style.width.%]="pct(u.total, total)"></div></div>
-        } @else {
-          <div class="ms">
-            Aparece en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%) · puesto {{ juego.puesto(u.nombre) }} en uso
-          </div>
-          <div class="mbar"><div [style.width.%]="pct(u.total, juego.maxUso)"></div></div>
-        }
-        @for (c of juego.categorias; track c.nombre) {
-          @if (u.porCategoria[c.nombre]; as subs) {
-            <div class="mg" [style.--c]="c.color">
-              <b>{{ c.nombre }}</b>
-              @for (s of subs; track $index) {
-                <span>{{ s }}</span>
-              }
-            </div>
-          }
-        }
-      </div>
-    }
-  `,
+  templateUrl: './personaje-modal.html',
 })
 export class PersonajeModal {
   protected readonly juego = inject(JuegoService);
@@ -59,6 +25,7 @@ export class PersonajeModal {
   protected readonly pj = computed(() => PJ[this.juego.abierto() ?? '']);
   protected readonly total = this.juego.totalEquipos;
   protected readonly rolColor = ROL_COLOR;
+  protected readonly rolIcono = ROL_ICONO;
   protected readonly pct = pct;
   protected readonly fondo = degradado;
   protected readonly ini = iniciales;
