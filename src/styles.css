@@ -15,6 +15,11 @@ html,body{height:100%;overflow:hidden}
 .lg .ic{font-size:20px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--c);background:#0a0f2a;flex:none}
 .lg b{color:var(--c);font-weight:700}
 .lg.on{border-color:var(--c);background:#131f4d}
+.lg.btn{transition:transform .15s,box-shadow .2s,background .2s,border-color .2s}
+.lg.btn:hover{transform:translateY(-2px);border-color:var(--c);background:#131f4d;color:var(--ink);box-shadow:0 0 6px color-mix(in srgb,var(--c) 50%,transparent)}
+.lg.btn:focus-visible{box-shadow:0 0 0 .2rem color-mix(in srgb,var(--c) 40%,transparent)}
+.lg.btn.on,.lg.btn:active{border-color:var(--c);background:#131f4d;color:var(--ink);box-shadow:0 0 8px var(--c)}
+.lg.btn.on .ic{background:var(--c)}
 .roles{display:flex;overflow-x:auto;gap:6px;margin-bottom:10px;padding-bottom:4px}
 .roles button{--c:var(--gold);flex:none;white-space:nowrap;display:inline-flex;align-items:center;gap:2px;font-size:13px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:#0b1236;color:var(--c);font-family:inherit;cursor:pointer}
 .roles button .ri{margin-left:0;font-size:14px}
@@ -196,4 +201,4 @@ img.ri{width:18px;height:18px}
 .sgrp .schips{flex:1;min-width:0}
 @media (max-width:560px){.sgrp{flex-direction:column;align-items:flex-start;gap:4px}.sgrp .schips{align-self:stretch}.sgl{margin-bottom:0}}
 @keyframes desplegar{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.subm{animation:none}.subm .sc.btn{transition:none}}
+@media (prefers-reduced-motion:reduce){.subm{animation:none}.subm .sc.btn,.lg.btn{transition:none}}
