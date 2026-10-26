@@ -167,8 +167,12 @@ img.ri{width:18px;height:18px}
 .subm .roles button{background:#0a0f2a}
 .subm .sc{background:#0a0f2a}
 .sgrp{display:flex;align-items:center;gap:8px;min-width:0}
-.sgl{flex:none;font-size:12px;font-weight:700;white-space:nowrap;padding-bottom:8px}
+.sgl{flex:none;font-size:12px;font-weight:700;white-space:nowrap;margin-bottom:8px;padding:5px 10px;color:var(--c);background:#0a0f2a;border:1px solid var(--c)}
+.subm .sc.btn{font-size:13px;padding:6px 13px;transition:transform .15s,box-shadow .2s,background .2s}
+.subm .sc.btn:hover{transform:translateY(-2px);box-shadow:0 0 6px var(--c);color:var(--ink)}
+.subm .sc.btn:focus-visible{box-shadow:0 0 0 .2rem color-mix(in srgb,var(--c) 40%,transparent)}
+.subm .sc.btn.on{background:var(--c);color:#06102a;box-shadow:0 0 8px var(--c)}
 .sgrp .schips{flex:1;min-width:0}
-@media (max-width:560px){.sgrp{flex-direction:column;align-items:stretch;gap:4px}.sgl{padding-bottom:0}}
+@media (max-width:560px){.sgrp{flex-direction:column;align-items:flex-start;gap:4px}.sgrp .schips{align-self:stretch}.sgl{margin-bottom:0}}
 @keyframes desplegar{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.subm{animation:none}}
+@media (prefers-reduced-motion:reduce){.subm{animation:none}.subm .sc.btn{transition:none}}

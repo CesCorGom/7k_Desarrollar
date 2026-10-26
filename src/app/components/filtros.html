@@ -24,13 +24,15 @@
   @case ('/submodos') {
     <app-leyenda />
     @for (c of categorias(); track c.nombre) {
-      <div class="sgrp">
-        <span class="sgl" [style.color]="c.color">{{ c.icono }} {{ c.nombre }}</span>
+      <div class="sgrp" role="group" [attr.aria-label]="c.nombre" [style.--c]="c.color">
+        <span class="sgl badge rounded-pill">{{ c.icono }} {{ c.nombre }}</span>
         <div class="schips">
           @for (e of equiposDe(c.nombre); track e.submodo) {
             <button
-              class="sc"
+              type="button"
+              class="sc btn btn-sm rounded-pill"
               [class.on]="juego.submodo() === e.submodo"
+              [attr.aria-pressed]="juego.submodo() === e.submodo"
               [style.--c]="c.color"
               (click)="juego.toggleSubmodo(c.nombre, e.submodo)"
             >{{ e.submodo }}</button>
