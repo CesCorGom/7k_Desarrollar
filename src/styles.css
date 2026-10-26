@@ -344,5 +344,23 @@ img.mfr{width:96px;height:96px}
 .fr{flex-direction:row;align-items:center;gap:12px}
 .fl{align-self:center;flex:none;width:84px}
 }
+/* alineaciones: animación constante (marco que respira, destello en el encabezado, personajes que flotan) */
+.fc,.fpri{animation:marco 3.2s ease-in-out infinite}
+.fpri{animation-delay:-1.6s}
+.fc .card-header,.fpri .card-header{position:relative;overflow:hidden}
+.fc .card-header::after,.fpri .card-header::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(232,194,106,.18) 50%,transparent 65%);transform:translateX(-100%);animation:barrer 4s ease-in-out infinite}
+.fal{animation:chispa 2.4s ease-in-out infinite}
+.fl{animation:latir 2.6s ease-in-out infinite}
+.ft2 .fav{animation:levitar 2.8s ease-in-out infinite}
+.ft2:nth-child(2n) .fav{animation-delay:-.7s}
+.ft2:nth-child(3n) .fav{animation-delay:-1.4s}
+.ft2:nth-child(5n) .fav{animation-delay:-2.1s}
+.frb{animation:chispa 2.4s ease-in-out infinite}
+.fpn{animation:chispa 2.4s ease-in-out infinite}
+.fpi:nth-child(2n) .fpn{animation-delay:-.8s}
+.fpi:nth-child(3n) .fpn{animation-delay:-1.6s}
+@keyframes marco{50%{border-color:var(--gold);box-shadow:0 0 14px rgba(232,194,106,.28),inset 0 0 12px rgba(232,194,106,.06)}}
+@keyframes barrer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@keyframes chispa{50%{box-shadow:0 0 12px 2px rgba(232,194,106,.65);filter:brightness(1.15)}}
 @media (max-width:360px){.ft2{width:68px}.ft2 .av,.ft2 .av.im{width:40px;height:40px}}
-@media (prefers-reduced-motion:reduce){.fm>.row>.col,.fc,.fpri,.ft2,.ft2 .av,.fpi{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.fm>.row>.col,.fc,.fpri,.fc .card-header::after,.fpri .card-header::after,.fal,.fl,.ft2 .fav,.frb,.fpn,.ft2,.ft2 .av,.fpi{animation:none;transition:none}}
