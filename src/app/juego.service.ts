@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { CATEGORIAS, EQUIPOS, Equipo } from './data/modos';
 import { FORMACIONES, mascotasDe } from './data/formaciones';
-import { MASCOTAS, PJ } from './data/personajes';
+import { MASCOTAS, PJ, Rol } from './data/personajes';
 
 /** Uso de un personaje o mascota: total de equipos y submodos por categoría. */
 export interface Uso {
@@ -35,6 +35,10 @@ export class JuegoService {
   /** Filtro de categoría (leyenda) y de submodo (pestaña Submodos). */
   readonly categoria = signal<string | null>(null);
   readonly submodo = signal<string | null>(null);
+  /** Filtros de la lista completa. */
+  readonly termino = signal('');
+  readonly porUso = signal(false);
+  readonly filtroRol = signal<Rol | null>(null);
   /** Personaje abierto en el modal. */
   readonly abierto = signal<string | null>(null);
 

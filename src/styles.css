@@ -153,3 +153,22 @@ img.ri{width:18px;height:18px}
 .min-w-0{min-width:0}
 @keyframes aparecer{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.list>.col,.r,.r .av,.roles .btn,.tabs2 .nav-link,.tabs2 .ni{animation:none;transition:none}}
+
+/* submenú de filtros bajo el menú principal */
+.menu{margin-bottom:12px}
+.menu .tabs2{margin-bottom:0}
+.menu.abierto .tabs2{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-color:transparent}
+.tabs2 .nav-link .car{display:none;font-size:11px;margin-left:2px;transition:transform .18s}
+.tabs2 .nav-link.active .car{display:inline}
+.menu:not(.abierto) .tabs2 .nav-link.active .car{transform:rotate(-90deg)}
+.subm{display:block;background:#0b1236;border:1px solid var(--line);border-top:1px solid var(--gold2);border-radius:0 0 12px 12px;padding:10px 8px 6px;animation:desplegar .2s ease both;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.subm .leg{background:transparent;border:0;padding:0 0 6px;margin-bottom:6px}
+.subm .roles{margin-bottom:4px}
+.subm .roles button{background:#0a0f2a}
+.subm .sc{background:#0a0f2a}
+.sgrp{display:flex;align-items:center;gap:8px;min-width:0}
+.sgl{flex:none;font-size:12px;font-weight:700;white-space:nowrap;padding-bottom:8px}
+.sgrp .schips{flex:1;min-width:0}
+@media (max-width:560px){.sgrp{flex-direction:column;align-items:stretch;gap:4px}.sgl{padding-bottom:0}}
+@keyframes desplegar{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.subm{animation:none}}

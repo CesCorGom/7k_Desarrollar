@@ -1,23 +1,3 @@
-<div class="tools input-group mb-3">
-  <span class="input-group-text">🔍</span>
-  <input type="search" class="form-control" placeholder="Buscar personaje..." autocomplete="off" [value]="termino()" (input)="termino.set($any($event.target).value)" />
-  @if (termino()) {
-    <button class="btn btn-outline-secondary" type="button" title="Limpiar" (click)="termino.set('')">✕</button>
-  }
-  <button class="btn btn-outline-warning" type="button" (click)="porUso.set(!porUso())">{{ porUso() ? 'A–Z' : '🔥 Más usados' }}</button>
-</div>
-<div class="roles">
-  <button class="btn btn-sm rounded-pill" [class.on]="!filtroRol()" (click)="filtroRol.set(null)">
-    Todos <span class="badge rounded-pill text-bg-warning">{{ juego.personajes.length }}</span>
-  </button>
-  @for (r of roles; track r) {
-    <button class="btn btn-sm rounded-pill" [class.on]="filtroRol() === r" [style.--c]="rolColor[r]" (click)="filtroRol.set(filtroRol() === r ? null : r)">
-      @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
-      {{ r }}
-      <span class="badge rounded-pill" [style.background]="rolColor[r]">{{ conteo()[r] || 0 }}</span>
-    </button>
-  }
-</div>
 <div class="cnt d-flex align-items-center gap-2">
   <span class="text-nowrap">{{ filtrados().length }} de {{ juego.personajes.length }} personajes</span>
   <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="filtrados().length" aria-valuemin="0" [attr.aria-valuemax]="juego.personajes.length">
