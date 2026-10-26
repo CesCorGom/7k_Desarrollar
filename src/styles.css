@@ -225,6 +225,14 @@ img.mfr{width:96px;height:96px}
 .sp:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .sp .av{margin:4px auto;transition:transform .25s}.sp:hover .av{transform:scale(1.08) rotate(-2deg)}
 .sp .av.im{width:52px;height:52px}.sp.f .av{width:58px;height:58px;font-size:18px}.sp.f .av.im{width:72px;height:72px}
+/* podio vivo: 1º levita con aura dorada, 2º se balancea, 3º da saltitos */
+.sp.f .av{animation:levitar 2.4s ease-in-out .5s infinite,aura 2.4s ease-in-out .5s infinite}
+.sp:first-child .av{transform-origin:bottom;animation:mecer 3s ease-in-out .6s infinite}
+.sp:last-child .av{animation:saltar 2.2s ease-in-out .8s infinite}
+@keyframes levitar{50%{translate:0 -6px}}
+@keyframes aura{50%{box-shadow:0 0 18px 3px rgba(232,194,106,.7),0 10px 14px -6px rgba(232,194,106,.5)}}
+@keyframes mecer{0%,100%{rotate:0deg}25%{rotate:-5deg}75%{rotate:5deg}}
+@keyframes saltar{0%,40%,100%{translate:0 0}15%{translate:0 -7px}25%{translate:0 0}32%{translate:0 -3px}}
 .sp b{display:block;max-width:100%;padding:0 4px;font-size:14px}
 .sp small{font-size:11px;color:var(--mut)}
 .sp .pp{margin-top:2px}
@@ -297,7 +305,7 @@ img.mfr{width:96px;height:96px}
 .spod{gap:14px;max-width:640px;margin:0 auto 10px}
 .sp.f .av.im{width:84px;height:84px}
 }
-@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .av,.sp:first-child .av,.sp:last-child .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
 
 /* alineaciones (Bootstrap) */
 .fm{margin:6px 0 4px}
