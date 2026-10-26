@@ -91,6 +91,8 @@ img.ri{width:18px;height:18px}
 .fph::-webkit-scrollbar{height:5px}.fph::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
 .fp{flex:none;border:1px solid var(--gold2);border-radius:8px;padding:8px 10px}.fp .fr:last-child{margin-bottom:0}.fpt{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:6px}
 .fsc::-webkit-scrollbar{height:5px}.fsc::-webkit-scrollbar-thumb{background:var(--gold2);border-radius:3px}
+.fav{position:relative;display:inline-block}
+.frb{position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:#0b1236;border:1.5px solid;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1}.frb img{width:13px;height:13px}
 .fsc .ft2{flex:none;min-width:58px;white-space:nowrap}
 .av.pn{font-size:18px}
 #vB,#vS,#vM{display:none}

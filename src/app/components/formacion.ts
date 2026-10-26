@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { Avatar, degradado } from './avatar';
 import { FORMACIONES } from '../data/formaciones';
+import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
 import { JuegoService } from '../juego.service';
 
 @Component({
@@ -55,7 +56,15 @@ import { JuegoService } from '../juego.service';
         <span class="fl">{{ label }}</span>
         @for (nombre of n; track nombre) {
           <button class="ft2" (click)="juego.abierto.set(nombre)">
-            <app-avatar [nombre]="nombre" /><i>{{ nombre }}</i>
+            <span class="fav">
+              <app-avatar [nombre]="nombre" />
+              @if (rol(nombre); as r) {
+                <span class="frb" [style.border-color]="rolColor[r]">
+                  @if (rolIcono[r].endsWith('.svg')) {<img [src]="rolIcono[r]" alt="" />} @else {<span [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
+                </span>
+              }
+            </span>
+            <i>{{ nombre }}</i>
           </button>
         }
       </div>
@@ -71,4 +80,10 @@ export class Formacion {
     return f ? [f, ...(f.alternativas ?? [])] : [];
   });
   protected readonly fondo = degradado;
+  protected readonly rolColor = ROL_COLOR;
+  protected readonly rolIcono = ROL_ICONO;
+
+  protected rol(n: string) {
+    return PJ[n]?.rol;
+  }
 }
