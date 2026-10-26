@@ -1,7 +1,7 @@
 <div class="stats row row-cols-3 g-2">
-  <div class="col"><div class="st card"><b>{{ total() }}</b><span>Equipos</span></div></div>
-  <div class="col"><div class="st card"><b>{{ juego.rankingMascotas().length }}</b><span>Mascotas</span></div></div>
-  <div class="col"><div class="st card"><b>{{ porModo().length }}</b><span>Modos</span></div></div>
+  <div class="col"><div class="st card"><b class="rebotar">{{ total() }}</b><span>Equipos</span></div></div>
+  <div class="col"><div class="st card"><b class="balancear">{{ juego.rankingMascotas().length }}</b><span>Mascotas</span></div></div>
+  <div class="col"><div class="st card"><b class="neon">{{ porModo().length }}</b><span>Modos</span></div></div>
 </div>
 <app-podio [items]="juego.rankingMascotas()" [total]="total()" />
 <div class="uh d-flex flex-wrap align-items-center gap-2">

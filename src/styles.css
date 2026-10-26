@@ -189,6 +189,33 @@ img.mfr{width:96px;height:96px}
 .ubtn:hover{transform:translateY(-2px);box-shadow:0 0 10px rgba(232,194,106,.45)}
 .ubtn:focus-visible{box-shadow:0 0 0 .2rem rgba(232,194,106,.35)}
 .pp{font-size:11px;font-weight:700;color:#06102a;background:var(--gold)}
+/* porcentaje que cuenta de 0 a N% y hace "pop" */
+@property --n{syntax:"<integer>";inherits:false;initial-value:0}
+.cuenta{display:inline-block;counter-reset:n var(--n);font-variant-numeric:tabular-nums;animation:contar 1s cubic-bezier(.2,.8,.3,1) .2s both,pop .35s ease-out 1.15s;transition:--n .6s ease-out}
+.cuenta::after{content:counter(n) "%"}
+/* el % del líder sigue latiendo después de contar */
+.st b.cuenta{animation:contar 1s cubic-bezier(.2,.8,.3,1) .2s both,brillo 2.4s ease-in-out 1.2s infinite}
+/* equipos flotan arriba/abajo; personajes giran en Y como moneda */
+.st b.flotar{display:inline-block;animation:flotar 2s ease-in-out infinite}
+.st b.girar{display:inline-block;animation:girar 3.2s ease-in-out 1s infinite}
+@keyframes flotar{50%{transform:translateY(-4px);text-shadow:0 6px 10px rgba(232,194,106,.5)}}
+@keyframes girar{0%,60%,100%{transform:none}80%{transform:rotateY(360deg)}}
+/* mascotas: equipos rebotan, mascotas se balancean, modos parpadean tipo neón */
+.st b.rebotar{display:inline-block;transform-origin:bottom;animation:rebotar 1.6s ease-in-out infinite}
+.st b.balancear{display:inline-block;animation:balancear 2.2s ease-in-out infinite}
+.st b.neon{animation:neon 3s linear infinite}
+@keyframes rebotar{0%,100%{transform:none}20%{transform:scale(1.1,.85)}45%{transform:translateY(-6px) scale(.95,1.08)}70%{transform:scale(1.05,.95)}}
+@keyframes balancear{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes neon{0%,18%,22%,60%,64%,100%{text-shadow:0 0 6px var(--gold),0 0 14px var(--gold),0 0 22px #ff4d5e}20%,62%{text-shadow:none;opacity:.6}}
+/* roles: equipos cambian de color, puestos respiran, roles voltean en X */
+.st b.color{animation:color 4s ease-in-out infinite}
+.st b.respirar{display:inline-block;animation:respirar 3s ease-in-out infinite}
+.st b.voltear{display:inline-block;animation:voltear 3.6s ease-in-out .5s infinite}
+@keyframes color{0%,100%{color:var(--gold)}33%{color:#ff4d5e;text-shadow:0 0 10px rgba(255,77,94,.5)}66%{color:#6ab8ff;text-shadow:0 0 10px rgba(106,184,255,.5)}}
+@keyframes respirar{50%{transform:scale(1.12);letter-spacing:2px}}
+@keyframes voltear{0%,65%,100%{transform:none}85%{transform:rotateX(360deg)}}
+@keyframes contar{from{--n:0}}
+@keyframes pop{50%{transform:scale(1.25);box-shadow:0 0 10px var(--gold)}}
 /* podio */
 .spod{display:flex;gap:8px;align-items:flex-end;margin-bottom:6px}
 .sp{--c:var(--line);flex:1;min-width:0;align-items:center;gap:2px;padding:10px 4px 0;overflow:hidden;color:var(--ink);background:var(--row);border:1px solid var(--c);border-radius:12px;font-family:inherit;cursor:pointer;animation:subir .45s cubic-bezier(.2,1.3,.4,1) both;transition:transform .2s,box-shadow .2s,background .2s}
@@ -198,6 +225,14 @@ img.mfr{width:96px;height:96px}
 .sp:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .sp .av{margin:4px auto;transition:transform .25s}.sp:hover .av{transform:scale(1.08) rotate(-2deg)}
 .sp .av.im{width:52px;height:52px}.sp.f .av{width:58px;height:58px;font-size:18px}.sp.f .av.im{width:72px;height:72px}
+/* podio vivo: 1º levita con aura dorada, 2º se balancea, 3º da saltitos */
+.sp.f .av{animation:levitar 2.4s ease-in-out .5s infinite,aura 2.4s ease-in-out .5s infinite}
+.sp:first-child .av{transform-origin:bottom;animation:mecer 3s ease-in-out .6s infinite}
+.sp:last-child .av{animation:saltar 2.2s ease-in-out .8s infinite}
+@keyframes levitar{50%{translate:0 -6px}}
+@keyframes aura{50%{box-shadow:0 0 18px 3px rgba(232,194,106,.7),0 10px 14px -6px rgba(232,194,106,.5)}}
+@keyframes mecer{0%,100%{rotate:0deg}25%{rotate:-5deg}75%{rotate:5deg}}
+@keyframes saltar{0%,40%,100%{translate:0 0}15%{translate:0 -7px}25%{translate:0 0}32%{translate:0 -3px}}
 .sp b{display:block;max-width:100%;padding:0 4px;font-size:14px}
 .sp small{font-size:11px;color:var(--mut)}
 .sp .pp{margin-top:2px}
@@ -252,6 +287,13 @@ img.mfr{width:96px;height:96px}
 .sb .progress-bar.progress-bar-striped{animation:progress-bar-stripes 1s linear infinite,llenar .7s ease-out both}
 .pres .progress-bar-striped{animation:progress-bar-stripes 1s linear infinite}
 @keyframes destello{to{transform:translateX(100%)}}
+/* barras del resto: degradado arcoíris que fluye, late y deja un destello rápido */
+.rk .sb .progress-bar:not(.progress-bar-striped){background-image:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c2),var(--c1));background-size:300% 100%;animation:llenar .7s ease-out both,fluir 4s linear .7s infinite,latir 1.8s ease-in-out .7s infinite}
+.rk .sb .progress-bar:not(.progress-bar-striped)::after{background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%);animation-duration:1.6s}
+.rk .col:not(:first-child) .sb{animation:resplandor 1.8s ease-in-out .7s infinite}
+@keyframes fluir{to{background-position:-300% 0}}
+@keyframes latir{50%{filter:brightness(1.35) saturate(1.3)}}
+@keyframes resplandor{50%{box-shadow:0 0 8px 1px color-mix(in srgb,var(--c2) 60%,transparent)}}
 .spl{display:inline-flex;align-items:center;gap:4px;font-family:inherit;font-size:12px;padding:3px 4px 3px 10px;color:var(--ink);background:#0a0f2a;border:1px solid color-mix(in srgb,var(--c) 70%,transparent);transition:transform .15s,background .2s,color .2s,box-shadow .2s}
 .spl .badge{font-size:10px;color:#06102a;background:var(--c)}
 .spl:hover{transform:translateY(-2px);color:#06102a;background:var(--c);border-color:var(--c);box-shadow:0 0 8px var(--c)}
@@ -270,7 +312,7 @@ img.mfr{width:96px;height:96px}
 .spod{gap:14px;max-width:640px;margin:0 auto 10px}
 .sp.f .av.im{width:84px;height:84px}
 }
-@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.rk .sb,.rk .sb .progress-bar:not(.progress-bar-striped),.rk .sb .progress-bar:not(.progress-bar-striped)::after,.st,.sp,.sp .av,.sp.f .av,.sp:first-child .av,.sp:last-child .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
 
 /* alineaciones (Bootstrap) */
 .fm{margin:6px 0 4px}
@@ -302,5 +344,23 @@ img.mfr{width:96px;height:96px}
 .fr{flex-direction:row;align-items:center;gap:12px}
 .fl{align-self:center;flex:none;width:84px}
 }
+/* alineaciones: animación constante (marco que respira, destello en el encabezado, personajes que flotan) */
+.fc,.fpri{animation:marco 3.2s ease-in-out infinite}
+.fpri{animation-delay:-1.6s}
+.fc .card-header,.fpri .card-header{position:relative;overflow:hidden}
+.fc .card-header::after,.fpri .card-header::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 35%,rgba(232,194,106,.18) 50%,transparent 65%);transform:translateX(-100%);animation:barrer 4s ease-in-out infinite}
+.fal{animation:chispa 2.4s ease-in-out infinite}
+.fl{animation:latir 2.6s ease-in-out infinite}
+.ft2 .fav{animation:levitar 2.8s ease-in-out infinite}
+.ft2:nth-child(2n) .fav{animation-delay:-.7s}
+.ft2:nth-child(3n) .fav{animation-delay:-1.4s}
+.ft2:nth-child(5n) .fav{animation-delay:-2.1s}
+.frb{animation:chispa 2.4s ease-in-out infinite}
+.fpn{animation:chispa 2.4s ease-in-out infinite}
+.fpi:nth-child(2n) .fpn{animation-delay:-.8s}
+.fpi:nth-child(3n) .fpn{animation-delay:-1.6s}
+@keyframes marco{50%{border-color:var(--gold);box-shadow:0 0 14px rgba(232,194,106,.28),inset 0 0 12px rgba(232,194,106,.06)}}
+@keyframes barrer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@keyframes chispa{50%{box-shadow:0 0 12px 2px rgba(232,194,106,.65);filter:brightness(1.15)}}
 @media (max-width:360px){.ft2{width:68px}.ft2 .av,.ft2 .av.im{width:40px;height:40px}}
-@media (prefers-reduced-motion:reduce){.fm>.row>.col,.fc,.fpri,.ft2,.ft2 .av,.fpi{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.fm>.row>.col,.fc,.fpri,.fc .card-header::after,.fpri .card-header::after,.fal,.fl,.ft2 .fav,.frb,.fpn,.ft2,.ft2 .av,.fpi{animation:none;transition:none}}
