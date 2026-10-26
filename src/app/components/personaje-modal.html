@@ -1,35 +1,77 @@
 @if (uso(); as u) {
-  <div class="mb">
-    <button class="mx" aria-label="Cerrar" (click)="cerrar()">✕</button>
-    @if (pj()?.img; as src) {
-      <div class="mi" [style.background-image]="'url(' + src + ')'"></div>
-    } @else {
-      <div class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</div>
-    }
-    <div class="mn">{{ u.nombre }}</div>
-    @if (pj()?.rol; as rol) {
-      <div class="ms">Rol: <b [style.color]="rolColor[rol]">{{ rol }}</b>@if (rolIcono[rol].endsWith('.svg')) {<img class="ri" [src]="rolIcono[rol]" alt="" />} @else {<span class="ri" [style.color]="rolColor[rol]">{{ rolIcono[rol] }}</span>}</div>
-    }
-    @if (u.mascota) {
-      <div class="ms">🐾 Mascota · usada en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%)</div>
-      <div class="mbar"><div [style.width.%]="pct(u.total, total)"></div></div>
-    } @else {
-      <div class="ms">
-        Aparece en {{ u.total }} de {{ total }} equipos ({{ pct(u.total, total) }}%) · puesto {{ juego.puesto(u.nombre) }} en uso
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content mb">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close btn-close-white mx" aria-label="Cerrar" (click)="cerrar()"></button>
       </div>
-      <div class="mbar"><div [style.width.%]="pct(u.total, juego.maxUso)"></div></div>
-    }
-    <div class="ml">
-      @for (c of juego.categorias; track c.nombre) {
-        @if (u.porCategoria[c.nombre]; as subs) {
-          <div class="mg" [style.--c]="c.color">
-            <b>{{ c.nombre }}</b>
-            @for (s of subs; track $index) {
-              <span>{{ s }}</span>
-            }
-          </div>
+      <div class="modal-body pt-0">
+        @if (pj()?.img; as src) {
+          <div class="mi" [style.background-image]="'url(' + src + ')'"></div>
+        } @else {
+          <div class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</div>
         }
-      }
+        <h2 class="modal-title mn" [id]="'mt-' + u.nombre">{{ u.nombre }}</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-2 my-2">
+          @if (pj()?.rol; as rol) {
+            <span class="badge rounded-pill mbadge" [style.--c]="rolColor[rol]">
+              @if (rolIcono[rol].endsWith('.svg')) {<img class="ri" [src]="rolIcono[rol]" alt="" />} @else {<span class="ri">{{ rolIcono[rol] }}</span>}
+              {{ rol }}
+            </span>
+          }
+          @if (u.mascota) {
+            <span class="badge rounded-pill mbadge">🐾 Mascota</span>
+          } @else {
+            <span class="badge rounded-pill mbadge">🏆 Puesto {{ juego.puesto(u.nombre) }}</span>
+          }
+          <span class="badge rounded-pill mbadge">⚔️ {{ u.total }} / {{ total }} equipos</span>
+        </div>
+        <div class="d-flex justify-content-between ms px-1">
+          <span>{{ u.mascota ? 'Uso como mascota' : 'Uso en equipos' }}</span>
+          <b>{{ pct(u.total, total) }}%</b>
+        </div>
+        <div
+          class="progress mbar"
+          role="progressbar"
+          aria-label="Porcentaje de uso"
+          [attr.aria-valuenow]="pct(u.total, total)"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated"
+            [style.width.%]="u.mascota ? pct(u.total, total) : pct(u.total, juego.maxUso)"
+          ></div>
+        </div>
+        <div class="accordion ml">
+          @for (c of juego.categorias; track c.nombre) {
+            @if (u.porCategoria[c.nombre]; as subs) {
+              <div class="accordion-item mg" [style.--c]="c.color">
+                <h3 class="accordion-header">
+                  <button
+                    type="button"
+                    class="accordion-button"
+                    [class.collapsed]="!estaAbierta(c.nombre)"
+                    [attr.aria-expanded]="estaAbierta(c.nombre)"
+                    (click)="alternar(c.nombre)"
+                  >
+                    <span class="me-auto">{{ c.icono }} {{ c.nombre }}</span>
+                    <span class="badge rounded-pill me-2">{{ subs.length }}</span>
+                  </button>
+                </h3>
+                @if (estaAbierta(c.nombre)) {
+                  <div class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                      @for (s of subs; track $index) {
+                        <span class="badge rounded-pill">{{ s }}</span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
     </div>
   </div>
 }
