@@ -8,7 +8,7 @@
           <span class="mid">
             <span class="t">
               <span class="tn text-truncate">{{ p.nombre }}</span>
-              <span class="badge rounded-pill pp">{{ pct(p.total, total()) }}%</span>
+              <span class="badge rounded-pill pp cuenta" [style.--n]="pct(p.total, total())"></span>
             </span>
             <span
               class="progress sb"

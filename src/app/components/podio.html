@@ -10,7 +10,7 @@
     <span class="medal">{{ p.medalla }}</span>
     <app-avatar [nombre]="p.c.nombre" />
     <b class="text-truncate">{{ p.c.nombre }}</b>
-    <span class="badge rounded-pill pp">{{ pct(p.c.total, total()) }}%</span>
+    <span class="badge rounded-pill pp cuenta" [style.--n]="pct(p.c.total, total())"></span>
     <small>{{ p.c.total }} de {{ total() }}</small>
     <span class="pedestal"></span>
   </button>

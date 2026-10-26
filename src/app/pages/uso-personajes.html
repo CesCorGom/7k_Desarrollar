@@ -1,7 +1,7 @@
 <div class="stats row row-cols-3 g-2">
-  <div class="col"><div class="st card"><b>{{ totalFiltrado() }}</b><span>Equipos</span></div></div>
-  <div class="col"><div class="st card"><b>{{ ranking().length }}</b><span>Personajes</span></div></div>
-  <div class="col"><div class="st card"><b>{{ ranking()[0] ? pct(ranking()[0].total, totalFiltrado()) : 0 }}%</b><span>Uso del líder</span></div></div>
+  <div class="col"><div class="st card"><b class="flotar">{{ totalFiltrado() }}</b><span>Equipos</span></div></div>
+  <div class="col"><div class="st card"><b class="girar">{{ ranking().length }}</b><span>Personajes</span></div></div>
+  <div class="col"><div class="st card"><b class="cuenta" [style.--n]="ranking()[0] ? pct(ranking()[0].total, totalFiltrado()) : 0"></b><span>Uso del líder</span></div></div>
 </div>
 <app-podio [items]="ranking()" [total]="totalFiltrado()" />
 <div class="uh d-flex flex-wrap align-items-center gap-2">

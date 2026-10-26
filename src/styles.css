@@ -189,6 +189,33 @@ img.mfr{width:96px;height:96px}
 .ubtn:hover{transform:translateY(-2px);box-shadow:0 0 10px rgba(232,194,106,.45)}
 .ubtn:focus-visible{box-shadow:0 0 0 .2rem rgba(232,194,106,.35)}
 .pp{font-size:11px;font-weight:700;color:#06102a;background:var(--gold)}
+/* porcentaje que cuenta de 0 a N% y hace "pop" */
+@property --n{syntax:"<integer>";inherits:false;initial-value:0}
+.cuenta{display:inline-block;counter-reset:n var(--n);font-variant-numeric:tabular-nums;animation:contar 1s cubic-bezier(.2,.8,.3,1) .2s both,pop .35s ease-out 1.15s;transition:--n .6s ease-out}
+.cuenta::after{content:counter(n) "%"}
+/* el % del líder sigue latiendo después de contar */
+.st b.cuenta{animation:contar 1s cubic-bezier(.2,.8,.3,1) .2s both,brillo 2.4s ease-in-out 1.2s infinite}
+/* equipos flotan arriba/abajo; personajes giran en Y como moneda */
+.st b.flotar{display:inline-block;animation:flotar 2s ease-in-out infinite}
+.st b.girar{display:inline-block;animation:girar 3.2s ease-in-out 1s infinite}
+@keyframes flotar{50%{transform:translateY(-4px);text-shadow:0 6px 10px rgba(232,194,106,.5)}}
+@keyframes girar{0%,60%,100%{transform:none}80%{transform:rotateY(360deg)}}
+/* mascotas: equipos rebotan, mascotas se balancean, modos parpadean tipo neón */
+.st b.rebotar{display:inline-block;transform-origin:bottom;animation:rebotar 1.6s ease-in-out infinite}
+.st b.balancear{display:inline-block;animation:balancear 2.2s ease-in-out infinite}
+.st b.neon{animation:neon 3s linear infinite}
+@keyframes rebotar{0%,100%{transform:none}20%{transform:scale(1.1,.85)}45%{transform:translateY(-6px) scale(.95,1.08)}70%{transform:scale(1.05,.95)}}
+@keyframes balancear{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes neon{0%,18%,22%,60%,64%,100%{text-shadow:0 0 6px var(--gold),0 0 14px var(--gold),0 0 22px #ff4d5e}20%,62%{text-shadow:none;opacity:.6}}
+/* roles: equipos cambian de color, puestos respiran, roles voltean en X */
+.st b.color{animation:color 4s ease-in-out infinite}
+.st b.respirar{display:inline-block;animation:respirar 3s ease-in-out infinite}
+.st b.voltear{display:inline-block;animation:voltear 3.6s ease-in-out .5s infinite}
+@keyframes color{0%,100%{color:var(--gold)}33%{color:#ff4d5e;text-shadow:0 0 10px rgba(255,77,94,.5)}66%{color:#6ab8ff;text-shadow:0 0 10px rgba(106,184,255,.5)}}
+@keyframes respirar{50%{transform:scale(1.12);letter-spacing:2px}}
+@keyframes voltear{0%,65%,100%{transform:none}85%{transform:rotateX(360deg)}}
+@keyframes contar{from{--n:0}}
+@keyframes pop{50%{transform:scale(1.25);box-shadow:0 0 10px var(--gold)}}
 /* podio */
 .spod{display:flex;gap:8px;align-items:flex-end;margin-bottom:6px}
 .sp{--c:var(--line);flex:1;min-width:0;align-items:center;gap:2px;padding:10px 4px 0;overflow:hidden;color:var(--ink);background:var(--row);border:1px solid var(--c);border-radius:12px;font-family:inherit;cursor:pointer;animation:subir .45s cubic-bezier(.2,1.3,.4,1) both;transition:transform .2s,box-shadow .2s,background .2s}
@@ -270,7 +297,7 @@ img.mfr{width:96px;height:96px}
 .spod{gap:14px;max-width:640px;margin:0 auto 10px}
 .sp.f .av.im{width:84px;height:84px}
 }
-@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.st,.sp,.sp .av,.sp.f .medal,.rk>.col,.sr,.sr .av,.sb .progress-bar,.sb .progress-bar::after,.pres .progress-bar,.pres .progress-bar::after,.rc,.rc .av.pn,.spl,.ubtn,.cuenta,.st b.cuenta,.st b.flotar,.st b.girar,.st b.rebotar,.st b.balancear,.st b.neon,.st b.color,.st b.respirar,.st b.voltear{animation:none;transition:none}}
 
 /* alineaciones (Bootstrap) */
 .fm{margin:6px 0 4px}
