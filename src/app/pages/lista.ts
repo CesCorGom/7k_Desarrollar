@@ -15,7 +15,7 @@ import { JuegoService } from '../juego.service';
       <button [class.on]="!filtroRol()" (click)="filtroRol.set(null)">Todos</button>
       @for (r of roles; track r) {
         <button [class.on]="filtroRol() === r" [style.--c]="rolColor[r]" (click)="filtroRol.set(filtroRol() === r ? null : r)">
-          @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
+          @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
           {{ r }}
         </button>
       }
@@ -31,7 +31,7 @@ import { JuegoService } from '../juego.service';
             <div class="nm">
               {{ p.nombre }}
               @if (rol(p.nombre); as r) {
-                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span>@if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
+                <span class="rl" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">{{ r }}</span>@if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
               }
             </div>
           </div>
