@@ -18,6 +18,11 @@ html,body{height:100%;overflow:hidden}
 .tools{display:flex;gap:8px;margin-bottom:10px}
 .tools input{flex:1;min-width:0;font-size:16px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#0b1236;color:var(--ink);font-family:inherit}
 .tools button{flex:none;font-size:13px;padding:0 14px;border-radius:10px;border:1px solid var(--gold2);background:#17204a;color:var(--gold);font-family:inherit}
+.roles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.roles button{--c:var(--gold);display:inline-flex;align-items:center;gap:2px;font-size:13px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:#0b1236;color:var(--c);font-family:inherit;cursor:pointer}
+.roles button .ri{margin-left:0;font-size:14px}
+.roles button img.ri{width:15px;height:15px}
+.roles button.on{border-color:var(--c);background:#17204a;box-shadow:0 0 6px var(--c)}
 .cnt{font-size:12px;color:var(--mut);margin:0 2px 8px}
 .th{display:none}
 .list{display:block}
