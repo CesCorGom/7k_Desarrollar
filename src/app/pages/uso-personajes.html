@@ -1,6 +1,20 @@
+<div class="stats row row-cols-3 g-2">
+  <div class="col"><div class="st card"><b>{{ totalFiltrado() }}</b><span>Equipos</span></div></div>
+  <div class="col"><div class="st card"><b>{{ ranking().length }}</b><span>Personajes</span></div></div>
+  <div class="col"><div class="st card"><b>{{ ranking()[0] ? pct(ranking()[0].total, totalFiltrado()) : 0 }}%</b><span>Uso del líder</span></div></div>
+</div>
 <app-podio [items]="ranking()" [total]="totalFiltrado()" />
-<h2 class="sh">Top de uso{{ filtro() }} ({{ totalFiltrado() }} equipos)</h2>
+<div class="uh d-flex flex-wrap align-items-center gap-2">
+  <h2 class="sh me-auto">Top de uso{{ filtro() }}</h2>
+  <span class="badge rounded-pill ub">⚔️ {{ totalFiltrado() }} equipos</span>
+</div>
 <app-ranking [items]="visibles()" [total]="totalFiltrado()" [relativa]="true" />
 @if (ocultos() > 0) {
-  <p class="ctr"><button class="sbtn" (click)="limite.set(0)">Ver los {{ ocultos() }} restantes</button></p>
+  <p class="ctr mt-3">
+    <button type="button" class="btn btn-outline-warning rounded-pill ubtn" (click)="limite.set(0)">⬇ Ver los {{ ocultos() }} restantes</button>
+  </p>
+} @else if (!limite() && ranking().length > LIMITE) {
+  <p class="ctr mt-3">
+    <button type="button" class="btn btn-outline-warning rounded-pill ubtn" (click)="limite.set(LIMITE)">⬆ Mostrar solo el top {{ LIMITE }}</button>
+  </p>
 }

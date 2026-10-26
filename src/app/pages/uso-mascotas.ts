@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, linkedSignal } from '@angular/core';
 import { Avatar } from '../components/avatar';
 import { Podio, Ranking, pct } from '../components/ranking';
 import { JuegoService } from '../juego.service';
@@ -32,4 +32,23 @@ export class UsoMascotas {
       })
       .filter((g) => g.mascotas.length);
   });
+
+  /** Modos desplegados; al cambiar el filtro solo queda abierto el primero. */
+  protected readonly abiertas = linkedSignal({
+    source: this.porModo,
+    computation: (g) => new Set(g.slice(0, 1).map((x) => x.categoria.nombre)),
+  });
+  protected readonly todasAbiertas = computed(() => this.abiertas().size === this.porModo().length);
+
+  protected alternar(cat: string): void {
+    this.abiertas.update((s) => {
+      const n = new Set(s);
+      if (!n.delete(cat)) n.add(cat);
+      return n;
+    });
+  }
+
+  protected alternarTodas(): void {
+    this.abiertas.set(new Set(this.todasAbiertas() ? [] : this.porModo().map((g) => g.categoria.nombre)));
+  }
 }

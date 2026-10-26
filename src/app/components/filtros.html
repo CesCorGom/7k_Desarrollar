@@ -6,7 +6,7 @@
       @if (juego.termino()) {
         <button class="btn btn-outline-secondary" type="button" title="Limpiar" (click)="juego.termino.set('')">✕</button>
       }
-      <button class="btn btn-outline-warning" type="button" (click)="juego.porUso.set(!juego.porUso())">{{ juego.porUso() ? 'A–Z' : '🔥 Más usados' }}</button>
+      <button class="btn btn-outline-warning" type="button" (click)="juego.porUso.set(!juego.porUso())">{{ juego.porUso() ? '🔥 Más usados' : 'A–Z'  }}</button>
     </div>
     <div class="roles">
       <button class="btn btn-sm rounded-pill" [class.on]="!juego.filtroRol()" (click)="juego.filtroRol.set(null)">

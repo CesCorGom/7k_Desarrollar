@@ -1,5 +1,5 @@
 import { Component, computed, inject, linkedSignal } from '@angular/core';
-import { Podio, Ranking } from '../components/ranking';
+import { Podio, Ranking, pct } from '../components/ranking';
 import { JuegoService } from '../juego.service';
 
 const LIMITE = 15;
@@ -11,6 +11,8 @@ const LIMITE = 15;
 })
 export class UsoPersonajes {
   protected readonly juego = inject(JuegoService);
+  protected readonly pct = pct;
+  protected readonly LIMITE = LIMITE;
 
   protected readonly ranking = this.juego.rankingPersonajes;
   protected readonly totalFiltrado = computed(() => this.juego.equiposFiltrados().length);

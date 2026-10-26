@@ -1,22 +1,78 @@
+<div class="stats row row-cols-3 g-2">
+  <div class="col"><div class="st card"><b>{{ total() }}</b><span>Equipos</span></div></div>
+  <div class="col"><div class="st card"><b>{{ juego.rankingMascotas().length }}</b><span>Mascotas</span></div></div>
+  <div class="col"><div class="st card"><b>{{ porModo().length }}</b><span>Modos</span></div></div>
+</div>
 <app-podio [items]="juego.rankingMascotas()" [total]="total()" />
-<h2 class="sh">Uso de mascotas{{ filtro() }} ({{ total() }} equipos)</h2>
+<div class="uh d-flex flex-wrap align-items-center gap-2">
+  <h2 class="sh me-auto">Uso de mascotas{{ filtro() }}</h2>
+  <span class="badge rounded-pill ub">⚔️ {{ total() }} equipos</span>
+</div>
 <app-ranking [items]="juego.rankingMascotas()" [total]="total()" />
 
-<h2 class="sh">Mascotas por modo</h2>
-@for (g of porModo(); track g.categoria.nombre) {
-  <div class="smc" [style.--c]="g.categoria.color">
-    <h3>{{ g.categoria.nombre }}</h3>
-    @for (m of g.mascotas; track m.nombre) {
-      <div class="sr" (click)="juego.abierto.set(m.nombre)">
-        <app-avatar [nombre]="m.nombre" />
-        <div class="mid">
-          <div class="t">{{ m.nombre }}<i>{{ m.submodos.length }} de {{ g.total }} ({{ pct(m.submodos.length, g.total) }}%)</i></div>
-          <div class="sb"><div [style.width.%]="pct(m.submodos.length, g.total)" [style.background]="g.categoria.color"></div></div>
-          <div class="bs">{{ m.submodos.join(' · ') }}</div>
-        </div>
+<div class="uh d-flex flex-wrap align-items-center gap-2">
+  <h2 class="sh me-auto">Mascotas por modo</h2>
+  @if (porModo().length > 1) {
+    <button type="button" class="btn btn-sm btn-outline-warning rounded-pill ubtn" (click)="alternarTodas()">
+      {{ todasAbiertas() ? '⊟ Plegar todo' : '⊞ Desplegar todo' }}
+    </button>
+  }
+</div>
+<div class="accordion um row row-cols-1 row-cols-lg-2 g-2 align-items-start">
+  @for (g of porModo(); track g.categoria.nombre) {
+    <div class="col">
+      <div class="accordion-item mg" [style.--c]="g.categoria.color">
+        <h3 class="accordion-header">
+          <button
+            type="button"
+            class="accordion-button"
+            [class.collapsed]="!abiertas().has(g.categoria.nombre)"
+            [attr.aria-expanded]="abiertas().has(g.categoria.nombre)"
+            (click)="alternar(g.categoria.nombre)"
+          >
+            <span class="me-auto">{{ g.categoria.icono }} {{ g.categoria.nombre }}</span>
+            <span class="badge rounded-pill me-2">{{ g.mascotas.length }}</span>
+          </button>
+        </h3>
+        @if (abiertas().has(g.categoria.nombre)) {
+          <div class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              @for (m of g.mascotas; track m.nombre) {
+                <button type="button" class="sr card w-100 text-start" (click)="juego.abierto.set(m.nombre)">
+                  <span class="card-body d-flex align-items-center gap-2">
+                    <app-avatar [nombre]="m.nombre" />
+                    <span class="mid">
+                      <span class="t">
+                        <span class="tn text-truncate">{{ m.nombre }}</span>
+                        <span class="badge rounded-pill pp">{{ m.submodos.length }}/{{ g.total }} · {{ pct(m.submodos.length, g.total) }}%</span>
+                      </span>
+                      <span
+                        class="progress sb"
+                        role="progressbar"
+                        [attr.aria-label]="'Uso de ' + m.nombre + ' en ' + g.categoria.nombre"
+                        [attr.aria-valuenow]="pct(m.submodos.length, g.total)"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <span class="progress-bar" [style.width.%]="pct(m.submodos.length, g.total)" [style.background-color]="g.categoria.color"></span>
+                      </span>
+                      <span class="subs d-flex flex-wrap gap-1">
+                        @for (s of m.submodos; track $index) {
+                          <span class="badge rounded-pill">{{ s }}</span>
+                        }
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              }
+            </div>
+          </div>
+        }
       </div>
-    }
-  </div>
-} @empty {
-  <div class="empty">Sin datos</div>
-}
+    </div>
+  } @empty {
+    <div class="col-12">
+      <div class="empty alert alert-dark text-center mb-0">😕 Sin datos</div>
+    </div>
+  }
+</div>

@@ -1,28 +1,61 @@
-<h2 class="sh">Ranking de roles{{ filtro() }} ({{ puestos() }} puestos en {{ equipos() }} equipos)</h2>
-<div class="rgrid">
-@for (r of roles(); track r.nombre; let i = $index) {
-  <div class="smc" [style.--c]="r.color">
-    <div class="sr">
-      <span class="no">{{ i + 1 }}</span>
-      <div class="av pn" [style.border-color]="r.color">
-        @if (r.icono.endsWith('.svg')) {<img class="ri" [src]="r.icono" alt="" />} @else {<span [style.color]="r.color">{{ r.icono }}</span>}
-      </div>
-      <div class="mid">
-        <div class="t">
-          <span class="tn" [style.color]="r.color">{{ r.nombre }}</span>
-          <i>{{ r.total }} de {{ puestos() }} ({{ pct(r.total, puestos()) }}%)</i>
+<div class="stats row row-cols-3 g-2">
+  <div class="col"><div class="st card"><b>{{ equipos() }}</b><span>Equipos</span></div></div>
+  <div class="col"><div class="st card"><b>{{ puestos() }}</b><span>Puestos</span></div></div>
+  <div class="col"><div class="st card"><b>{{ roles().length }}</b><span>Roles</span></div></div>
+</div>
+<div class="uh d-flex flex-wrap align-items-center gap-2">
+  <h2 class="sh me-auto">Ranking de roles{{ filtro() }}</h2>
+  <span class="badge rounded-pill ub">⚔️ {{ puestos() }} puestos · {{ equipos() }} equipos</span>
+</div>
+<div class="rk row row-cols-1 row-cols-md-2 g-2">
+  @for (r of roles(); track r.nombre; let i = $index) {
+    <div class="col" [style.animation-delay.ms]="i * 60">
+      <div class="rc card h-100" [style.--c]="r.color">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-2">
+            <span class="no badge rounded-pill">{{ i + 1 }}</span>
+            <div class="av pn" [style.border-color]="r.color">
+              @if (r.icono.endsWith('.svg')) {<img class="ri" [src]="r.icono" alt="" />} @else {<span [style.color]="r.color">{{ r.icono }}</span>}
+            </div>
+            <div class="mid flex-grow-1 min-w-0">
+              <div class="t">
+                <span class="tn text-truncate">{{ r.nombre }}</span>
+                <span class="badge rounded-pill pp">{{ pct(r.total, puestos()) }}%</span>
+              </div>
+              <div
+                class="progress sb"
+                role="progressbar"
+                [attr.aria-label]="'Uso del rol ' + r.nombre"
+                [attr.aria-valuenow]="pct(r.total, puestos())"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="progress-bar" [style.width.%]="pct(r.total, roles()[0].total)" [style.background-color]="r.color"></div>
+              </div>
+              <div class="bs">{{ r.total }} de {{ puestos() }} puestos</div>
+            </div>
+          </div>
+          <div class="pres d-flex align-items-center gap-2 mt-2">
+            <span class="bs text-nowrap">En {{ pct(r.enEquipos, equipos()) }}% de equipos</span>
+            <div class="progress flex-grow-1" role="progressbar" [attr.aria-label]="'Equipos con ' + r.nombre" [attr.aria-valuenow]="pct(r.enEquipos, equipos())" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar progress-bar-striped" [style.width.%]="pct(r.enEquipos, equipos())"></div>
+            </div>
+          </div>
+          @if (r.top.length) {
+            <div class="tops d-flex flex-wrap gap-1 mt-2">
+              @for (p of r.top; track p.nombre; let k = $index) {
+                <button type="button" class="btn btn-sm rounded-pill spl" (click)="juego.abierto.set(p.nombre)">
+                  @if (k === 0) {⭐ }{{ p.nombre }} <span class="badge rounded-pill">{{ p.total }}</span>
+                </button>
+              }
+            </div>
+          }
         </div>
-        <div class="sb"><div [style.width.%]="pct(r.total, roles()[0].total)" [style.background]="r.color"></div></div>
-        <div class="bs">Presente en {{ r.enEquipos }} de {{ equipos() }} equipos ({{ pct(r.enEquipos, equipos()) }}%)</div>
       </div>
     </div>
-    <div class="spsc">
-      @for (p of r.top; track p.nombre) {
-        <button class="spl" (click)="juego.abierto.set(p.nombre)">{{ p.nombre }} · {{ p.total }}</button>
-      }
+  } @empty {
+    <div class="col-12">
+      <div class="empty alert alert-dark text-center mb-0">😕 Sin datos</div>
     </div>
-  </div>
-} @empty {
-  <div class="empty">Sin datos</div>
-}
+  }
 </div>

@@ -1,20 +1,40 @@
-@for (p of items(); track p.nombre; let i = $index) {
-  <div class="sr" (click)="juego.abierto.set(p.nombre)">
-    <span class="no">{{ i + 1 }}</span>
-    <app-avatar [nombre]="p.nombre" />
-    <div class="mid">
-      <div class="t">
-        {{ p.nombre }}
-        <i>{{ p.total }}{{ relativa() ? '' : ' de ' + total() }} ({{ pct(p.total, total()) }}%)</i>
-      </div>
-      <div class="sb">
-        <div
-          [style.width.%]="relativa() ? pct(p.total, items()[0].total) : pct(p.total, total())"
-          [style.background]="i === 0 ? 'linear-gradient(90deg,#f5b301,#ff4d5e)' : 'linear-gradient(90deg,#4aa3ff,#b86bff)'"
-        ></div>
-      </div>
+<div class="rk row row-cols-1 row-cols-md-2 g-2">
+  @for (p of items(); track p.nombre; let i = $index) {
+    <div class="col" [style.animation-delay.ms]="i < 20 ? i * 30 : 0">
+      <button type="button" class="sr card w-100 h-100 text-start" [class.top]="i < 3" (click)="juego.abierto.set(p.nombre)">
+        <span class="card-body d-flex align-items-center gap-2">
+          <span class="no badge rounded-pill">{{ i + 1 }}</span>
+          <app-avatar [nombre]="p.nombre" />
+          <span class="mid">
+            <span class="t">
+              <span class="tn text-truncate">{{ p.nombre }}</span>
+              <span class="badge rounded-pill pp">{{ pct(p.total, total()) }}%</span>
+            </span>
+            <span
+              class="progress sb"
+              role="progressbar"
+              [attr.aria-label]="'Uso de ' + p.nombre"
+              [attr.aria-valuenow]="pct(p.total, total())"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <span
+                class="progress-bar"
+                [class.progress-bar-striped]="i === 0"
+                [class.progress-bar-animated]="i === 0"
+                [style.width.%]="relativa() ? pct(p.total, items()[0].total) : pct(p.total, total())"
+                [style.background-color]="i === 0 ? '#f5b301' : null"
+              ></span>
+            </span>
+            <span class="bs">{{ p.total }}{{ relativa() ? '' : ' de ' + total() }} equipos</span>
+          </span>
+          <span class="go">›</span>
+        </span>
+      </button>
     </div>
-  </div>
-} @empty {
-  <div class="empty">Sin datos</div>
-}
+  } @empty {
+    <div class="col-12">
+      <div class="empty alert alert-dark text-center mb-0">😕 Sin datos</div>
+    </div>
+  }
+</div>
