@@ -33,6 +33,8 @@ export class PersonajeModal {
   protected readonly ini = iniciales;
   /** Categorías desplegadas en el acordeón; se reinicia al abrir otro personaje. */
   private readonly abiertas = signal(new Set<string>());
+  /** Imagen girada mostrando el rol; vuelve al frente al abrir otro personaje. */
+  protected readonly volteada = signal(false);
 
   constructor() {
     effect(() => {
@@ -42,6 +44,7 @@ export class PersonajeModal {
       const u = this.uso();
       const primera = u && this.juego.categorias.find((c) => u.porCategoria[c.nombre]);
       this.abiertas.set(new Set(primera ? [primera.nombre] : []));
+      this.volteada.set(false);
     });
   }
 

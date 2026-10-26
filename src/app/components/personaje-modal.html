@@ -5,7 +5,28 @@
         <button type="button" class="btn-close btn-close-white mx" aria-label="Cerrar" (click)="cerrar()"></button>
       </div>
       <div class="modal-body pt-0">
-        @if (pj()?.img; as src) {
+        @if (pj()?.rol; as rol) {
+          <button
+            type="button"
+            class="mf"
+            [class.vuelta]="volteada()"
+            [attr.aria-pressed]="volteada()"
+            aria-label="Voltear para ver el rol"
+            (click)="volteada.set(!volteada())"
+          >
+            <span class="mfi">
+              @if (pj()?.img; as src) {
+                <span class="mi" [style.background-image]="'url(' + src + ')'"></span>
+              } @else {
+                <span class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</span>
+              }
+              <span class="mi mfb" [style.--c]="rolColor[rol]">
+                @if (rolIcono[rol].endsWith('.svg')) {<img class="mfr" [src]="rolIcono[rol]" alt="" />} @else {<span class="mfr">{{ rolIcono[rol] }}</span>}
+                <span class="mfn">{{ rol }}</span>
+              </span>
+            </span>
+          </button>
+        } @else if (pj()?.img; as src) {
           <div class="mi" [style.background-image]="'url(' + src + ')'"></div>
         } @else {
           <div class="mi" [style.background]="fondo(u.nombre)">{{ ini(u.nombre) }}</div>
