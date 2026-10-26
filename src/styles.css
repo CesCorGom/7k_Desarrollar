@@ -107,10 +107,22 @@ img.ri{width:18px;height:18px}
 .sdet .lis{margin-top:8px}
 .smc .sr{margin:6px 0 0}
 .sr .bs{font-size:11px;color:var(--mut);margin-top:4px}
+.sh{overflow-wrap:anywhere}
+.sr .t{flex-wrap:wrap;column-gap:8px;row-gap:2px}.sr .t i{white-space:nowrap}.sr .t .tn{min-width:0;overflow-wrap:anywhere}
+.rgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:0 12px}
+.rgrid>.empty{grid-column:1/-1}
+@media (max-width:420px){
+.sh{font-size:14px}
+.smc{padding:8px}
+.smc .sr{padding:6px;gap:6px}
+.sr .no{width:16px;font-size:12px}
+}
 @media (min-width:760px){
 .in{padding:18px 16px 14px}
 .th{display:grid;grid-template-columns:30px 58px 1fr;gap:8px;padding:8px;margin-bottom:6px;color:var(--gold);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--gold2)}
 
 .list{column-count:2;column-gap:12px}
+.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rgrid .spsc{flex-wrap:wrap;overflow-x:visible}
 .nm{margin:0}
 }

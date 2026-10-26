@@ -1,4 +1,5 @@
 <h2 class="sh">Ranking de roles{{ filtro() }} ({{ puestos() }} puestos en {{ equipos() }} equipos)</h2>
+<div class="rgrid">
 @for (r of roles(); track r.nombre; let i = $index) {
   <div class="smc" [style.--c]="r.color">
     <div class="sr">
@@ -8,7 +9,7 @@
       </div>
       <div class="mid">
         <div class="t">
-          <span [style.color]="r.color">{{ r.nombre }}</span>
+          <span class="tn" [style.color]="r.color">{{ r.nombre }}</span>
           <i>{{ r.total }} de {{ puestos() }} ({{ pct(r.total, puestos()) }}%)</i>
         </div>
         <div class="sb"><div [style.width.%]="pct(r.total, roles()[0].total)" [style.background]="r.color"></div></div>
@@ -24,3 +25,4 @@
 } @empty {
   <div class="empty">Sin datos</div>
 }
+</div>
