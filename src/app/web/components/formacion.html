@@ -47,7 +47,7 @@
     <span class="fl badge rounded-pill">{{ label }}</span>
     <div class="fsc">
       @for (nombre of n; track nombre) {
-        <button type="button" class="ft2 btn" [title]="nombre" (click)="juego.abierto.set(nombre)">
+        <button type="button" class="ft2 btn" [title]="nombre" (click)="seleccion.abrir(nombre)">
           <span class="fav">
             <app-avatar [nombre]="nombre" />
             @if (rol(nombre); as r) {

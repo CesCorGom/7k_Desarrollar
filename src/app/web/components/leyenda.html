@@ -1,11 +1,11 @@
-@for (c of juego.categorias; track c.nombre) {
+@for (c of catalogo.categorias; track c.nombre) {
   <button
     type="button"
     class="lg btn btn-sm"
-    [class.on]="juego.categoria() === c.nombre"
-    [attr.aria-pressed]="juego.categoria() === c.nombre"
+    [class.on]="filtros.categoria() === c.nombre"
+    [attr.aria-pressed]="filtros.categoria() === c.nombre"
     [style.--c]="c.color"
-    (click)="juego.toggleCategoria(c.nombre)"
+    (click)="filtros.toggleCategoria(c.nombre)"
   >
     <span class="ic">{{ c.icono }}</span>
     <span><b>{{ c.linea1 }}</b><br />{{ c.linea2 }}</span>

@@ -1,16 +1,4 @@
-export interface Categoria {
-  nombre: string;
-  color: string;
-  icono: string;
-  linea1: string;
-  linea2: string;
-}
-
-export interface Equipo {
-  categoria: string;
-  submodo: string;
-  miembros: string[];
-}
+import { Categoria, Equipo } from '../../domain/models/modo';
 
 export const CATEGORIAS: Categoria[] = [
   { nombre: 'Expedición de los Adviento', color: '#4aa3ff', icono: '🧭', linea1: 'Expedición', linea2: 'de los Adviento' },
@@ -19,10 +7,6 @@ export const CATEGORIAS: Categoria[] = [
   { nombre: 'Power Up Honguitos', color: '#5de07a', icono: '🍄', linea1: 'Power Up', linea2: 'Honguitos' },
   { nombre: 'Incursiones', color: '#f5a623', icono: '👹', linea1: 'Incursiones', linea2: '' },
 ];
-
-export const COLOR_CATEGORIA: Record<string, string> = Object.fromEntries(
-  CATEGORIAS.map((c) => [c.nombre, c.color]),
-);
 
 const eq = (categoria: string, submodo: string, miembros: string[]): Equipo => ({ categoria, submodo, miembros });
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
+import { FiltrosStore } from '../../application/filtros.store';
 import { Formacion } from '../components/formacion';
-import { JuegoService } from '../juego.service';
 
 @Component({
   selector: 'app-submodos',
@@ -8,5 +8,5 @@ import { JuegoService } from '../juego.service';
   templateUrl: './submodos.html',
 })
 export class Submodos {
-  protected readonly juego = inject(JuegoService);
+  protected readonly filtros = inject(FiltrosStore);
 }

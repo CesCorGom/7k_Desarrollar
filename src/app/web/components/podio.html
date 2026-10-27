@@ -5,7 +5,7 @@
     [class.f]="p.i === 0"
     [style.animation-delay.ms]="k * 90"
     [attr.aria-label]="'Puesto ' + (p.i + 1) + ': ' + p.c.nombre"
-    (click)="juego.abierto.set(p.c.nombre)"
+    (click)="seleccion.abrir(p.c.nombre)"
   >
     <span class="medal">{{ p.medalla }}</span>
     <app-avatar [nombre]="p.c.nombre" />

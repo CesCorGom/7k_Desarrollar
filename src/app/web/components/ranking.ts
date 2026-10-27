@@ -1,10 +1,8 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { Avatar } from './avatar';
-import { Conteo, JuegoService } from '../juego.service';
-
-export function pct(n: number, total: number): number {
-  return total ? Math.round((n / total) * 100) : 0;
-}
+import { SeleccionStore } from '../../application/seleccion.store';
+import { Conteo } from '../../domain/models/estadistica';
+import { porcentaje } from '../../domain/services/conteo';
 
 /** Podio de los tres primeros (orden 2º · 1º · 3º). */
 @Component({
@@ -14,10 +12,10 @@ export function pct(n: number, total: number): number {
   templateUrl: './podio.html',
 })
 export class Podio {
-  protected readonly juego = inject(JuegoService);
+  protected readonly seleccion = inject(SeleccionStore);
   readonly items = input.required<Conteo[]>();
   readonly total = input.required<number>();
-  protected readonly pct = pct;
+  protected readonly pct = porcentaje;
   protected readonly podio = computed(() =>
     [1, 0, 2]
       .map((i, k) => ({ i, c: this.items()[i], medalla: ['🥈', '🥇', '🥉'][k] }))
@@ -33,9 +31,9 @@ export class Podio {
   templateUrl: './ranking.html',
 })
 export class Ranking {
-  protected readonly juego = inject(JuegoService);
+  protected readonly seleccion = inject(SeleccionStore);
   readonly items = input.required<Conteo[]>();
   readonly total = input.required<number>();
   readonly relativa = input(false);
-  protected readonly pct = pct;
+  protected readonly pct = porcentaje;
 }

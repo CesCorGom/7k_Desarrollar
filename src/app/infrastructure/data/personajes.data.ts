@@ -1,10 +1,4 @@
-export type Rol = 'Healer' | 'Debuffer' | 'Attack' | 'Mage' | 'Mago' | 'Tank';
-
-export interface Personaje {
-  nombre: string;
-  img: string | null;
-  rol: Rol | null;
-}
+import { Personaje } from '../../domain/models/personaje';
 
 export const PERSONAJES: Personaje[] = [
   { nombre: 'Aris', img: 'images/aris.png', rol: 'Debuffer' },
@@ -63,25 +57,3 @@ export const MASCOTAS: Personaje[] = [
   { nombre: 'Ventoso', img: 'images/ventoso.png', rol: null },
   { nombre: 'Jeo', img: 'images/Jeo.png', rol: null },
 ];
-
-export const PJ: Record<string, Personaje> = Object.fromEntries(
-  [...PERSONAJES, ...MASCOTAS].map((p) => [p.nombre, p]),
-);
-
-export const ROL_COLOR: Record<Rol, string> = {
-  Healer: '#f5d142',
-  Debuffer: '#b86bff',
-  Attack: '#ff4d5e',
-  Mage: '#4aa3ff',
-  Mago: '#4aa3ff',
-  Tank: '#a0693b',
-};
-
-export const ROL_ICONO: Record<Rol, string> = {
-  Healer: '✚',
-  Debuffer: 'images/estrella.svg',
-  Attack: 'images/espadas.svg',
-  Mage: 'images/varita.svg',
-  Mago: 'images/varita.svg',
-  Tank: 'images/escudo.svg',
-};

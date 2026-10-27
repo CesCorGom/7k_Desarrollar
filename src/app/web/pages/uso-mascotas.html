@@ -1,14 +1,14 @@
 <div class="stats row row-cols-3 g-2">
   <div class="col"><div class="st card"><b class="rebotar">{{ total() }}</b><span>Equipos</span></div></div>
-  <div class="col"><div class="st card"><b class="balancear">{{ juego.rankingMascotas().length }}</b><span>Mascotas</span></div></div>
+  <div class="col"><div class="st card"><b class="balancear">{{ ranking().length }}</b><span>Mascotas</span></div></div>
   <div class="col"><div class="st card"><b class="neon">{{ porModo().length }}</b><span>Modos</span></div></div>
 </div>
-<app-podio [items]="juego.rankingMascotas()" [total]="total()" />
+<app-podio [items]="ranking()" [total]="total()" />
 <div class="uh d-flex flex-wrap align-items-center gap-2">
   <h2 class="sh me-auto">Uso de mascotas{{ filtro() }}</h2>
   <span class="badge rounded-pill ub">⚔️ {{ total() }} equipos</span>
 </div>
-<app-ranking [items]="juego.rankingMascotas()" [total]="total()" />
+<app-ranking [items]="ranking()" [total]="total()" />
 
 <div class="uh d-flex flex-wrap align-items-center gap-2">
   <h2 class="sh me-auto">Mascotas por modo</h2>
@@ -38,7 +38,7 @@
           <div class="accordion-collapse collapse show">
             <div class="accordion-body">
               @for (m of g.mascotas; track m.nombre) {
-                <button type="button" class="sr card w-100 text-start" (click)="juego.abierto.set(m.nombre)">
+                <button type="button" class="sr card w-100 text-start" (click)="seleccion.abrir(m.nombre)">
                   <span class="card-body d-flex align-items-center gap-2">
                     <app-avatar [nombre]="m.nombre" />
                     <span class="mid">

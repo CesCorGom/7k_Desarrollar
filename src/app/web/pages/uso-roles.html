@@ -44,7 +44,7 @@
           @if (r.top.length) {
             <div class="tops d-flex flex-wrap gap-1 mt-2">
               @for (p of r.top; track p.nombre; let k = $index) {
-                <button type="button" class="btn btn-sm rounded-pill spl" (click)="juego.abierto.set(p.nombre)">
+                <button type="button" class="btn btn-sm rounded-pill spl" (click)="seleccion.abrir(p.nombre)">
                   @if (k === 0) {⭐ }{{ p.nombre }} <span class="badge rounded-pill">{{ p.total }}</span>
                 </button>
               }

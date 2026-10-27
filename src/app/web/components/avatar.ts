@@ -1,5 +1,5 @@
-import { Component, computed, input } from '@angular/core';
-import { PJ } from '../data/personajes';
+import { Component, computed, inject, input } from '@angular/core';
+import { CatalogoService } from '../../application/catalogo.service';
 
 export function hue(s: string): number {
   let h = 0;
@@ -23,8 +23,9 @@ export function iniciales(n: string): string {
   templateUrl: './avatar.html',
 })
 export class Avatar {
+  private readonly catalogo = inject(CatalogoService);
   readonly nombre = input.required<string>();
-  protected readonly img = computed(() => PJ[this.nombre()]?.img);
+  protected readonly img = computed(() => this.catalogo.personaje(this.nombre())?.img);
   protected readonly fondo = computed(() => degradado(this.nombre()));
   protected readonly ini = computed(() => iniciales(this.nombre()));
 }

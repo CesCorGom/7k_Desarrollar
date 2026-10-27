@@ -1,7 +1,7 @@
 <div class="rk row row-cols-1 row-cols-md-2 g-2">
   @for (p of items(); track p.nombre; let i = $index) {
     <div class="col" [style.animation-delay.ms]="i < 20 ? i * 30 : 0">
-      <button type="button" class="sr card w-100 h-100 text-start" [class.top]="i < 3" (click)="juego.abierto.set(p.nombre)">
+      <button type="button" class="sr card w-100 h-100 text-start" [class.top]="i < 3" (click)="seleccion.abrir(p.nombre)">
         <span class="card-body d-flex align-items-center gap-2">
           <span class="no badge rounded-pill">{{ i + 1 }}</span>
           <app-avatar [nombre]="p.nombre" />

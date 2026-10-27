@@ -1,13 +1,13 @@
 <div class="cnt d-flex align-items-center gap-2">
-  <span class="text-nowrap">{{ filtrados().length }} de {{ juego.personajes.length }} personajes</span>
-  <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="filtrados().length" aria-valuemin="0" [attr.aria-valuemax]="juego.personajes.length">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(filtrados().length / juego.personajes.length) * 100"></div>
+  <span class="text-nowrap">{{ filtrados().length }} de {{ total }} personajes</span>
+  <div class="progress flex-grow-1" role="progressbar" [attr.aria-valuenow]="filtrados().length" aria-valuemin="0" [attr.aria-valuemax]="total">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(filtrados().length / total) * 100"></div>
   </div>
 </div>
 <div class="list row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
   @for (p of filtrados(); track p.nombre; let i = $index) {
     <div class="col" [style.animation-delay.ms]="i < 20 ? i * 30 : 0">
-      <div class="r card h-100" [style.--c]="rol(p.nombre) ? rolColor[rol(p.nombre)!] : null" (click)="juego.abierto.set(p.nombre)">
+      <div class="r card h-100" [style.--c]="rol(p.nombre) ? rolColor[rol(p.nombre)!] : null" (click)="seleccion.abrir(p.nombre)">
         <div class="card-body d-flex align-items-center gap-2">
           <span class="no badge rounded-pill">{{ i + 1 }}</span>
           <app-avatar [nombre]="p.nombre" />

@@ -44,7 +44,7 @@
           @if (u.mascota) {
             <span class="badge rounded-pill mbadge">🐾 Mascota</span>
           } @else {
-            <span class="badge rounded-pill mbadge">🏆 Puesto {{ juego.puesto(u.nombre) }}</span>
+            <span class="badge rounded-pill mbadge">🏆 Puesto {{ usos.puesto(u.nombre) }}</span>
           }
           <span class="badge rounded-pill mbadge">⚔️ {{ u.total }} / {{ total }} equipos</span>
         </div>
@@ -62,11 +62,11 @@
         >
           <div
             class="progress-bar progress-bar-striped progress-bar-animated"
-            [style.width.%]="u.mascota ? pct(u.total, total) : pct(u.total, juego.maxUso)"
+            [style.width.%]="u.mascota ? pct(u.total, total) : pct(u.total, usos.maxUso)"
           ></div>
         </div>
         <div class="accordion ml">
-          @for (c of juego.categorias; track c.nombre) {
+          @for (c of catalogo.categorias; track c.nombre) {
             @if (u.porCategoria[c.nombre]; as subs) {
               <div class="accordion-item mg" [style.--c]="c.color">
                 <h3 class="accordion-header">

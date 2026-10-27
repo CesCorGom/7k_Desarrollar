@@ -2,21 +2,21 @@
   @case ('/') {
     <div class="tools input-group mb-2">
       <span class="input-group-text">🔍</span>
-      <input type="search" class="form-control" placeholder="Buscar personaje..." autocomplete="off" [value]="juego.termino()" (input)="juego.termino.set($any($event.target).value)" />
-      @if (juego.termino()) {
-        <button class="btn btn-outline-secondary" type="button" title="Limpiar" (click)="juego.termino.set('')">✕</button>
+      <input type="search" class="form-control" placeholder="Buscar personaje..." autocomplete="off" [value]="filtros.termino()" (input)="filtros.termino.set($any($event.target).value)" />
+      @if (filtros.termino()) {
+        <button class="btn btn-outline-secondary" type="button" title="Limpiar" (click)="filtros.termino.set('')">✕</button>
       }
-      <button class="btn btn-outline-warning" type="button" (click)="juego.porUso.set(!juego.porUso())">{{ juego.porUso() ? '🔥 Más usados' : 'A–Z'  }}</button>
+      <button class="btn btn-outline-warning" type="button" (click)="filtros.porUso.set(!filtros.porUso())">{{ filtros.porUso() ? '🔥 Más usados' : 'A–Z'  }}</button>
     </div>
     <div class="roles">
-      <button class="btn btn-sm rounded-pill" [class.on]="!juego.filtroRol()" (click)="juego.filtroRol.set(null)">
-        Todos <span class="badge rounded-pill text-bg-warning">{{ juego.personajes.length }}</span>
+      <button class="btn btn-sm rounded-pill" [class.on]="!filtros.rol()" (click)="filtros.rol.set(null)">
+        Todos <span class="badge rounded-pill text-bg-warning">{{ totalPersonajes }}</span>
       </button>
       @for (r of roles; track r) {
-        <button class="btn btn-sm rounded-pill" [class.on]="juego.filtroRol() === r" [style.--c]="rolColor[r]" (click)="juego.filtroRol.set(juego.filtroRol() === r ? null : r)">
+        <button class="btn btn-sm rounded-pill" [class.on]="filtros.rol() === r" [style.--c]="rolColor[r]" (click)="filtros.toggleRol(r)">
           @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri" [style.color]="rolColor[r]">{{ rolIcono[r] }}</span>}
           {{ r }}
-          <span class="badge rounded-pill" [style.background]="rolColor[r]">{{ conteo()[r] || 0 }}</span>
+          <span class="badge rounded-pill" [style.background]="rolColor[r]">{{ porRol[r] || 0 }}</span>
         </button>
       }
     </div>
@@ -27,14 +27,14 @@
       <div class="sgrp" role="group" [attr.aria-label]="c.nombre" [style.--c]="c.color">
         <span class="sgl badge rounded-pill">{{ c.icono }} {{ c.nombre }}</span>
         <div class="schips">
-          @for (e of equiposDe(c.nombre); track e.submodo) {
+          @for (e of catalogo.equiposDe(c.nombre); track e.submodo) {
             <button
               type="button"
               class="sc btn btn-sm rounded-pill"
-              [class.on]="juego.submodo() === e.submodo"
-              [attr.aria-pressed]="juego.submodo() === e.submodo"
+              [class.on]="filtros.submodo() === e.submodo"
+              [attr.aria-pressed]="filtros.submodo() === e.submodo"
               [style.--c]="c.color"
-              (click)="juego.toggleSubmodo(c.nombre, e.submodo)"
+              (click)="filtros.toggleSubmodo(c.nombre, e.submodo)"
             >{{ e.submodo }}</button>
           }
         </div>

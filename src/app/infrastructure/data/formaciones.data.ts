@@ -1,14 +1,4 @@
-export interface Alineacion {
-  al: string;
-  adelante: string[];
-  atras: string[];
-  mascota: string[];
-}
-
-export interface Formacion extends Alineacion {
-  alternativas?: Alineacion[];
-  prioridad?: string[];
-}
+import { Formacion } from '../../domain/models/formacion';
 
 export const FORMACIONES: Record<string, Formacion> = {
   'Ventisca Spike': { al: '3-2', adelante: ['Feng Yan', 'Biscuit', 'Rachel'], atras: ['Sunran', 'Ryan'], mascota: ['Ventoso'] },
@@ -80,9 +70,3 @@ export const FORMACIONES: Record<string, Formacion> = {
     prioridad: ['2da de Biscuit', '2da de Xiao Qiao', '1ra de Xiao Qiao', '1ra de Pascal', '2da de Pascal'],
   },
 };
-
-/** Todas las mascotas de una formación, incluidas las de sus alternativas (sin repetir). */
-export function mascotasDe(f: Formacion): string[] {
-  const todas = [f, ...(f.alternativas ?? [])].flatMap((x) => x.mascota);
-  return [...new Set(todas)];
-}

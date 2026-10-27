@@ -1,7 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CatalogoService } from '../../application/catalogo.service';
+import { ListaPersonajesService } from '../../application/lista-personajes.service';
+import { SeleccionStore } from '../../application/seleccion.store';
 import { Avatar } from '../components/avatar';
-import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
-import { JuegoService } from '../juego.service';
+import { ROL_COLOR, ROL_ICONO } from '../shared/rol-estilo';
 
 @Component({
   selector: 'app-lista',
@@ -9,19 +11,15 @@ import { JuegoService } from '../juego.service';
   templateUrl: './lista.html',
 })
 export class Lista {
-  protected readonly juego = inject(JuegoService);
+  private readonly catalogo = inject(CatalogoService);
+  private readonly lista = inject(ListaPersonajesService);
+  protected readonly seleccion = inject(SeleccionStore);
   protected readonly rolColor = ROL_COLOR;
   protected readonly rolIcono = ROL_ICONO;
-
-  protected readonly filtrados = computed(() => {
-    const t = this.juego.termino().trim().toLowerCase();
-    const r = this.juego.filtroRol();
-    return this.juego.personajes
-      .filter((p) => p.nombre.toLowerCase().includes(t) && (!r || this.rol(p.nombre) === r))
-      .sort((a, b) => (this.juego.porUso() ? b.total - a.total : 0) || a.nombre.localeCompare(b.nombre));
-  });
+  protected readonly filtrados = this.lista.filtrados;
+  protected readonly total = this.lista.total;
 
   protected rol(n: string) {
-    return PJ[n]?.rol;
+    return this.catalogo.rol(n);
   }
 }

@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { JuegoService } from '../juego.service';
+import { CatalogoService } from '../../application/catalogo.service';
+import { FiltrosStore } from '../../application/filtros.store';
 
 @Component({
   selector: 'app-leyenda',
@@ -7,5 +8,6 @@ import { JuegoService } from '../juego.service';
   templateUrl: './leyenda.html',
 })
 export class Leyenda {
-  protected readonly juego = inject(JuegoService);
+  protected readonly catalogo = inject(CatalogoService);
+  protected readonly filtros = inject(FiltrosStore);
 }

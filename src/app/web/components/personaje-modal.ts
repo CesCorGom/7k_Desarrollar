@@ -1,8 +1,10 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { degradado, iniciales } from './avatar';
-import { pct } from './ranking';
-import { PJ, ROL_COLOR, ROL_ICONO } from '../data/personajes';
-import { JuegoService } from '../juego.service';
+import { CatalogoService } from '../../application/catalogo.service';
+import { SeleccionStore } from '../../application/seleccion.store';
+import { UsosService } from '../../application/usos.service';
+import { porcentaje } from '../../domain/services/conteo';
+import { ROL_COLOR, ROL_ICONO } from '../shared/rol-estilo';
 
 @Component({
   selector: 'app-personaje-modal',
@@ -19,16 +21,18 @@ import { JuegoService } from '../juego.service';
   templateUrl: './personaje-modal.html',
 })
 export class PersonajeModal {
-  protected readonly juego = inject(JuegoService);
+  protected readonly catalogo = inject(CatalogoService);
+  protected readonly usos = inject(UsosService);
+  private readonly seleccion = inject(SeleccionStore);
   protected readonly uso = computed(() => {
-    const n = this.juego.abierto();
-    return n ? this.juego.usos[n] : null;
+    const n = this.seleccion.abierto();
+    return (n && this.usos.uso(n)) || null;
   });
-  protected readonly pj = computed(() => PJ[this.juego.abierto() ?? '']);
-  protected readonly total = this.juego.totalEquipos;
+  protected readonly pj = computed(() => this.catalogo.personaje(this.seleccion.abierto() ?? ''));
+  protected readonly total = this.catalogo.totalEquipos;
   protected readonly rolColor = ROL_COLOR;
   protected readonly rolIcono = ROL_ICONO;
-  protected readonly pct = pct;
+  protected readonly pct = porcentaje;
   protected readonly fondo = degradado;
   protected readonly ini = iniciales;
   /** Categorías desplegadas en el acordeón; se reinicia al abrir otro personaje. */
@@ -42,7 +46,7 @@ export class PersonajeModal {
     });
     effect(() => {
       const u = this.uso();
-      const primera = u && this.juego.categorias.find((c) => u.porCategoria[c.nombre]);
+      const primera = u && this.catalogo.categorias.find((c) => u.porCategoria[c.nombre]);
       this.abiertas.set(new Set(primera ? [primera.nombre] : []));
       this.volteada.set(false);
     });
@@ -61,7 +65,7 @@ export class PersonajeModal {
   }
 
   cerrar(): void {
-    this.juego.abierto.set(null);
+    this.seleccion.cerrar();
   }
 
   cerrarFondo(e: MouseEvent): void {
