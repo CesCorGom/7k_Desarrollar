@@ -1,0 +1,2 @@
+crear la app en arquitectura hexagonal orientada a capa de dominio, capa de aplicacion, y capa de infraestructura si asi la posee, capa de web APIs.
+Respetando los principios de Responsabilidad Unica, Abierto - Cerrado y de sustitucion Liskov 
