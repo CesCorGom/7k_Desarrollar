@@ -1,0 +1,11 @@
+instruccines_claude.txt
+
+# Dependencias
+node_modules/
+
+# Compilación y caché de Angular
+dist/
+.angular/
+
+# macOS
+.DS_Store
