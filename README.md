@@ -36,6 +36,16 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Publicar en GitHub Pages
+
+Para compilar una versión nueva y publicarla en GitHub Pages, ejecuta:
+
+```bash
+npm run build
+```
+
+Este script ya está configurado: compila la app en modo producción y la sube a la rama `gh-pages` con `angular-cli-ghpages` (carpeta `dist/rol-angular/browser`).
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

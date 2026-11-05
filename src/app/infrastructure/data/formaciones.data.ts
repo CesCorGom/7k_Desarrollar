@@ -58,7 +58,7 @@ export const FORMACIONES: Record<string, Formacion> = {
     prioridad: ['1ra de Hayeon', '2da de Xiao', '1ra de Bai Jiao', '2da de Xiao', '3ra de Hayeon', '2da de Bi Dam', '2da de Freyja', '1ra de Bi Dam'],
   },
   'Red Ox': {
-    al: '4-1', adelante: ['Biscuit', 'Orly', 'Karon', 'Daisy'], atras: ['Espada'], mascota: ['Ventoso'],
+    al: '4-1', adelante: ['Orly','Biscuit', 'Karon', 'Daisy'], atras: ['Espada'], mascota: ['Ventoso'],
     prioridad: ['2da de Biscuit', '1ra de Daisy', '2da de Espada', '1ra de Espada', '2da de Daisy', '2da de Karon', '1ra de Karon'],
   },
   Letal: {
