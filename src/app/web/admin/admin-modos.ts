@@ -49,7 +49,7 @@ export class AdminModos {
         const coincideModo = !q || normalizar(c.nombre).includes(q);
         const visibles = coincideModo
           ? equipos
-          : equipos.filter((e) => normalizar(e.submodo).includes(q) || e.miembros.some((m) => normalizar(m).includes(q)));
+          : equipos.filter((e) => normalizar(e.submodo).includes(q) || [...e.miembros, ...(e.mascotas ?? [])].some((m) => normalizar(m).includes(q)));
         return { c, equipos: visibles, total: equipos.length, primero: i === 0, ultimo: i === todas.length - 1 };
       })
       .filter((v) => !q || v.equipos.length || normalizar(v.c.nombre).includes(q));
@@ -111,13 +111,13 @@ export class AdminModos {
   protected nuevoSubmodo(categoria: string): void {
     this.modo.set(null);
     this.abrir(categoria);
-    this.submodo.set({ datos: { categoria, submodo: '', miembros: [] }, actual: null, origen: categoria });
+    this.submodo.set({ datos: { categoria, submodo: '', miembros: [], mascotas: [] }, actual: null, origen: categoria });
   }
 
   protected editarSubmodo(e: EquipoEditable): void {
     this.modo.set(null);
     this.submodo.set({
-      datos: { categoria: e.categoria, submodo: e.submodo, miembros: [...e.miembros] },
+      datos: { categoria: e.categoria, submodo: e.submodo, miembros: [...e.miembros], mascotas: [...(e.mascotas ?? [])] },
       actual: e,
       origen: e.categoria,
     });

@@ -1,6 +1,6 @@
 @if (editando(); as p) {
   <form class="card p-3 mb-3" (ngSubmit)="guardar()">
-    <h3 class="h5">{{ nuevo() ? 'Nuevo personaje' : 'Editar ' + p.nombre }}</h3>
+    <h3 class="h5">{{ nuevo() ? (p.mascota ? '🐾 Nueva mascota' : 'Nuevo personaje') : 'Editar ' + p.nombre }}</h3>
 
     <label class="form-label" for="adm-nombre">Nombre</label>
     <input id="adm-nombre" class="form-control mb-2" name="nombre" [(ngModel)]="p.nombre" [readonly]="!nuevo()" required />
@@ -46,7 +46,8 @@
     <option value="personajes">Personajes ({{ admin.nombresPersonajes().length }})</option>
     <option value="mascotas">Mascotas ({{ admin.nombresMascotas().length }})</option>
   </select>
-  <button class="btn btn-sm btn-warning" (click)="crear()" [disabled]="admin.ocupado()">+ Nuevo</button>
+  <button class="btn btn-sm btn-warning" (click)="crear(false)" [disabled]="admin.ocupado()">+ Personaje</button>
+  <button class="btn btn-sm btn-outline-warning" (click)="crear(true)" [disabled]="admin.ocupado()">🐾 + Mascota</button>
 </div>
 
 <ul class="list-group">

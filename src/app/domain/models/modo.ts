@@ -11,6 +11,8 @@ export interface Equipo {
   categoria: string;
   submodo: string;
   miembros: string[];
+  /** Mascotas recomendadas (opcional; también se toman las de su alineación). */
+  mascotas?: string[];
 }
 
 /** Categoría tal como se edita: con su posición en el menú. */

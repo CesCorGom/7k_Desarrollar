@@ -23,8 +23,9 @@ export class Filtros {
   protected readonly rolColor = ROL_COLOR;
   protected readonly rolIcono = ROL_ICONO;
 
+  /** Categoría elegida en la leyenda; sin ninguna elegida no se muestran los submodos. */
   protected readonly categorias = computed(() => {
     const c = this.filtros.categoria();
-    return this.catalogo.categorias.filter((x) => !c || x.nombre === c);
+    return c ? this.catalogo.categorias.filter((x) => x.nombre === c) : [];
   });
 }

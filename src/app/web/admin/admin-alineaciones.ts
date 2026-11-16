@@ -68,8 +68,8 @@ export class AdminAlineaciones {
 
   protected crear(b: Borrador, e: EquipoEditable): void {
     b.existe = true;
-    // Propuesta inicial: los miembros del submodo, 4 adelante y el resto atrás.
-    b.fases = [{ al: '', adelante: e.miembros.slice(0, 4), atras: e.miembros.slice(4, 5), mascota: [] }];
+    // Propuesta inicial: los miembros del submodo, 4 adelante y el resto atrás, con sus mascotas.
+    b.fases = [{ al: '', adelante: e.miembros.slice(0, 4), atras: e.miembros.slice(4, 5), mascota: [...(e.mascotas ?? [])] }];
   }
 
   /** Personajes de todas las fases. */

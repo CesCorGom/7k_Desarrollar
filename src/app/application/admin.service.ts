@@ -68,7 +68,8 @@ export class AdminService {
       const nombre = validarNombre(personaje.nombre, 'El nombre');
       if (!personaje.mascota && !personaje.rol) throw new Error('Elige un rol (o marca que es mascota).');
       const img = archivo ? await this.imagenes.subir(this.validarImagen(archivo)) : personaje.img;
-      await this.repo.guardar({ ...personaje, nombre, img });
+      // Las mascotas no tienen rol.
+      await this.repo.guardar({ ...personaje, nombre, img, rol: personaje.mascota ? null : personaje.rol });
       await this.recargar();
       return `«${nombre}» guardado.`;
     });
@@ -128,8 +129,9 @@ export class AdminService {
       if (!this.categorias().some((c) => c.nombre === e.categoria)) throw new Error('Elige el modo al que pertenece.');
       if (this.equipos().some((x) => x.submodo === submodo && x.id !== actual?.id)) throw new Error(`Ya existe el submodo «${submodo}».`);
       const miembros = sinRepetir(e.miembros);
+      const mascotas = sinRepetir(e.mascotas ?? []);
       const orden = actual?.orden ?? siguiente(this.equipos());
-      await this.catalogoRepo.guardarEquipo({ categoria: e.categoria, submodo, miembros }, orden, actual?.id ?? null, actual?.submodo ?? null);
+      await this.catalogoRepo.guardarEquipo({ categoria: e.categoria, submodo, miembros, mascotas }, orden, actual?.id ?? null, actual?.submodo ?? null);
       await this.recargar();
       return `Submodo «${submodo}» guardado.`;
     });
@@ -161,7 +163,8 @@ export class AdminService {
 
   /**
    * Guarda la alineación del submodo. Con `sincronizar`, los miembros del submodo pasan a ser
-   * los personajes de todas sus fases (en Asedio deben coincidir).
+   * los personajes de todas sus fases (en Asedio deben coincidir), y sus mascotas las de las fases
+   * (si las fases no tienen mascotas, se conservan las del submodo).
    */
   guardarFormacion(equipo: EquipoEditable, fases: Alineacion[], prioridad: string[], sincronizar: boolean): Promise<boolean> {
     return this.tarea(async () => {
@@ -179,8 +182,10 @@ export class AdminService {
       await this.catalogoRepo.guardarFormacion(equipo.submodo, f);
       if (sincronizar) {
         const miembros = sinRepetir(limpias.flatMap((x) => [...x.adelante, ...x.atras]));
-        if (miembros.join() !== equipo.miembros.join()) {
-          await this.catalogoRepo.guardarEquipo({ ...equipo, miembros }, equipo.orden, equipo.id, null);
+        const deFases = sinRepetir(limpias.flatMap((x) => x.mascota));
+        const mascotas = deFases.length ? deFases : (equipo.mascotas ?? []);
+        if (miembros.join() !== equipo.miembros.join() || mascotas.join() !== (equipo.mascotas ?? []).join()) {
+          await this.catalogoRepo.guardarEquipo({ ...equipo, miembros, mascotas }, equipo.orden, equipo.id, null);
         }
       }
       await this.recargar();

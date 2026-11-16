@@ -56,7 +56,7 @@ export class CatalogoEditorFirestoreRepository extends CatalogoEditorRepository 
   async guardarEquipo(e: Equipo, orden: number, id: string | null, submodoAnterior: string | null): Promise<void> {
     const lote = writeBatch(db);
     const ref = id ? doc(db, COLECCION.equipos, id) : doc(collection(db, COLECCION.equipos));
-    lote.set(ref, limpio({ categoria: e.categoria, submodo: e.submodo, miembros: e.miembros, orden }));
+    lote.set(ref, limpio({ categoria: e.categoria, submodo: e.submodo, miembros: e.miembros, mascotas: e.mascotas ?? [], orden }));
     if (submodoAnterior && submodoAnterior !== e.submodo) {
       const vieja = await getDoc(doc(db, COLECCION.formaciones, submodoAnterior));
       if (vieja.exists()) {

@@ -39,8 +39,9 @@ export class AdminPersonajes {
       .filter((p) => p.nombre.toLowerCase().includes(t));
   });
 
-  protected crear(): void {
-    this.abrir({ ...VACIO, mascota: this.tipo() === 'mascotas' }, true);
+  /** Abre el formulario de alta de un personaje o de una mascota. */
+  protected crear(mascota: boolean): void {
+    this.abrir({ ...VACIO, mascota }, true);
   }
 
   protected editar(p: PersonajeEditable): void {

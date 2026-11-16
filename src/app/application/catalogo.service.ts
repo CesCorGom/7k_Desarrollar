@@ -37,8 +37,9 @@ export class CatalogoService {
     return this.equipos.filter((e) => e.categoria === categoria);
   }
 
+  /** Mascotas del submodo y de su alineación (sin repetir). */
   mascotasDeEquipo(e: Equipo): string[] {
     const f = this.formacion(e.submodo);
-    return f ? mascotasDe(f) : [];
+    return [...new Set([...(e.mascotas ?? []), ...(f ? mascotasDe(f) : [])])];
   }
 }

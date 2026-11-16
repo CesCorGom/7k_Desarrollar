@@ -77,6 +77,13 @@
       [validos]="admin.nombresPersonajes()"
       placeholder="Añadir personaje…"
     />
+    <span class="form-label d-block mt-2">🐾 Mascotas recomendadas <span class="amc">{{ s.datos.mascotas.length }}</span></span>
+    <app-lista-nombres
+      [(nombres)]="s.datos.mascotas"
+      [opciones]="admin.nombresMascotas()"
+      [validos]="admin.nombresMascotas()"
+      placeholder="Añadir mascota…"
+    />
     @if (s.actual && tieneAlineacion(s.actual.submodo)) {
       <p class="amf-nota">Tiene alineación: al guardarla se pueden sincronizar los miembros con ella.</p>
     }
@@ -160,6 +167,9 @@
                 <div class="ams-nom">
                   <b>{{ e.submodo }}</b>
                   <span class="amc">{{ e.miembros.length }} 👥</span>
+                  @if (e.mascotas?.length) {
+                    <span class="amc" title="Mascotas">{{ e.mascotas!.length }} 🐾</span>
+                  }
                   @if (tieneAlineacion(e.submodo)) {
                     <span class="ams-tag ok">✓ Alineación</span>
                   } @else {
@@ -177,6 +187,13 @@
                   </div>
                 } @else {
                   <div class="ams-miembros vacio">Sin miembros recomendados</div>
+                }
+                @if (e.mascotas?.length) {
+                  <div class="ams-miembros">
+                    @for (n of e.mascotas; track n) {
+                      <span>🐾 {{ n }}</span>
+                    }
+                  </div>
                 }
               </div>
               <div class="ams-acc">
