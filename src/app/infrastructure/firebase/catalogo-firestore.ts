@@ -4,9 +4,6 @@ import { Formacion } from '../../domain/models/formacion';
 import { Categoria, Equipo } from '../../domain/models/modo';
 import { Personaje, PersonajeEditable } from '../../domain/models/personaje';
 import { COLECCION } from '../config';
-import { FORMACIONES } from '../data/formaciones.data';
-import { CATEGORIAS, EQUIPOS } from '../data/modos.data';
-import { MASCOTAS, PERSONAJES } from '../data/personajes.data';
 import { db } from './firebase';
 
 const ESPERA_MAXIMA_MS = 8000;
@@ -15,16 +12,16 @@ type ConOrden<T> = T & { orden: number };
 
 /**
  * Copia en memoria del catálogo guardado en Firestore. Se carga una vez al arrancar para que
- * los repositorios puedan responder de forma síncrona. Si Firestore no responde o una colección
- * está vacía, se usan los datos locales de `infrastructure/data`.
+ * los repositorios puedan responder de forma síncrona. Todo el contenido sale de la base de datos:
+ * si Firestore no responde, el catálogo queda vacío.
  */
 @Injectable({ providedIn: 'root' })
 export class CatalogoFirestore {
-  personajes: readonly Personaje[] = PERSONAJES;
-  mascotas: readonly Personaje[] = MASCOTAS;
-  categorias: readonly Categoria[] = CATEGORIAS;
-  equipos: readonly Equipo[] = EQUIPOS;
-  formaciones: Readonly<Record<string, Formacion>> = FORMACIONES;
+  personajes: readonly Personaje[] = [];
+  mascotas: readonly Personaje[] = [];
+  categorias: readonly Categoria[] = [];
+  equipos: readonly Equipo[] = [];
+  formaciones: Readonly<Record<string, Formacion>> = {};
 
   async cargar(): Promise<void> {
     try {
@@ -36,20 +33,14 @@ export class CatalogoFirestore {
           leer<Formacion>(COLECCION.formaciones),
         ]),
       );
-      if (personajes.length) {
-        const orden = [...personajes].sort((a, b) => a.datos.nombre.localeCompare(b.datos.nombre));
-        this.personajes = orden.filter((p) => !p.datos.mascota).map((p) => aPersonaje(p.datos));
-        this.mascotas = orden.filter((p) => p.datos.mascota).map((p) => aPersonaje(p.datos));
-      }
-      // Modos, submodos y alineaciones van juntos: si hay categorías en Firestore se usa todo de
-      // allí (aunque un submodo no tenga alineación); si no, todo lo local.
-      if (categorias.length) {
-        this.categorias = porOrden(categorias).map(({ orden, ...c }) => c);
-        this.equipos = porOrden(equipos).map(({ orden, ...e }) => e);
-        this.formaciones = Object.fromEntries(formaciones.map((f) => [f.id, f.datos]));
-      }
+      const orden = [...personajes].sort((a, b) => a.datos.nombre.localeCompare(b.datos.nombre));
+      this.personajes = orden.filter((p) => !p.datos.mascota).map((p) => aPersonaje(p.datos));
+      this.mascotas = orden.filter((p) => p.datos.mascota).map((p) => aPersonaje(p.datos));
+      this.categorias = porOrden(categorias).map(({ orden, ...c }) => c);
+      this.equipos = porOrden(equipos).map(({ orden, ...e }) => e);
+      this.formaciones = Object.fromEntries(formaciones.map((f) => [f.id, f.datos]));
     } catch (e) {
-      console.warn('No se pudo leer Firestore; se usan los datos locales.', e);
+      console.error('No se pudo leer el catálogo de Firestore.', e);
     }
   }
 }

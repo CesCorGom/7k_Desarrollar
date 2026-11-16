@@ -29,12 +29,6 @@ export class Admin {
     this.pestana.set('alineaciones');
   }
 
-  protected async importar(): Promise<void> {
-    if (confirm('Se copiarán a Firestore los personajes, modos, submodos y alineaciones del código. Los que tengan el mismo nombre se sobrescribirán. ¿Continuar?')) {
-      await this.admin.importar();
-    }
-  }
-
   protected recargarWeb(): void {
     location.reload();
   }

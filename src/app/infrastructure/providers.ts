@@ -10,8 +10,7 @@ import { PersonajeFirestoreRepository } from './repositories/personaje-firestore
 
 /**
  * Conecta cada puerto del dominio con su adaptador. Los adaptadores Firestore leen de
- * `CatalogoFirestore`, que se carga al arrancar (ver `app.config.ts`). Para volver a los datos
- * estáticos basta con usar los adaptadores `*MemoriaRepository`.
+ * `CatalogoFirestore`, que se carga al arrancar (ver `app.config.ts`).
  */
 export function provideInfraestructura(): EnvironmentProviders {
   return makeEnvironmentProviders([

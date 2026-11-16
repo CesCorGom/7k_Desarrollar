@@ -1,6 +1,7 @@
 <div class="ln" [class.ln-num]="numerada()">
   @for (n of nombres(); track n; let i = $index, primero = $first, ultimo = $last) {
-    <span class="ln-chip" [class.ln-mal]="desconocido(n)" [title]="desconocido(n) ? 'No existe en el catálogo' : n">
+    <span class="ln-chip" [class.ln-con-av]="avatares()" [class.ln-mal]="desconocido(n)" [title]="desconocido(n) ? 'No existe en el catálogo' : n">
+      @if (avatares()) {<span class="ln-av"><app-avatar [nombre]="n" /></span>}
       @if (numerada()) {<b class="ln-n">{{ i + 1 }}</b>}
       <span class="ln-t">{{ n }}</span>
       <button type="button" class="ln-b" [disabled]="primero || deshabilitada()" (click)="mover(i, -1)" [attr.aria-label]="'Subir ' + n">{{ numerada() ? '▲' : '◀' }}</button>

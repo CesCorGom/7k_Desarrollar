@@ -38,8 +38,8 @@
     @if (u.admin) {
       @if (admin.sinModos()) {
         <div class="alert alert-info">
-          La base de datos aún no tiene los modos y la web usa los datos del código. Impórtalos para poder editarlos.
-          <button class="btn btn-sm btn-primary ms-2" (click)="importar()" [disabled]="admin.ocupado()">Importar datos iniciales</button>
+          La base de datos aún no tiene modos. Créalos en la pestaña «Modos y submodos».
+          <button class="btn btn-sm btn-primary ms-2" (click)="pestana.set('modos')">Ir a modos</button>
         </div>
       }
 

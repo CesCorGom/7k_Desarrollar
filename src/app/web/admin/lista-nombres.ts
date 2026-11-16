@@ -1,3 +1,4 @@
+import { Avatar } from '../components/avatar';
 import { Component, computed, input, model, signal } from '@angular/core';
 
 let siguienteId = 0;
@@ -8,6 +9,7 @@ let siguienteId = 0;
  */
 @Component({
   selector: 'app-lista-nombres',
+  imports: [Avatar],
   templateUrl: './lista-nombres.html',
 })
 export class ListaNombres {
@@ -20,6 +22,8 @@ export class ListaNombres {
   /** Lista vertical numerada (para la prioridad). */
   readonly numerada = input(false);
   readonly deshabilitada = input(false);
+  /** Muestra el avatar de cada nombre en su chip. */
+  readonly avatares = input(false);
 
   protected readonly lista = `ln-${++siguienteId}`;
   protected readonly nuevo = signal('');

@@ -1,76 +1,166 @@
-<label class="form-label" for="al-sub">Submodo</label>
-<select id="al-sub" class="form-select mb-3" [ngModel]="submodo()" (ngModelChange)="submodo.set($event)">
-  <option [ngValue]="null" disabled>Elige un submodo</option>
-  @for (c of admin.categorias(); track c.nombre) {
-    <optgroup [label]="c.icono + ' ' + c.nombre">
-      @for (e of admin.equiposDe(c.nombre); track e.id) {
-        <option [ngValue]="e.submodo">{{ e.submodo }}{{ admin.formaciones()[e.submodo] ? ' ✓' : '' }}</option>
-      }
-    </optgroup>
-  }
-</select>
+<!-- Barra superior -->
+<div class="amt">
+  <div class="amt-stats">
+    <span><b>{{ conAlineacion() }}</b> con alineación</span>
+    <span><b>{{ admin.equipos().length - conAlineacion() }}</b> pendientes</span>
+  </div>
+  <div class="ala-progreso" [attr.aria-label]="conAlineacion() + ' de ' + admin.equipos().length + ' submodos con alineación'">
+    <span [style.width.%]="admin.equipos().length ? (conAlineacion() * 100) / admin.equipos().length : 0"></span>
+  </div>
+</div>
 
-@if (equipo(); as e) {
-  @if (borrador(); as b) {
-    @if (!b.existe) {
-      <div class="card p-3 text-center">
-        <p class="mb-2">«{{ e.submodo }}» aún no tiene alineación.</p>
-        <button class="btn btn-warning" (click)="crear(b, e)">Crear alineación</button>
+<div class="ala">
+  <!-- Selector de submodo: lista lateral en escritorio, desplegable en móvil -->
+  <aside class="ala-nav" aria-label="Submodos">
+    <select class="form-select d-lg-none" aria-label="Submodo" [ngModel]="submodo()" (ngModelChange)="submodo.set($event)">
+      <option [ngValue]="null" disabled>Elige un submodo</option>
+      @for (c of admin.categorias(); track c.nombre) {
+        <optgroup [label]="c.icono + ' ' + c.nombre">
+          @for (e of admin.equiposDe(c.nombre); track e.id) {
+            <option [ngValue]="e.submodo">{{ admin.formaciones()[e.submodo] ? '✓' : '○' }} {{ e.submodo }}</option>
+          }
+        </optgroup>
+      }
+    </select>
+
+    <div class="ala-lista d-none d-lg-flex">
+      <input
+        class="form-control form-control-sm"
+        type="search"
+        placeholder="🔍 Buscar submodo…"
+        aria-label="Buscar submodo"
+        [value]="busqueda()"
+        (input)="busqueda.set($any($event.target).value)"
+      />
+      <div class="ala-scroll">
+        @for (g of grupos(); track g.c.nombre) {
+          <div class="ala-grupo" [style.--c]="g.c.color">
+            <span class="ala-gt"><span class="ala-gi">{{ g.c.icono || '❔' }}</span>{{ g.c.nombre }}</span>
+            @for (e of g.equipos; track e.id) {
+              @let tiene = !!admin.formaciones()[e.submodo];
+              <button type="button" class="ala-it" [class.on]="e.submodo === submodo()" [attr.aria-current]="e.submodo === submodo() ? 'true' : null" (click)="submodo.set(e.submodo)">
+                <span class="ala-dot" [class.ok]="tiene" [title]="tiene ? 'Con alineación' : 'Sin alineación'">{{ tiene ? '✓' : '' }}</span>
+                <span class="ala-nom">{{ e.submodo }}</span>
+              </button>
+            }
+          </div>
+        } @empty {
+          <p class="ams-vacio">Ningún submodo coincide.</p>
+        }
       </div>
-    } @else {
-      <div class="row g-2">
-        @for (f of b.fases; track $index; let i = $index) {
-          <div class="col-12" [class.col-lg-6]="b.fases.length > 1">
-            <div class="card h-100">
-              <div class="card-header d-flex align-items-center gap-2">
-                <b class="me-auto">{{ b.fases.length > 1 ? 'Fase ' + (i + 1) : 'Alineación' }}</b>
-                <span class="badge text-bg-warning">{{ f.adelante.length }}-{{ f.atras.length }}</span>
-                @if (b.fases.length > 1) {
-                  <button class="btn btn-sm btn-outline-danger" (click)="quitarFase(b, i)" aria-label="Quitar fase">✕</button>
-                }
-              </div>
-              <div class="card-body">
-                <span class="adm-fila" style="--c: #22d3c5">Adelante</span>
-                <app-lista-nombres [(nombres)]="f.adelante" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" placeholder="Añadir adelante…" />
-                <span class="adm-fila mt-2" style="--c: #ff7ac6">Atrás</span>
-                <app-lista-nombres [(nombres)]="f.atras" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" placeholder="Añadir atrás…" />
-                <span class="adm-fila mt-2" style="--c: #9be15d">Mascota</span>
-                <app-lista-nombres [(nombres)]="f.mascota" [opciones]="admin.nombresMascotas()" [validos]="admin.nombresMascotas()" placeholder="Añadir mascota…" />
-              </div>
+    </div>
+  </aside>
+
+  <section class="ala-main">
+    @if (equipo(); as e) {
+      @let c = categoria(e);
+      @if (borrador(); as b) {
+        <header class="ala-cab" [style.--c]="c?.color ?? 'var(--gold)'">
+          <span class="amc-ic">{{ c?.icono || '❔' }}</span>
+          <span class="amc-txt">
+            <b>{{ e.submodo }}</b>
+            <small>{{ e.categoria }} · {{ e.miembros.length }} {{ e.miembros.length === 1 ? 'miembro' : 'miembros' }}</small>
+          </span>
+          @if (!b.existe) {
+            <span class="ams-tag ms-auto">Sin alineación</span>
+          } @else if (sinGuardar(b, e)) {
+            <span class="ams-tag ala-pend ms-auto">● Cambios sin guardar</span>
+          } @else if (admin.formaciones()[e.submodo]) {
+            <span class="ams-tag ok ms-auto">✓ Guardada</span>
+          } @else {
+            <span class="ams-tag ala-pend ms-auto">● Nueva, sin guardar</span>
+          }
+        </header>
+
+        @if (!b.existe) {
+          <div class="smv-vacio sm text-center">
+            <div class="smv-ico mx-auto mb-2">🧩</div>
+            <p class="mb-1">«{{ e.submodo }}» aún no tiene alineación.</p>
+            <p class="small text-secondary mb-3">Se propondrá una con sus miembros: los 4 primeros adelante y el siguiente atrás.</p>
+            <button class="btn btn-warning" (click)="crear(b, e)">Crear alineación</button>
+          </div>
+        } @else {
+          <div class="ala-fases" [class.varias]="b.fases.length > 1">
+            @for (f of b.fases; track $index; let i = $index) {
+              <article class="ala-fase">
+                <div class="ala-fcab">
+                  @if (b.fases.length > 1) {
+                    <span class="fpb badge rounded-pill">Fase {{ i + 1 }}</span>
+                  }
+                  <span class="fh me-auto">{{ i === 0 ? 'Alineación' : 'Alternativa' }}</span>
+                  <span class="fal badge" title="Adelante-Atrás">{{ f.adelante.length }}-{{ f.atras.length }}</span>
+                  @if (b.fases.length > 1) {
+                    <button class="amb amb-del" (click)="quitarFase(b, i)" aria-label="Quitar fase" title="Quitar fase">🗑</button>
+                  }
+                </div>
+                <div class="ala-filas">
+                  <div class="ala-fila" style="--c: #22d3c5">
+                    <span class="fl badge rounded-pill">Adelante <span class="ala-n">{{ f.adelante.length }}</span></span>
+                    <app-lista-nombres [(nombres)]="f.adelante" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" [avatares]="true" placeholder="Añadir adelante…" />
+                  </div>
+                  <div class="ala-fila" style="--c: #ff7ac6">
+                    <span class="fl badge rounded-pill">Atrás <span class="ala-n">{{ f.atras.length }}</span></span>
+                    <app-lista-nombres [(nombres)]="f.atras" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" [avatares]="true" placeholder="Añadir atrás…" />
+                  </div>
+                  <div class="ala-fila" style="--c: #9be15d">
+                    <span class="fl badge rounded-pill">Mascota <span class="ala-n">{{ f.mascota.length }}</span></span>
+                    <app-lista-nombres [(nombres)]="f.mascota" [opciones]="admin.nombresMascotas()" [validos]="admin.nombresMascotas()" [avatares]="true" placeholder="Añadir mascota…" />
+                  </div>
+                </div>
+              </article>
+            }
+            <button type="button" class="ams-nuevo ala-mas" (click)="agregarFase(b)">+ Añadir fase alternativa</button>
+          </div>
+
+          <article class="ala-fase ala-pri">
+            <div class="ala-fcab">
+              <span class="fh me-auto">⚡ Prioridad de habilidad</span>
+              <span class="amc">{{ b.prioridad.length }}</span>
             </div>
+            <div class="ala-filas">
+              <app-lista-nombres [(nombres)]="b.prioridad" [opciones]="sugerenciasPrioridad(b)" [numerada]="true" placeholder="p. ej. 2da de Biscuit" />
+              <p class="amf-nota mb-0">Escribe un nombre para ver sugerencias («1ra de…», «2da de…», «3ra de…») o cualquier texto libre. Usa ▲▼ para cambiar el orden.</p>
+            </div>
+          </article>
+
+          @let d = diferencias(b, e);
+          <div class="ala-sync" [class.aviso]="d.sobran.length || d.faltan.length">
+            <div class="form-check form-switch m-0">
+              <input id="al-sync" class="form-check-input" type="checkbox" role="switch" [(ngModel)]="b.sincronizar" />
+              <label class="form-check-label" for="al-sync">Usar los personajes de la alineación como miembros del submodo</label>
+            </div>
+            @if (d.faltan.length) {
+              <div class="ala-dif">
+                <span>No están en el submodo:</span>
+                @for (n of d.faltan; track n) {<span class="ala-chip mas">+ {{ n }}</span>}
+              </div>
+            }
+            @if (d.sobran.length) {
+              <div class="ala-dif">
+                <span>No están en la alineación:</span>
+                @for (n of d.sobran; track n) {<span class="ala-chip menos">− {{ n }}</span>}
+              </div>
+            }
+            @if ((d.sobran.length || d.faltan.length) && e.categoria === 'Asedio') {
+              <p class="amf-aviso mt-1">⚠️ En Asedio deben coincidir.</p>
+            }
+          </div>
+
+          <div class="ala-pie">
+            @if (admin.formaciones()[e.submodo]) {
+              <button class="btn btn-sm btn-outline-danger" [disabled]="admin.ocupado()" (click)="eliminar(e)">🗑 Eliminar</button>
+            }
+            <span class="ms-auto"></span>
+            <button class="btn btn-outline-secondary" [disabled]="admin.ocupado() || !sinGuardar(b, e)" (click)="descartar()">Descartar</button>
+            <button class="btn btn-warning" [disabled]="admin.ocupado()" (click)="guardar(b, e)">{{ admin.ocupado() ? 'Guardando…' : 'Guardar alineación' }}</button>
           </div>
         }
-      </div>
-      <button class="btn btn-sm btn-outline-warning mt-2" (click)="agregarFase(b)">+ Añadir fase alternativa</button>
-
-      <div class="card mt-3">
-        <div class="card-header"><b>⚡ Prioridad de habilidad</b></div>
-        <div class="card-body">
-          <app-lista-nombres [(nombres)]="b.prioridad" [opciones]="sugerenciasPrioridad(b)" [numerada]="true" placeholder="p. ej. 2da de Biscuit" />
-          <p class="small text-secondary mt-2 mb-0">Escribe el nombre para ver sugerencias («1ra de…», «2da de…», «3ra de…») o cualquier texto libre. Usa ▲▼ para cambiar el orden.</p>
-        </div>
-      </div>
-
-      @let d = diferencias(b, e);
-      <div class="form-check mt-3">
-        <input id="al-sync" class="form-check-input" type="checkbox" [(ngModel)]="b.sincronizar" />
-        <label class="form-check-label" for="al-sync">Usar los personajes de la alineación como miembros del submodo</label>
-      </div>
-      @if (d.sobran.length || d.faltan.length) {
-        <p class="small text-warning mb-0">
-          @if (d.faltan.length) {No están en el submodo: {{ d.faltan.join(', ') }}. }
-          @if (d.sobran.length) {No están en la alineación: {{ d.sobran.join(', ') }}.}
-          @if (e.categoria === 'Asedio') {<br />En Asedio deben coincidir.}
-        </p>
       }
-
-      <div class="d-flex flex-wrap gap-2 mt-3">
-        <button class="btn btn-warning" [disabled]="admin.ocupado()" (click)="guardar(b, e)">{{ admin.ocupado() ? 'Guardando…' : 'Guardar alineación' }}</button>
-        <button class="btn btn-outline-secondary" [disabled]="admin.ocupado()" (click)="descartar()">Descartar cambios</button>
-        @if (admin.formaciones()[e.submodo]) {
-          <button class="btn btn-outline-danger ms-auto" [disabled]="admin.ocupado()" (click)="eliminar(e)">Eliminar alineación</button>
-        }
+    } @else {
+      <div class="smv-vacio sm text-center">
+        <div class="smv-ico mx-auto mb-2">🧩</div>
+        <p class="mb-0">Elige un submodo para ver o editar su alineación.</p>
       </div>
     }
-  }
-}
+  </section>
+</div>

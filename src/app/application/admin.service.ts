@@ -4,7 +4,6 @@ import { Categoria, CategoriaEditable, Equipo, EquipoEditable } from '../domain/
 import { PersonajeEditable } from '../domain/models/personaje';
 import { AlmacenImagenes } from '../domain/ports/almacen-imagenes';
 import { CatalogoEditorRepository } from '../domain/ports/catalogo-editor.repository';
-import { ImportadorCatalogo } from '../domain/ports/importador-catalogo';
 import { PersonajeEditorRepository } from '../domain/ports/personaje-editor.repository';
 import { SesionService } from './sesion.service';
 
@@ -17,7 +16,6 @@ export class AdminService {
   private readonly repo = inject(PersonajeEditorRepository);
   private readonly catalogoRepo = inject(CatalogoEditorRepository);
   private readonly imagenes = inject(AlmacenImagenes);
-  private readonly importador = inject(ImportadorCatalogo);
   private readonly sesion = inject(SesionService);
 
   readonly usuario = this.sesion.usuario;
@@ -34,7 +32,7 @@ export class AdminService {
 
   readonly nombresPersonajes = computed(() => this.personajes().filter((p) => !p.mascota).map((p) => p.nombre));
   readonly nombresMascotas = computed(() => this.personajes().filter((p) => p.mascota).map((p) => p.nombre));
-  /** Modos sin importar: la web pública sigue usando los datos del código. */
+  /** La base de datos todavía no tiene ningún modo. */
   readonly sinModos = computed(() => this.cargado() && !this.categorias().length);
 
   constructor() {
@@ -81,14 +79,6 @@ export class AdminService {
       await this.repo.eliminar(nombre);
       await this.recargar();
       return `«${nombre}» eliminado.`;
-    });
-  }
-
-  importar(): Promise<boolean> {
-    return this.tarea(async () => {
-      const n = await this.importador.importar();
-      await this.recargar();
-      return `Importados ${n} documentos.`;
     });
   }
 

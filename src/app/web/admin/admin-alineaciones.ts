@@ -1,8 +1,8 @@
-import { Component, computed, inject, linkedSignal, model } from '@angular/core';
+import { Component, computed, inject, linkedSignal, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../application/admin.service';
 import { Alineacion, Formacion, fasesDe } from '../../domain/models/formacion';
-import { EquipoEditable } from '../../domain/models/modo';
+import { CategoriaEditable, EquipoEditable } from '../../domain/models/modo';
 import { ListaNombres } from './lista-nombres';
 
 const HABILIDADES = ['1ra', '2da', '3ra'];
@@ -25,6 +25,19 @@ export class AdminAlineaciones {
   /** Submodo elegido. */
   readonly submodo = model<string | null>(null);
 
+  protected readonly busqueda = signal('');
+
+  /** Submodos agrupados por modo para la lista lateral, filtrados por la búsqueda. */
+  protected readonly grupos = computed(() => {
+    const q = normalizar(this.busqueda());
+    return this.admin
+      .categorias()
+      .map((c) => ({ c, equipos: this.admin.equiposDe(c.nombre).filter((e) => !q || normalizar(`${c.nombre} ${e.submodo}`).includes(q)) }))
+      .filter((g) => g.equipos.length);
+  });
+
+  protected readonly conAlineacion = computed(() => this.admin.equipos().filter((e) => this.admin.formaciones()[e.submodo]).length);
+
   protected readonly equipo = computed(() => this.admin.equipos().find((e) => e.submodo === this.submodo()) ?? null);
 
   /** Copia editable; se reinicia al cambiar de submodo o al recargar los datos guardados. */
@@ -32,6 +45,18 @@ export class AdminAlineaciones {
     const e = this.equipo();
     return e ? crearBorrador(e, this.admin.formaciones()[e.submodo]) : null;
   });
+
+  protected categoria(e: EquipoEditable): CategoriaEditable | undefined {
+    return this.admin.categorias().find((c) => c.nombre === e.categoria);
+  }
+
+  /** Si el borrador difiere de lo guardado. */
+  protected sinGuardar(b: Borrador, e: EquipoEditable): boolean {
+    const f = this.admin.formaciones()[e.submodo];
+    if (!f) return b.existe;
+    const o = crearBorrador(e, f);
+    return JSON.stringify([b.fases, b.prioridad, b.sincronizar]) !== JSON.stringify([o.fases, o.prioridad, o.sincronizar]);
+  }
 
   protected agregarFase(b: Borrador): void {
     b.fases = [...b.fases, { al: '', adelante: [], atras: [], mascota: [] }];
@@ -83,4 +108,8 @@ function crearBorrador(e: EquipoEditable, f: Formacion | undefined): Borrador {
   const al = new Set(fases.flatMap((x) => [...x.adelante, ...x.atras]));
   const coinciden = al.size === new Set(e.miembros).size && e.miembros.every((m) => al.has(m));
   return { existe: !!f, fases, prioridad: [...(f?.prioridad ?? [])], sincronizar: !f || coinciden || e.categoria === 'Asedio' };
+}
+
+function normalizar(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
