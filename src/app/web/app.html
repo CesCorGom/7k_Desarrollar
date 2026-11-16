@@ -17,8 +17,9 @@
               [routerLinkActiveOptions]="{ exact: s.ruta === '/' }"
               [attr.aria-expanded]="ruta() === s.ruta ? submenu() : null"
               aria-controls="submenu"
+              [attr.title]="s.nombre"
               (click)="pulsar(s.ruta)"
-            ><span class="ni">{{ s.icono }}</span>{{ s.nombre }}<span class="car">▾</span></a>
+            ><span class="ni" aria-hidden="true">{{ s.icono }}</span><span class="nl">{{ s.nombre }}</span><span class="nc" aria-hidden="true">{{ s.corto }}</span><span class="car" aria-hidden="true">▾</span></a>
           }
         </nav>
         @if (conFiltros()) {
