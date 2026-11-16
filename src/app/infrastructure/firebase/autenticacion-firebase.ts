@@ -42,7 +42,7 @@ getRedirectResult(auth).catch((e) => console.warn('Login por redirección fallid
 export class AutenticacionFirebase extends Autenticacion {
   observar(cambio: (usuario: Usuario | null) => void): () => void {
     return onAuthStateChanged(auth, (u) =>
-      cambio(u ? { uid: u.uid, nombre: u.displayName, email: u.email, admin: ADMIN_UIDS.includes(u.uid) } : null),
+      cambio(u ? { uid: u.uid, nombre: u.displayName, email: u.email, foto: u.photoURL, admin: ADMIN_UIDS.includes(u.uid) } : null),
     );
   }
 

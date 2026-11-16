@@ -1,7 +1,9 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { Autenticacion } from '../domain/ports/autenticacion';
 import { FormacionRepository } from '../domain/ports/formacion.repository';
 import { ModoRepository } from '../domain/ports/modo.repository';
 import { PersonajeRepository } from '../domain/ports/personaje.repository';
+import { AutenticacionDiferida } from './firebase/autenticacion-diferida';
 import { FormacionFirestoreRepository } from './repositories/formacion-firestore.repository';
 import { ModoFirestoreRepository } from './repositories/modo-firestore.repository';
 import { PersonajeFirestoreRepository } from './repositories/personaje-firestore.repository';
@@ -16,5 +18,6 @@ export function provideInfraestructura(): EnvironmentProviders {
     { provide: PersonajeRepository, useClass: PersonajeFirestoreRepository },
     { provide: ModoRepository, useClass: ModoFirestoreRepository },
     { provide: FormacionRepository, useClass: FormacionFirestoreRepository },
+    { provide: Autenticacion, useClass: AutenticacionDiferida },
   ]);
 }

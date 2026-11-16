@@ -1,14 +1,12 @@
-import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { Alineacion, Formacion } from '../domain/models/formacion';
 import { Categoria, CategoriaEditable, Equipo, EquipoEditable } from '../domain/models/modo';
 import { PersonajeEditable } from '../domain/models/personaje';
-import { Usuario } from '../domain/models/usuario';
 import { AlmacenImagenes } from '../domain/ports/almacen-imagenes';
-import { Autenticacion } from '../domain/ports/autenticacion';
 import { CatalogoEditorRepository } from '../domain/ports/catalogo-editor.repository';
 import { ImportadorCatalogo } from '../domain/ports/importador-catalogo';
 import { PersonajeEditorRepository } from '../domain/ports/personaje-editor.repository';
-import { SesionAdminStore } from './sesion-admin.store';
+import { SesionService } from './sesion.service';
 
 export const FORMATOS_IMAGEN = ['image/png', 'image/jpeg', 'image/webp'];
 export const TAMANO_MAX_IMAGEN = 2_000_000;
@@ -16,16 +14,15 @@ export const TAMANO_MAX_IMAGEN = 2_000_000;
 /** Casos de uso de la zona de administración: sesión, personajes, modos, submodos y alineaciones. */
 @Injectable()
 export class AdminService {
-  private readonly auth = inject(Autenticacion);
   private readonly repo = inject(PersonajeEditorRepository);
   private readonly catalogoRepo = inject(CatalogoEditorRepository);
   private readonly imagenes = inject(AlmacenImagenes);
   private readonly importador = inject(ImportadorCatalogo);
-  private readonly sesion = inject(SesionAdminStore);
+  private readonly sesion = inject(SesionService);
 
-  readonly usuario = signal<Usuario | null>(null);
+  readonly usuario = this.sesion.usuario;
   /** `true` hasta que se sabe si hay sesión. */
-  readonly comprobando = signal(true);
+  readonly comprobando = this.sesion.comprobando;
   readonly personajes = signal<PersonajeEditable[]>([]);
   readonly categorias = signal<CategoriaEditable[]>([]);
   readonly equipos = signal<EquipoEditable[]>([]);
@@ -41,21 +38,20 @@ export class AdminService {
   readonly sinModos = computed(() => this.cargado() && !this.categorias().length);
 
   constructor() {
-    const dejar = this.auth.observar((u) => {
-      this.usuario.set(u);
-      this.comprobando.set(false);
-      this.sesion.marcar(!!u?.admin);
-      if (u?.admin) this.cargar();
+    this.sesion.escuchar();
+    // Al entrar como administrador se lee la base de datos; al salir se olvida.
+    effect(() => {
+      const admin = !!this.usuario()?.admin;
+      untracked(() => (admin ? this.cargar() : this.cargado.set(false)));
     });
-    inject(DestroyRef).onDestroy(dejar);
   }
 
   entrar(): Promise<boolean> {
-    return this.tarea(() => this.auth.entrar());
+    return this.tarea(() => this.sesion.entrar());
   }
 
   salir(): Promise<boolean> {
-    return this.tarea(() => this.auth.salir());
+    return this.tarea(() => this.sesion.salir());
   }
 
   cargar(): Promise<boolean> {
