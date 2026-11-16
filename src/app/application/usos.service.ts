@@ -9,7 +9,7 @@ import { CatalogoService } from './catalogo.service';
 export class UsosService {
   private readonly catalogo = inject(CatalogoService);
 
-  readonly usos: Record<string, Uso> = calcularUsos(this.catalogo.equipos, this.catalogo.mascotas, (e) =>
+  readonly usos: Record<string, Uso> = calcularUsos(this.catalogo.equipos, this.catalogo.listaPersonajes, this.catalogo.mascotas, (e) =>
     this.catalogo.mascotasDeEquipo(e),
   );
   readonly personajes = Object.values(this.usos).filter((u) => !u.mascota);

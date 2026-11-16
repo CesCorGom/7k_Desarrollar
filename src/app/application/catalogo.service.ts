@@ -16,6 +16,7 @@ export class CatalogoService {
   readonly categorias = this.modos.categorias();
   readonly equipos = this.modos.equipos();
   readonly totalEquipos = this.equipos.length;
+  readonly listaPersonajes = this.personajes.personajes();
   readonly mascotas = this.personajes.mascotas();
   /** Roles presentes en el catálogo, en orden de aparición. */
   readonly roles = [...new Set(this.personajes.personajes().map((p) => p.rol).filter((r): r is Rol => !!r))];
