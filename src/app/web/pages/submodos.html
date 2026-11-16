@@ -1,5 +1,24 @@
 @if (filtros.submodo(); as s) {
-  <app-formacion [submodo]="s" />
+  <section class="smv" [style.--c]="categoria()?.color ?? 'var(--gold)'">
+    <header class="smh">
+      <span class="smi" aria-hidden="true">{{ categoria()?.icono ?? '🎮' }}</span>
+      <div class="smt">
+        @if (categoria(); as c) {<small>{{ c.nombre }}</small>}
+        <h2>{{ s }}</h2>
+      </div>
+      @if (resumen().fases) {
+        <div class="sms">
+          @if (resumen().fases > 1) {<span class="badge rounded-pill">{{ resumen().fases }} fases</span>}
+          <span class="badge rounded-pill">{{ resumen().heroes }} héroes</span>
+        </div>
+      }
+    </header>
+    <app-formacion [submodo]="s" />
+  </section>
 } @else {
-  <div class="empty">Elige un submodo en el menú para ver su alineación</div>
+  <div class="smv-vacio">
+    <span class="smv-ico" aria-hidden="true">🎮</span>
+    <b>Elige un submodo</b>
+    <p>Selecciona una categoría y uno de sus submodos en el menú de arriba para ver la alineación recomendada.</p>
+  </div>
 }

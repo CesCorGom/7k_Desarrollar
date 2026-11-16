@@ -9,7 +9,7 @@ import { iniciales } from './avatar';
   imports: [RouterLink],
   templateUrl: './usuario-menu.html',
   host: {
-    class: 'um',
+    class: 'umenu',
     '(document:click)': 'fuera($event)',
     '(document:keydown.escape)': 'abierto.set(false)',
   },
