@@ -1,56 +1,76 @@
-@if (modo(); as m) {
-  <form class="card p-3 mb-3" (ngSubmit)="guardarModo()">
-    <h3 class="h5">{{ m.anterior ? 'Editar modo ' + m.anterior : 'Nuevo modo de juego' }}</h3>
-    <div class="row g-2">
-      <div class="col-12 col-sm-8">
-        <label class="form-label" for="mo-nombre">Nombre</label>
-        <input id="mo-nombre" class="form-control" name="nombre" [(ngModel)]="m.datos.nombre" required />
+<!-- Formulario de modo (alta arriba, edición dentro de su tarjeta) -->
+<ng-template #formModo let-m>
+  <form class="amf" (ngSubmit)="guardarModo()" [style.--c]="m.datos.color">
+    <div class="amf-cab">
+      <h3>{{ m.anterior ? 'Editar modo' : 'Nuevo modo de juego' }}</h3>
+      <button type="button" class="amb amb-x" (click)="modo.set(null)" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="amf-grid">
+      <div class="amf-campos row g-2">
+        <div class="col-12">
+          <label class="form-label" for="mo-nombre">Nombre</label>
+          <input id="mo-nombre" class="form-control" name="nombre" [(ngModel)]="m.datos.nombre" required autofocus />
+        </div>
+        <div class="col-6">
+          <label class="form-label" for="mo-icono">Icono</label>
+          <input id="mo-icono" class="form-control text-center" name="icono" [(ngModel)]="m.datos.icono" placeholder="⚔️" maxlength="8" />
+        </div>
+        <div class="col-6">
+          <label class="form-label" for="mo-color">Color</label>
+          <div class="amf-color">
+            <input id="mo-color" class="form-control form-control-color" type="color" name="color" [(ngModel)]="m.datos.color" />
+            <code>{{ m.datos.color }}</code>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <label class="form-label" for="mo-l1">Línea 1 de la leyenda</label>
+          <input id="mo-l1" class="form-control" name="linea1" [(ngModel)]="m.datos.linea1" [placeholder]="m.datos.nombre || 'Igual que el nombre'" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label class="form-label" for="mo-l2">Línea 2 de la leyenda</label>
+          <input id="mo-l2" class="form-control" name="linea2" [(ngModel)]="m.datos.linea2" placeholder="Opcional" />
+        </div>
       </div>
-      <div class="col-6 col-sm-2">
-        <label class="form-label" for="mo-icono">Icono</label>
-        <input id="mo-icono" class="form-control" name="icono" [(ngModel)]="m.datos.icono" placeholder="⚔️" maxlength="8" />
-      </div>
-      <div class="col-6 col-sm-2">
-        <label class="form-label" for="mo-color">Color</label>
-        <input id="mo-color" class="form-control form-control-color w-100" type="color" name="color" [(ngModel)]="m.datos.color" />
-      </div>
-      <div class="col-6">
-        <label class="form-label" for="mo-l1">Línea 1 (leyenda)</label>
-        <input id="mo-l1" class="form-control" name="linea1" [(ngModel)]="m.datos.linea1" [placeholder]="m.datos.nombre" />
-      </div>
-      <div class="col-6">
-        <label class="form-label" for="mo-l2">Línea 2 (leyenda)</label>
-        <input id="mo-l2" class="form-control" name="linea2" [(ngModel)]="m.datos.linea2" />
+      <div class="amf-prev" aria-hidden="true">
+        <span class="amf-prev-t">Vista previa</span>
+        <span class="lg on" [style.--c]="m.datos.color">
+          <span class="ic">{{ m.datos.icono || '❔' }}</span>
+          <span><b>{{ m.datos.linea1 || m.datos.nombre || 'Nombre' }}</b>@if (m.datos.linea2) {<br />{{ m.datos.linea2 }}}</span>
+        </span>
       </div>
     </div>
     @if (m.anterior && m.anterior !== m.datos.nombre.trim()) {
-      <p class="small text-warning mt-2 mb-0">Al renombrarlo, sus submodos pasan al nuevo nombre.</p>
+      <p class="amf-aviso">⚠️ Al renombrarlo, sus submodos pasan al nuevo nombre.</p>
     }
-    <div class="d-flex gap-2 mt-3">
-      <button class="btn btn-warning" type="submit" [disabled]="admin.ocupado()">Guardar</button>
+    <div class="amf-pie">
       <button class="btn btn-outline-secondary" type="button" (click)="modo.set(null)">Cancelar</button>
+      <button class="btn btn-warning" type="submit" [disabled]="admin.ocupado() || !m.datos.nombre.trim()">Guardar</button>
     </div>
   </form>
-}
+</ng-template>
 
-@if (submodo(); as s) {
-  <form class="card p-3 mb-3" (ngSubmit)="guardarSubmodo()">
-    <h3 class="h5">{{ s.actual ? 'Editar submodo ' + s.actual.submodo : 'Nuevo submodo' }}</h3>
+<!-- Formulario de submodo (dentro de la tarjeta de su modo) -->
+<ng-template #formSubmodo let-s>
+  <form class="amf amf-sub" (ngSubmit)="guardarSubmodo()">
+    <div class="amf-cab">
+      <h3>{{ s.actual ? 'Editar submodo' : 'Nuevo submodo' }}</h3>
+      <button type="button" class="amb amb-x" (click)="submodo.set(null)" aria-label="Cerrar">✕</button>
+    </div>
     <div class="row g-2 mb-2">
-      <div class="col-12 col-sm-6">
-        <label class="form-label" for="sm-cat">Modo</label>
+      <div class="col-12 col-sm-7">
+        <label class="form-label" for="sm-nombre">Nombre del submodo</label>
+        <input id="sm-nombre" class="form-control" name="submodo" [(ngModel)]="s.datos.submodo" required autofocus />
+      </div>
+      <div class="col-12 col-sm-5">
+        <label class="form-label" for="sm-cat">Pertenece a</label>
         <select id="sm-cat" class="form-select" name="categoria" [(ngModel)]="s.datos.categoria">
           @for (c of admin.categorias(); track c.nombre) {
             <option [ngValue]="c.nombre">{{ c.icono }} {{ c.nombre }}</option>
           }
         </select>
       </div>
-      <div class="col-12 col-sm-6">
-        <label class="form-label" for="sm-nombre">Nombre del submodo</label>
-        <input id="sm-nombre" class="form-control" name="submodo" [(ngModel)]="s.datos.submodo" required />
-      </div>
     </div>
-    <span class="form-label d-block">Miembros recomendados ({{ s.datos.miembros.length }})</span>
+    <span class="form-label d-block">Miembros recomendados <span class="amc">{{ s.datos.miembros.length }}</span></span>
     <app-lista-nombres
       [(nombres)]="s.datos.miembros"
       [opciones]="admin.nombresPersonajes()"
@@ -58,48 +78,140 @@
       placeholder="Añadir personaje…"
     />
     @if (s.actual && tieneAlineacion(s.actual.submodo)) {
-      <p class="small text-secondary mt-2 mb-0">Tiene alineación: al guardarla se pueden sincronizar los miembros con ella.</p>
+      <p class="amf-nota">Tiene alineación: al guardarla se pueden sincronizar los miembros con ella.</p>
     }
-    <div class="d-flex gap-2 mt-3">
-      <button class="btn btn-warning" type="submit" [disabled]="admin.ocupado()">Guardar</button>
+    @if (s.datos.categoria !== s.origen) {
+      <p class="amf-aviso">Se moverá al modo «{{ s.datos.categoria }}».</p>
+    }
+    <div class="amf-pie">
       <button class="btn btn-outline-secondary" type="button" (click)="submodo.set(null)">Cancelar</button>
+      <button class="btn btn-warning" type="submit" [disabled]="admin.ocupado() || !s.datos.submodo.trim()">Guardar</button>
     </div>
   </form>
-}
+</ng-template>
 
-<div class="d-flex justify-content-end mb-2">
-  <button class="btn btn-sm btn-warning" (click)="nuevoModo()" [disabled]="admin.ocupado()">+ Nuevo modo</button>
+<!-- Barra superior -->
+<div class="amt">
+  <div class="amt-stats">
+    <span><b>{{ admin.categorias().length }}</b> modos</span>
+    <span><b>{{ totalSubmodos() }}</b> submodos</span>
+    <span><b>{{ totalAlineaciones() }}</b> con alineación</span>
+  </div>
+  <div class="amt-acc">
+    <input
+      class="form-control form-control-sm amt-buscar"
+      type="search"
+      placeholder="🔍 Buscar modo, submodo o personaje…"
+      aria-label="Buscar"
+      [value]="busqueda()"
+      (input)="busqueda.set($any($event.target).value)"
+    />
+    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="plegarTodo(!todoPlegado())">
+      {{ todoPlegado() ? 'Expandir todo' : 'Plegar todo' }}
+    </button>
+    <button class="btn btn-sm btn-warning" type="button" (click)="nuevoModo()" [disabled]="admin.ocupado()">+ Nuevo modo</button>
+  </div>
 </div>
 
-@for (c of admin.categorias(); track c.nombre; let primero = $first, ultimo = $last) {
-  <div class="card mb-3 adm-modo" [style.--c]="c.color">
-    <div class="card-header d-flex align-items-center gap-1 flex-wrap">
-      <b class="me-auto" [style.color]="c.color">{{ c.icono }} {{ c.nombre }}</b>
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="primero || admin.ocupado()" (click)="admin.moverCategoria(c.nombre, -1)" aria-label="Subir modo">▲</button>
-      <button class="btn btn-sm btn-outline-secondary" [disabled]="ultimo || admin.ocupado()" (click)="admin.moverCategoria(c.nombre, 1)" aria-label="Bajar modo">▼</button>
-      <button class="btn btn-sm btn-outline-light" [disabled]="admin.ocupado()" (click)="editarModo(c)">Editar</button>
-      <button class="btn btn-sm btn-outline-danger" [disabled]="admin.ocupado()" (click)="eliminarModo(c)" aria-label="Eliminar modo">✕</button>
-    </div>
-    <ul class="list-group list-group-flush">
-      @for (e of admin.equiposDe(c.nombre); track e.id; let p = $first, u = $last) {
-        <li class="list-group-item d-flex align-items-center gap-1 flex-wrap">
-          <span class="me-auto text-truncate">
-            {{ e.submodo }}
-            <small class="text-secondary">· {{ e.miembros.length }} miembros</small>
-            @if (tieneAlineacion(e.submodo)) {
-              <small class="text-success">· alineación ✓</small>
-            }
-          </span>
-          <button class="btn btn-sm btn-outline-secondary" [disabled]="p || admin.ocupado()" (click)="admin.moverEquipo(e, -1)" aria-label="Subir submodo">▲</button>
-          <button class="btn btn-sm btn-outline-secondary" [disabled]="u || admin.ocupado()" (click)="admin.moverEquipo(e, 1)" aria-label="Bajar submodo">▼</button>
-          <button class="btn btn-sm btn-outline-info" (click)="alineacion.emit(e.submodo)">Alineación</button>
-          <button class="btn btn-sm btn-outline-light" [disabled]="admin.ocupado()" (click)="editarSubmodo(e)">Editar</button>
-          <button class="btn btn-sm btn-outline-danger" [disabled]="admin.ocupado()" (click)="eliminarSubmodo(e)" aria-label="Eliminar submodo">✕</button>
-        </li>
+@if (modo(); as m) {
+  @if (!m.anterior) {
+    <ng-container *ngTemplateOutlet="formModo; context: { $implicit: m }" />
+  }
+}
+
+@for (v of vista(); track v.c.nombre) {
+  @let c = v.c;
+  @let abierto = !plegado(c.nombre);
+  <section class="amc-card" [style.--c]="c.color" [class.abierto]="abierto">
+    <header class="amc-cab">
+      <button type="button" class="amc-tit" (click)="alternar(c.nombre)" [attr.aria-expanded]="abierto">
+        <span class="amc-ic">{{ c.icono || '❔' }}</span>
+        <span class="amc-txt">
+          <b>{{ c.nombre }}</b>
+          <small>{{ v.total }} {{ v.total === 1 ? 'submodo' : 'submodos' }}@if (c.linea2) { · {{ c.linea2 }}}</small>
+        </span>
+        <span class="amc-flecha" aria-hidden="true">▾</span>
+      </button>
+      <div class="amc-acc">
+        <span class="amb-grupo">
+          <button class="amb" [disabled]="v.primero || admin.ocupado()" (click)="admin.moverCategoria(c.nombre, -1)" aria-label="Subir modo" title="Subir">▲</button>
+          <button class="amb" [disabled]="v.ultimo || admin.ocupado()" (click)="admin.moverCategoria(c.nombre, 1)" aria-label="Bajar modo" title="Bajar">▼</button>
+        </span>
+        <button class="amb" [disabled]="admin.ocupado()" (click)="editarModo(c)" aria-label="Editar modo" title="Editar">✎</button>
+        <button class="amb amb-del" [disabled]="admin.ocupado()" (click)="eliminarModo(c)" aria-label="Eliminar modo" title="Eliminar">🗑</button>
+      </div>
+    </header>
+
+    @if (modo(); as m) {
+      @if (m.anterior === c.nombre) {
+        <div class="amc-cuerpo"><ng-container *ngTemplateOutlet="formModo; context: { $implicit: m }" /></div>
       }
-      <li class="list-group-item">
-        <button class="btn btn-sm btn-link p-0" [disabled]="admin.ocupado()" (click)="nuevoSubmodo(c.nombre)">+ Añadir submodo</button>
-      </li>
-    </ul>
+    }
+
+    @if (abierto) {
+      <div class="amc-cuerpo">
+        @for (e of v.equipos; track e.id; let p = $first, u = $last) {
+          @let s = submodo();
+          @if (s?.actual?.id === e.id) {
+            <ng-container *ngTemplateOutlet="formSubmodo; context: { $implicit: s }" />
+          } @else {
+            <div class="ams">
+              <div class="ams-info">
+                <div class="ams-nom">
+                  <b>{{ e.submodo }}</b>
+                  <span class="amc">{{ e.miembros.length }} 👥</span>
+                  @if (tieneAlineacion(e.submodo)) {
+                    <span class="ams-tag ok">✓ Alineación</span>
+                  } @else {
+                    <span class="ams-tag">Sin alineación</span>
+                  }
+                </div>
+                @if (e.miembros.length) {
+                  <div class="ams-miembros">
+                    @for (n of e.miembros.slice(0, 6); track n) {
+                      <span>{{ n }}</span>
+                    }
+                    @if (e.miembros.length > 6) {
+                      <span class="mas">+{{ e.miembros.length - 6 }}</span>
+                    }
+                  </div>
+                } @else {
+                  <div class="ams-miembros vacio">Sin miembros recomendados</div>
+                }
+              </div>
+              <div class="ams-acc">
+                @if (!busqueda().trim()) {
+                  <span class="amb-grupo">
+                    <button class="amb" [disabled]="p || admin.ocupado()" (click)="admin.moverEquipo(e, -1)" aria-label="Subir submodo" title="Subir">▲</button>
+                    <button class="amb" [disabled]="u || admin.ocupado()" (click)="admin.moverEquipo(e, 1)" aria-label="Bajar submodo" title="Bajar">▼</button>
+                  </span>
+                }
+                <button class="btn btn-sm btn-outline-info" (click)="alineacion.emit(e.submodo)">Alineación</button>
+                <button class="amb" [disabled]="admin.ocupado()" (click)="editarSubmodo(e)" aria-label="Editar submodo" title="Editar">✎</button>
+                <button class="amb amb-del" [disabled]="admin.ocupado()" (click)="eliminarSubmodo(e)" aria-label="Eliminar submodo" title="Eliminar">🗑</button>
+              </div>
+            </div>
+          }
+        } @empty {
+          @if (!busqueda().trim()) {
+            <p class="ams-vacio">Este modo aún no tiene submodos.</p>
+          }
+        }
+
+        @if (submodo(); as s) {
+          @if (!s.actual && s.origen === c.nombre) {
+            <ng-container *ngTemplateOutlet="formSubmodo; context: { $implicit: s }" />
+          }
+        }
+        @if (!submodo() || submodo()!.actual || submodo()!.origen !== c.nombre) {
+          <button class="ams-nuevo" type="button" [disabled]="admin.ocupado()" (click)="nuevoSubmodo(c.nombre)">+ Añadir submodo</button>
+        }
+      </div>
+    }
+  </section>
+} @empty {
+  <div class="smv-vacio sm">
+    <b>Sin resultados</b>
+    <p>Ningún modo, submodo o personaje coincide con «{{ busqueda() }}».</p>
   </div>
 }
