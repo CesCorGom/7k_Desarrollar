@@ -9,7 +9,15 @@
   >
     <span class="medal">{{ p.medalla }}</span>
     <app-avatar [nombre]="p.c.nombre" />
+    <span class="nr">
     <b class="text-truncate">{{ p.c.nombre }}</b>
+    @if (rol(p.c.nombre); as r) {
+      <span class="rl badge rounded-pill" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">
+        @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
+        {{ r }}
+      </span>
+    }
+    </span>
     <span class="badge rounded-pill pp cuenta" [style.--n]="pct(p.c.total, total())"></span>
     <small>{{ p.c.total }} de {{ total() }}</small>
     <span class="pedestal"></span>

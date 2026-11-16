@@ -7,7 +7,15 @@
           <app-avatar [nombre]="p.nombre" />
           <span class="mid">
             <span class="t">
-              <span class="tn text-truncate">{{ p.nombre }}</span>
+              <span class="nr">
+                <span class="tn text-truncate">{{ p.nombre }}</span>
+                @if (rol(p.nombre); as r) {
+                <span class="rl badge rounded-pill" [style.color]="rolColor[r]" [style.border-color]="rolColor[r]">
+                  @if (rolIcono[r].endsWith('.svg')) {<img class="ri" [src]="rolIcono[r]" alt="" />} @else {<span class="ri">{{ rolIcono[r] }}</span>}
+                  {{ r }}
+                </span>
+                }
+              </span>
               <span class="badge rounded-pill pp cuenta" [style.--n]="pct(p.total, total())"></span>
             </span>
             <span

@@ -11,5 +11,6 @@ export const routes: Routes = [
   { path: 'personajes', component: UsoPersonajes, title: 'Tasa uso personajes' },
   { path: 'mascotas', component: UsoMascotas, title: 'Tasa uso mascotas' },
   { path: 'roles', component: UsoRoles, title: 'Tasa uso roles' },
+  { path: 'admin', loadChildren: () => import('../admin.routes').then((m) => m.ADMIN_ROUTES) },
   { path: '**', redirectTo: '' },
 ];

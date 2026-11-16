@@ -1,0 +1,76 @@
+<label class="form-label" for="al-sub">Submodo</label>
+<select id="al-sub" class="form-select mb-3" [ngModel]="submodo()" (ngModelChange)="submodo.set($event)">
+  <option [ngValue]="null" disabled>Elige un submodo</option>
+  @for (c of admin.categorias(); track c.nombre) {
+    <optgroup [label]="c.icono + ' ' + c.nombre">
+      @for (e of admin.equiposDe(c.nombre); track e.id) {
+        <option [ngValue]="e.submodo">{{ e.submodo }}{{ admin.formaciones()[e.submodo] ? ' ✓' : '' }}</option>
+      }
+    </optgroup>
+  }
+</select>
+
+@if (equipo(); as e) {
+  @if (borrador(); as b) {
+    @if (!b.existe) {
+      <div class="card p-3 text-center">
+        <p class="mb-2">«{{ e.submodo }}» aún no tiene alineación.</p>
+        <button class="btn btn-warning" (click)="crear(b, e)">Crear alineación</button>
+      </div>
+    } @else {
+      <div class="row g-2">
+        @for (f of b.fases; track $index; let i = $index) {
+          <div class="col-12" [class.col-lg-6]="b.fases.length > 1">
+            <div class="card h-100">
+              <div class="card-header d-flex align-items-center gap-2">
+                <b class="me-auto">{{ b.fases.length > 1 ? 'Fase ' + (i + 1) : 'Alineación' }}</b>
+                <span class="badge text-bg-warning">{{ f.adelante.length }}-{{ f.atras.length }}</span>
+                @if (b.fases.length > 1) {
+                  <button class="btn btn-sm btn-outline-danger" (click)="quitarFase(b, i)" aria-label="Quitar fase">✕</button>
+                }
+              </div>
+              <div class="card-body">
+                <span class="adm-fila" style="--c: #22d3c5">Adelante</span>
+                <app-lista-nombres [(nombres)]="f.adelante" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" placeholder="Añadir adelante…" />
+                <span class="adm-fila mt-2" style="--c: #ff7ac6">Atrás</span>
+                <app-lista-nombres [(nombres)]="f.atras" [opciones]="admin.nombresPersonajes()" [validos]="admin.nombresPersonajes()" placeholder="Añadir atrás…" />
+                <span class="adm-fila mt-2" style="--c: #9be15d">Mascota</span>
+                <app-lista-nombres [(nombres)]="f.mascota" [opciones]="admin.nombresMascotas()" [validos]="admin.nombresMascotas()" placeholder="Añadir mascota…" />
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <button class="btn btn-sm btn-outline-warning mt-2" (click)="agregarFase(b)">+ Añadir fase alternativa</button>
+
+      <div class="card mt-3">
+        <div class="card-header"><b>⚡ Prioridad de habilidad</b></div>
+        <div class="card-body">
+          <app-lista-nombres [(nombres)]="b.prioridad" [opciones]="sugerenciasPrioridad(b)" [numerada]="true" placeholder="p. ej. 2da de Biscuit" />
+          <p class="small text-secondary mt-2 mb-0">Escribe el nombre para ver sugerencias («1ra de…», «2da de…», «3ra de…») o cualquier texto libre. Usa ▲▼ para cambiar el orden.</p>
+        </div>
+      </div>
+
+      @let d = diferencias(b, e);
+      <div class="form-check mt-3">
+        <input id="al-sync" class="form-check-input" type="checkbox" [(ngModel)]="b.sincronizar" />
+        <label class="form-check-label" for="al-sync">Usar los personajes de la alineación como miembros del submodo</label>
+      </div>
+      @if (d.sobran.length || d.faltan.length) {
+        <p class="small text-warning mb-0">
+          @if (d.faltan.length) {No están en el submodo: {{ d.faltan.join(', ') }}. }
+          @if (d.sobran.length) {No están en la alineación: {{ d.sobran.join(', ') }}.}
+          @if (e.categoria === 'Asedio') {<br />En Asedio deben coincidir.}
+        </p>
+      }
+
+      <div class="d-flex flex-wrap gap-2 mt-3">
+        <button class="btn btn-warning" [disabled]="admin.ocupado()" (click)="guardar(b, e)">{{ admin.ocupado() ? 'Guardando…' : 'Guardar alineación' }}</button>
+        <button class="btn btn-outline-secondary" [disabled]="admin.ocupado()" (click)="descartar()">Descartar cambios</button>
+        @if (admin.formaciones()[e.submodo]) {
+          <button class="btn btn-outline-danger ms-auto" [disabled]="admin.ocupado()" (click)="eliminar(e)">Eliminar alineación</button>
+        }
+      </div>
+    }
+  }
+}

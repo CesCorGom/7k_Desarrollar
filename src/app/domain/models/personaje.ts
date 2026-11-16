@@ -6,3 +6,8 @@ export interface Personaje {
   img: string | null;
   rol: Rol | null;
 }
+
+/** Personaje o mascota tal como se edita y se guarda en la base de datos. */
+export interface PersonajeEditable extends Personaje {
+  mascota: boolean;
+}

@@ -1,0 +1,80 @@
+<div class="adm">
+  <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+    <h2 class="m-0">⚙️ Administración</h2>
+    <a routerLink="/" class="btn btn-sm btn-outline-secondary">← Volver</a>
+  </div>
+
+  @if (admin.mensaje(); as m) {
+    <div class="alert py-2 d-flex align-items-center gap-2" [class.alert-success]="m.tipo === 'ok'" [class.alert-danger]="m.tipo === 'error'" role="status">
+      <span class="me-auto">{{ m.texto }}</span>
+      <button type="button" class="btn-close" aria-label="Cerrar" (click)="admin.mensaje.set(null)"></button>
+    </div>
+  }
+
+  @if (admin.comprobando()) {
+    <p class="text-secondary">Comprobando sesión…</p>
+  } @else if (!admin.usuario()) {
+    <div class="card p-3 text-center">
+      <p>Inicia sesión para editar personajes, modos y alineaciones.</p>
+      <p class="small text-secondary">La sesión queda guardada en este navegador y no caduca hasta que pulses «Salir».</p>
+      <button class="btn btn-warning" (click)="admin.entrar()" [disabled]="admin.ocupado()">Entrar con Google</button>
+    </div>
+  } @else {
+    @let u = admin.usuario()!;
+    <div class="card p-2 mb-3 small">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <span>Sesión: <b>{{ u.nombre ?? u.email }}</b></span>
+        <span class="ms-auto"></span>
+        <button class="btn btn-sm btn-outline-light" (click)="admin.salir()">Salir</button>
+      </div>
+      @if (!u.admin) {
+        <div class="mt-1 text-secondary">
+          Esta cuenta no tiene permiso de edición. Tu UID: <code>{{ u.uid }}</code>
+          <button class="btn btn-sm btn-link p-0 ms-1" (click)="copiarUid(u.uid)">copiar</button>
+        </div>
+      }
+    </div>
+
+    @if (u.admin) {
+      @if (admin.sinModos()) {
+        <div class="alert alert-info">
+          La base de datos aún no tiene los modos y la web usa los datos del código. Impórtalos para poder editarlos.
+          <button class="btn btn-sm btn-primary ms-2" (click)="importar()" [disabled]="admin.ocupado()">Importar datos iniciales</button>
+        </div>
+      }
+
+      <nav class="nav nav-pills adm-tabs mb-3" aria-label="Secciones de administración">
+        @for (p of pestanas; track p.id) {
+          <button type="button" class="nav-link" [class.active]="pestana() === p.id" [attr.aria-current]="pestana() === p.id ? 'page' : null" (click)="pestana.set(p.id)">
+            {{ p.nombre }}
+          </button>
+        }
+      </nav>
+
+      @if (!admin.cargado()) {
+        <p class="text-secondary">Cargando…</p>
+      } @else {
+        @switch (pestana()) {
+          @case ('personajes') {
+            <app-admin-personajes />
+          }
+          @case ('modos') {
+            @if (!admin.sinModos()) {
+              <app-admin-modos (alineacion)="verAlineacion($event)" />
+            }
+          }
+          @case ('alineaciones') {
+            @if (!admin.sinModos()) {
+              <app-admin-alineaciones [(submodo)]="submodo" />
+            }
+          }
+        }
+      }
+
+      <p class="small text-secondary mt-3">
+        Los cambios se guardan al momento; la web pública los muestra al recargar.
+        <button class="btn btn-sm btn-link p-0 align-baseline" (click)="recargarWeb()">Recargar ahora</button>
+      </p>
+    }
+  }
+</div>

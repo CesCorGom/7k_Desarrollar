@@ -1,0 +1,30 @@
+<div class="ln" [class.ln-num]="numerada()">
+  @for (n of nombres(); track n; let i = $index, primero = $first, ultimo = $last) {
+    <span class="ln-chip" [class.ln-mal]="desconocido(n)" [title]="desconocido(n) ? 'No existe en el catálogo' : n">
+      @if (numerada()) {<b class="ln-n">{{ i + 1 }}</b>}
+      <span class="ln-t">{{ n }}</span>
+      <button type="button" class="ln-b" [disabled]="primero || deshabilitada()" (click)="mover(i, -1)" [attr.aria-label]="'Subir ' + n">{{ numerada() ? '▲' : '◀' }}</button>
+      <button type="button" class="ln-b" [disabled]="ultimo || deshabilitada()" (click)="mover(i, 1)" [attr.aria-label]="'Bajar ' + n">{{ numerada() ? '▼' : '▶' }}</button>
+      <button type="button" class="ln-b ln-x" [disabled]="deshabilitada()" (click)="quitar(i)" [attr.aria-label]="'Quitar ' + n">✕</button>
+    </span>
+  } @empty {
+    <span class="ln-vacio">Vacío</span>
+  }
+</div>
+<div class="input-group input-group-sm mt-1">
+  <input
+    class="form-control"
+    [attr.list]="lista"
+    [placeholder]="placeholder()"
+    [value]="nuevo()"
+    [disabled]="deshabilitada()"
+    (input)="alEscribir($event)"
+    (keydown.enter)="agregar($event)"
+  />
+  <button type="button" class="btn btn-outline-warning" [disabled]="!nuevo().trim() || deshabilitada()" (click)="agregar()">+</button>
+</div>
+<datalist [id]="lista">
+  @for (o of sugerencias(); track o) {
+    <option [value]="o"></option>
+  }
+</datalist>

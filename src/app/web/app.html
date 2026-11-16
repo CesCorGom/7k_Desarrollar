@@ -5,9 +5,9 @@
         <h1>Lista completa de <span>personajes que vale la pena evolucionar </span><br />y modos de uso</h1>
         <div class="orn"></div>
       </div>
-      <div class="menu" [class.abierto]="submenu()">
+      <div class="menu" [class.abierto]="conFiltros()">
         <nav class="tabs2 nav nav-pills nav-fill flex-nowrap" aria-label="Secciones">
-          @for (s of secciones; track s.ruta) {
+          @for (s of secciones(); track s.ruta) {
             <a
               class="nav-link"
               [routerLink]="s.ruta"
@@ -20,13 +20,13 @@
             ><span class="ni">{{ s.icono }}</span>{{ s.nombre }}<span class="car">▾</span></a>
           }
         </nav>
-        @if (submenu()) {
+        @if (conFiltros()) {
           <app-filtros id="submenu" [ruta]="ruta()" />
         }
       </div>
       <router-outlet />
     </div>
-    <div class="ft"><span></span><i>Más héroes, más posibilidades.</i></div>
+    <div class="ft"><a class="ft-adm" routerLink="/admin" title="Administración" aria-label="Administración">⚙️</a><i>Más héroes, más posibilidades.</i></div>
   </div>
 </div>
 <app-personaje-modal />
