@@ -10,11 +10,13 @@ import { db } from './firebase';
 export class PersonajeEditorFirestoreRepository extends PersonajeEditorRepository {
   async listar(): Promise<PersonajeEditable[]> {
     const snap = await getDocs(collection(db, COLECCION.personajes));
-    return snap.docs.map((d) => d.data() as PersonajeEditable).sort((a, b) => a.nombre.localeCompare(b.nombre));
+    return snap.docs
+      .map((d) => d.data() as PersonajeEditable)
+      .map((p) => ({ ...p, armaDedicada: !!p.armaDedicada })).sort((a, b) => a.nombre.localeCompare(b.nombre));
   }
 
-  async guardar({ nombre, img, rol, mascota }: PersonajeEditable): Promise<void> {
-    await setDoc(doc(db, COLECCION.personajes, nombre), { nombre, img, rol: mascota ? null : rol, mascota });
+  async guardar({ nombre, img, rol, mascota, armaDedicada }: PersonajeEditable): Promise<void> {
+    await setDoc(doc(db, COLECCION.personajes, nombre), { nombre, img, rol: mascota ? null : rol, mascota, armaDedicada: !mascota && armaDedicada });
   }
 
   async eliminar(nombre: string): Promise<void> {

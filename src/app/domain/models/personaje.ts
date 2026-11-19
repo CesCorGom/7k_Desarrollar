@@ -5,6 +5,8 @@ export interface Personaje {
   nombre: string;
   img: string | null;
   rol: Rol | null;
+  /** `true` si tiene equipado su armamento dedicado (solo personajes). */
+  armaDedicada: boolean;
 }
 
 /** Personaje o mascota tal como se edita y se guarda en la base de datos. */

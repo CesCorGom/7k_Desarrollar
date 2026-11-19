@@ -22,4 +22,8 @@ export class Lista {
   protected rol(n: string) {
     return this.catalogo.rol(n);
   }
+
+  protected armaDedicada(n: string): boolean {
+    return !!this.catalogo.personaje(n)?.armaDedicada;
+  }
 }

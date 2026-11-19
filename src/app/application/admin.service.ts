@@ -68,8 +68,9 @@ export class AdminService {
       const nombre = validarNombre(personaje.nombre, 'El nombre');
       if (!personaje.mascota && !personaje.rol) throw new Error('Elige un rol (o marca que es mascota).');
       const img = archivo ? await this.imagenes.subir(this.validarImagen(archivo)) : personaje.img;
-      // Las mascotas no tienen rol.
-      await this.repo.guardar({ ...personaje, nombre, img, rol: personaje.mascota ? null : personaje.rol });
+      // Las mascotas no tienen rol ni armamento dedicado.
+      const { mascota } = personaje;
+      await this.repo.guardar({ ...personaje, nombre, img, rol: mascota ? null : personaje.rol, armaDedicada: !mascota && personaje.armaDedicada });
       await this.recargar();
       return `«${nombre}» guardado.`;
     });

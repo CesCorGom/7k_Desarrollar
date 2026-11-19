@@ -18,6 +18,11 @@
           <option [ngValue]="r">{{ r }}</option>
         }
       </select>
+
+      <div class="form-check mb-2">
+        <input id="adm-arma" class="form-check-input" type="checkbox" name="armaDedicada" [(ngModel)]="p.armaDedicada" />
+        <label class="form-check-label" for="adm-arma">⚔️ Tiene equipado el armamento dedicado</label>
+      </div>
     }
 
     <label class="form-label" for="adm-img">Imagen (PNG, JPG o WEBP, máx. 2 MB)</label>
@@ -64,6 +69,9 @@
           <small class="text-secondary">· mascota</small>
         } @else if (p.rol) {
           <small [style.color]="rolColor[p.rol]">· {{ p.rol }}</small>
+        }
+        @if (!p.mascota && p.armaDedicada) {
+          <small class="text-warning" title="Armamento dedicado equipado">· ⚔️ Arma dedicada ✓</small>
         }
       </span>
       <button class="btn btn-sm btn-outline-light" (click)="editar(p)" [disabled]="admin.ocupado()">Editar</button>

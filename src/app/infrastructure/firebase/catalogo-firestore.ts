@@ -54,8 +54,8 @@ function porOrden<T>(docs: { datos: ConOrden<T> }[]): ConOrden<T>[] {
   return docs.map((d) => d.datos).sort((a, b) => a.orden - b.orden);
 }
 
-function aPersonaje({ nombre, img, rol }: PersonajeEditable): Personaje {
-  return { nombre, img: img ?? null, rol: rol ?? null };
+function aPersonaje({ nombre, img, rol, armaDedicada }: PersonajeEditable): Personaje {
+  return { nombre, img: img ?? null, rol: rol ?? null, armaDedicada: !!armaDedicada };
 }
 
 function conLimite<T>(p: Promise<T>): Promise<T> {

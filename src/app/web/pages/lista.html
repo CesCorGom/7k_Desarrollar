@@ -19,6 +19,9 @@
                 {{ r }}
               </span>
             }
+            @if (armaDedicada(p.nombre)) {
+              <span class="rl ad badge rounded-pill" title="Armamento dedicado equipado">✓ Arma dedicada</span>
+            }
           </div>
           <span class="go">›</span>
         </div>

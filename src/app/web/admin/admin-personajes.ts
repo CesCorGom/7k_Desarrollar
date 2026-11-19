@@ -5,7 +5,7 @@ import { PersonajeEditable, Rol } from '../../domain/models/personaje';
 import { degradado, iniciales } from '../components/avatar';
 import { ROL_COLOR } from '../shared/rol-estilo';
 
-const VACIO: PersonajeEditable = { nombre: '', img: null, rol: null, mascota: false };
+const VACIO: PersonajeEditable = { nombre: '', img: null, rol: null, mascota: false, armaDedicada: false };
 
 /** Alta, edición y baja de personajes y mascotas con su imagen. */
 @Component({

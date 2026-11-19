@@ -41,6 +41,9 @@
               {{ rol }}
             </span>
           }
+          @if (pj()?.armaDedicada) {
+            <span class="badge rounded-pill mbadge" title="Armamento dedicado equipado">✓ Arma dedicada</span>
+          }
           @if (u.mascota) {
             <span class="badge rounded-pill mbadge">🐾 Mascota</span>
           } @else {

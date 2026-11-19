@@ -149,6 +149,7 @@ img.mfr{width:96px;height:96px}
 .r .nm{font-size:15px;margin-bottom:4px}
 .r .rl{margin-left:0;background:transparent;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
 .r .rl .ri{margin-left:0;font-size:13px}.r .rl img.ri{width:14px;height:14px}
+.r .rl.ad{color:#5cd68a;border-color:#5cd68a;margin-left:4px}
 .r /* rol en ranking y podio */
 .nr{display:flex;align-items:center;gap:0;min-width:0}
 .nr .rl{flex:none;margin-left:16px!important}
